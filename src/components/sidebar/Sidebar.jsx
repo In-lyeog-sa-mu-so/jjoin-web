@@ -5,6 +5,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import CampaignIcon from "@mui/icons-material/Campaign";
 import DescriptionIcon from "@mui/icons-material/Description";
+import { Link } from "react-router-dom";
 
 export default function Sidebar() {
 const clubs = [
@@ -28,15 +29,15 @@ const clubs = [
             <ul className="sidebarList">
                 <li className="sidebarListItem">
                     <PersonIcon className="sidebarIcon" />
-                    인원관리
+                    <Link to="/users">인원관리</Link>
                 </li>
                 <li className="sidebarListItem">
                     <NotificationsIcon className="sidebarIcon" />
-                    공지사항
+                    <Link to="/notice">공지사항</Link>
                 </li>
                 <li className="sidebarListItem">
                     <CalendarMonthIcon className="sidebarIcon" />
-                    일정등록
+                    <Link to="/calendar">일정등록</Link>
                 </li>
                 <li className="sidebarListItem">
                     <CampaignIcon className="sidebarIcon" />
