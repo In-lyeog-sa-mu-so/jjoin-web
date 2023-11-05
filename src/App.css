@@ -2,7 +2,16 @@
     display: flex;
 }
 
+.container > *:not(.sidebar) {
+    flex: 1;
+    margin-top: 25px;
+}
+
+.sidebar {
+    flex: 1;
+    max-width: 16%; /* 최대 넓이를 200px로 제한 */
+    /* 추가적인 스타일 */
+}
 .home {
-    flex: 4;
     background-color:white;
 }

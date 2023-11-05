@@ -38,7 +38,7 @@ const CONTENT = styled.table`
   textarea{
     margin-left: 20px;
     min-height: 300px;
-    min-width: 95.5%;
+    min-width: 94%;
   }
 `
 const BUTTONS = styled.div`
@@ -46,13 +46,14 @@ const BUTTONS = styled.div`
   justify-content: flex-end;
   padding-top:2%;
   button + button {
-    margin-left: 30px;
+    margin-left: 10px;
   }
   button{
     padding: 8px 15px; /* Increase size, adjust as needed */
     background-color: lightgrey; /* Change color */
     font-size: 15px;
     cursor: pointer;
+    margin-right:5px;
     &:hover {
       background-color: darkgrey;
     }
@@ -80,7 +81,7 @@ const NoticeUpdatePage = () => {
 
     const getBoard = async () => {
         try {
-            const resp = await axios.get(`https://fe54c381-c22f-4101-b015-1d8ef0ec8ff9.mock.pstmn.io/notice/${id}`);
+            const resp = await axios.get(`https://1f118712-b219-41ed-affe-7cdb92c95f04.mock.pstmn.io/notice/${id}`);
             if(resp && resp.data) {
                 setNotice(resp.data);
             } else {

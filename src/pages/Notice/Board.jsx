@@ -65,7 +65,7 @@ const Board = ({ id, title, contents, updateddata }) => {
 
     const deleteBoard = async () => {
         if (window.confirm('게시글을 삭제하시겠습니까?')) {
-            await axios.delete(`https://fe54c381-c22f-4101-b015-1d8ef0ec8ff9.mock.pstmn.io/notice/${id}`).then((res) => {
+            await axios.delete(`https://1f118712-b219-41ed-affe-7cdb92c95f04.mock.pstmn.io/notice/${id}`).then((res) => {
                 alert('삭제되었습니다.');
                 navigate('/notice');
             });

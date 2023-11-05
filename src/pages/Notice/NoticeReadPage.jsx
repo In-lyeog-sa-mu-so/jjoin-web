@@ -8,7 +8,7 @@ const NoticeReadPage = () => {
     const [notice, setNotice] = useState({});
     const getBoard = async () => {
         try {
-            const resp = await axios.get(`https://fe54c381-c22f-4101-b015-1d8ef0ec8ff9.mock.pstmn.io/notice/${id}`);
+            const resp = await axios.get(`https://1f118712-b219-41ed-affe-7cdb92c95f04.mock.pstmn.io/notice/${id}`);
             if(resp && resp.data) {
                 setNotice(resp.data);
             } else {
