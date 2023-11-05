@@ -4,10 +4,10 @@ import {
     Routes,
     Route
 } from "react-router-dom";
-import NoticeListPage from "./../pages/Notice/NoticeList/NoticeListPage"
-import NoticeReadPage from "./../pages/Notice/NoticeReadPage";
-import NoticeWritePage from "./../pages/Notice/NoticeWritePage";
-import NoticeUpdatePage from "./../pages/Notice/NoticeUpdatePage";
+import NoticeListPage from "./pages/Notice/NoticeList/NoticeListPage"
+import NoticeReadPage from "./pages/Notice/NoticeReadPage";
+import NoticeWritePage from "./pages/Notice/NoticeWritePage";
+import NoticeUpdatePage from "./pages/Notice/NoticeUpdatePage";
 
 function App(props) {
     return (
