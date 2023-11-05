@@ -41,7 +41,7 @@ const clubs = [
                 </li>
                 <li className="sidebarListItem">
                     <CampaignIcon className="sidebarIcon" />
-                    홍보페이지 관리
+                    <Link to="/decorate">홍보페이지 관리</Link>
                 </li>
                 <li className="sidebarListItem">
                     <DescriptionIcon className="sidebarIcon" />

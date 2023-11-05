@@ -38,7 +38,7 @@ const CONTENT = styled.table`
   textarea{
     margin-left: 20px;
     min-height: 300px;
-    min-width: 95.5%;
+    min-width: 94%;
   }
 `
 const BUTTONS = styled.div`
@@ -46,13 +46,14 @@ const BUTTONS = styled.div`
   justify-content: flex-end;
   padding-top:2%;
   button + button {
-    margin-left: 30px;
+    margin-left: 10px;
   }
   button{
-    padding: 8px 15px; /* Increase size, adjust as needed */
+    padding: 8px 20px; /* Increase size, adjust as needed */
     background-color: lightgrey; /* Change color */
     font-size: 15px;
     cursor: pointer;
+    margin-right:5px;
     &:hover {
       background-color: darkgrey;
     }
@@ -79,7 +80,7 @@ const NoticeWrite = () => {
     };
 
     const saveBoard = async () => {
-        await axios.post(`https://18821b90-7c6b-4217-b68e-e5775ac40a41.mock.pstmn.io/notice`, notice).then((res) => {
+        await axios.post(`https://1f118712-b219-41ed-affe-7cdb92c95f04.mock.pstmn.io/notice`, notice).then((res) => {
             alert('등록되었습니다.');
             navigate('/notice');
         });

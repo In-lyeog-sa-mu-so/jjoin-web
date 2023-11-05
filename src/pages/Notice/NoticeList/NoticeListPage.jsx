@@ -58,9 +58,17 @@ function NoticeList() {
     /*const [page, setPage] = useState(0);
     const size = 10;*/
     const getBoardList = async () => {
-        const resp = await axios.get('https://fe54c381-c22f-4101-b015-1d8ef0ec8ff9.mock.pstmn.io/notice');
-        setNoticeList(resp.data);
-    }
+        try {
+            const resp = await axios.get(`https://1f118712-b219-41ed-affe-7cdb92c95f04.mock.pstmn.io/notice`);
+            if(resp && resp.data) {
+                setNoticeList(resp.data);
+            } else {
+                console.error('No data received');
+            }
+        } catch (error) {
+            console.error('Error fetching data: ', error);
+        }
+    };
     useEffect(() => {
         getBoardList(); // 1) 게시글 목록 조회 함수 호출
     }, []);
