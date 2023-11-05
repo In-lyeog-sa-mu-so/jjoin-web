@@ -11,6 +11,7 @@ import DecorateUpdatePage from "./pages/decorate/DecorateUpdatePage";
 import Home from './pages/home/Home';
 import UserList from "./pages/userList/UserList";
 import ReactCalendar from "./pages/calendar/Calendar";
+import ApplicationForm from "./pages/apply/ApplicationForm";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
                     <Route exact path="/" element={<Home />} />
                     <Route path="/users" element={<UserList/>} />
                     <Route path="/calendar" element={<ReactCalendar/>} />
+                    <Route path="/apply" element={<ApplicationForm/>} />
                 </Routes>
             </div>
         </Router>
