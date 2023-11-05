@@ -23,6 +23,11 @@
     cursor: pointer;
 }
 
+.topLeft a {
+    color: inherit;  /* 글자 색상을 상위 요소와 동일하게 설정 */
+    text-decoration: none;  /* 밑줄 제거 */
+}
+
 .topbarIconContainer {
     position: relative;
     margin-right: 15px;

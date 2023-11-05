@@ -45,7 +45,7 @@ const clubs = [
                 </li>
                 <li className="sidebarListItem">
                     <DescriptionIcon className="sidebarIcon" />
-                    신청서 관리
+                    <Link to="/apply">신청서 관리</Link>
                 </li>
             </ul>
           </div>
