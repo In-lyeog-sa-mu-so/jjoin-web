@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const CONTAINER = styled.div`
   margin-left: 5%;
-  background-color: #EFEFEF;
+  background-color: whitesmoke;
   width: 90%;
 `
 const CONTENTS= styled.div`
@@ -19,10 +19,6 @@ const H2 = styled.h2`
 const CONTENT = styled.table`
   display: flex;
   align-items: center;
-  a{
-    position: relative;
-    top: 13px;
-  }
 `
 const BUTTONS = styled.div`
   display: flex;
@@ -50,6 +46,14 @@ const IMAGE = styled.div`
     }
   }
 `
+const CHECKBOX=styled.div`
+ 
+  `
+
+const DATE = styled.div`
+
+`
+
 const DecorateBoard = ({ clubImage, backgroundImage, introduction, isFinished, startDate, endDate }) => {
     const navigate = useNavigate();
 
@@ -74,6 +78,31 @@ const DecorateBoard = ({ clubImage, backgroundImage, introduction, isFinished, s
                             {introduction}
                         </a>
                     </CONTENT>
+                    <CHECKBOX>
+                        <a>모집</a>
+                        <input
+                            type="checkbox"
+                            name="모집"
+                            checked={isFinished}
+                            disabled={true}
+                        />
+                        <a>모집안함</a>
+                        <input
+                            type="checkbox"
+                            name="모집안함"
+                            checked={!isFinished}
+                            disabled={true}
+                        />
+                    </CHECKBOX>
+                    <DATE>
+                        <a>모집일정</a>
+                        <a>
+                            {startDate}
+                        </a>
+                        <a>
+                            {endDate}
+                        </a>
+                    </DATE>
                     <BUTTONS>
                         <button onClick={moveToUpdate}>수정</button>
                     </BUTTONS>
