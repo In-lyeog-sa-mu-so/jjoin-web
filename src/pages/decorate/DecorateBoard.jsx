@@ -19,6 +19,10 @@ const H2 = styled.h2`
 const CONTENT = styled.table`
   display: flex;
   align-items: center;
+  a {
+    position: relative;
+    margin-right: 3%;
+  }
 `
 const BUTTONS = styled.div`
   display: flex;
@@ -58,7 +62,7 @@ const DecorateBoard = ({ clubImage, backgroundImage, introduction, isFinished, s
     const navigate = useNavigate();
 
     const moveToUpdate = () => {
-        navigate('/decorate/update/');
+        navigate('/update');
     };
 
     return (<>
@@ -73,24 +77,25 @@ const DecorateBoard = ({ clubImage, backgroundImage, introduction, isFinished, s
                         <img src={backgroundImage} alt="배경사진"/>
                     </IMAGE>
                     <CONTENT>
-                        <p>소개</p>
+                        <a>소개</a>
                         <a>
                             {introduction}
                         </a>
                     </CONTENT>
                     <CHECKBOX>
+                        <a>모집여부</a>
                         <a>모집</a>
                         <input
                             type="checkbox"
                             name="모집"
-                            checked={isFinished}
+                            checked={!isFinished}
                             disabled={true}
                         />
                         <a>모집안함</a>
                         <input
                             type="checkbox"
                             name="모집안함"
-                            checked={!isFinished}
+                            checked={isFinished}
                             disabled={true}
                         />
                     </CHECKBOX>

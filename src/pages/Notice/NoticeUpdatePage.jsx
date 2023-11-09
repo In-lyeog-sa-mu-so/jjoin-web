@@ -78,7 +78,6 @@ const NoticeUpdatePage = () => {
             [name]: value,
         });
     };
-
     const getBoard = async () => {
         try {
             const resp = await axios.get(`https://1f118712-b219-41ed-affe-7cdb92c95f04.mock.pstmn.io/notice/${id}`);
@@ -94,7 +93,7 @@ const NoticeUpdatePage = () => {
 
     const updateBoard = async () => {
         try {
-            await axios.patch(`https://fe54c381-c22f-4101-b015-1d8ef0ec8ff9.mock.pstmn.io/notice`, notice);
+            await axios.patch(`https://1f118712-b219-41ed-affe-7cdb92c95f04.mock.pstmn.io/notice`, notice);
             alert('수정되었습니다.');
             navigate('/notice/' + id);
         } catch (error) {

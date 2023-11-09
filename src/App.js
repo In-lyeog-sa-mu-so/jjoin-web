@@ -26,7 +26,7 @@ function App() {
                     <Route path="/write" element={<NoticeWritePage/>} />
                     <Route path="/update/:id" element={<NoticeUpdatePage/>}/>
                     <Route path="/decorate" element={<DecoratePage />} />
-                    <Route path="/decorate/update" elemnt={<DecorateUpdatePage/>}/>
+                    <Route path="/update" element={<DecorateUpdatePage/>}/>
                     <Route exact path="/" element={<Home />} />
                     <Route path="/users" element={<UserList/>} />
                     <Route path="/calendar" element={<ReactCalendar/>} />
