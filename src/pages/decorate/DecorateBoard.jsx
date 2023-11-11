@@ -21,12 +21,23 @@ const CONTENT = styled.table`
   align-items: center;
   a {
     position: relative;
-    margin-right: 3%;
+    margin: 10px 45px;
+    &:last-child{
+      margin: 10px 25px;
+      width: 600px;
+      height: 100px;
+      border: 1px solid dimgray;
+      white-space: pre-line;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 `
 const BUTTONS = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  margin-top: 30px;
   button{
     margin-left:1%;
     padding: 8px 25px; /* Increase size, adjust as needed */
@@ -40,22 +51,42 @@ const BUTTONS = styled.div`
 `
 const IMAGE = styled.div`
   display: flex;
+  flex-direction: row;
   align-items: center;
+  & > * {
+    margin: 45px 20px;
+  }
   img {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     &:last-child {
-      width: 180px;
-      height: 100px;
+      width: 300px;
+      height: 150px;
     }
   }
 `
 const CHECKBOX=styled.div`
- 
-  `
+  display: flex;
+  align-items: center;
+  margin-left: 2.5%;
+  margin-top: 30px;
+  & > div:not(:first-child) {
+    margin-left: 5%;
+  }
+
+`
 
 const DATE = styled.div`
-
+  display: flex;
+  align-items: center;
+  margin-left: 2.5%;
+  margin-top: 30px;
+  & > div{
+    margin-left: 5%;
+    a:not(:first-child){
+      margin-left: 10px;
+    }
+  }
 `
 
 const DecorateBoard = ({ clubImage, backgroundImage, introduction, isFinished, startDate, endDate }) => {
@@ -83,7 +114,10 @@ const DecorateBoard = ({ clubImage, backgroundImage, introduction, isFinished, s
                         </a>
                     </CONTENT>
                     <CHECKBOX>
+                        <div>
                         <a>모집여부</a>
+                        </div>
+                        <div>
                         <a>모집</a>
                         <input
                             type="checkbox"
@@ -91,6 +125,8 @@ const DecorateBoard = ({ clubImage, backgroundImage, introduction, isFinished, s
                             checked={!isFinished}
                             disabled={true}
                         />
+                        </div>
+                        <div>
                         <a>모집안함</a>
                         <input
                             type="checkbox"
@@ -98,15 +134,19 @@ const DecorateBoard = ({ clubImage, backgroundImage, introduction, isFinished, s
                             checked={isFinished}
                             disabled={true}
                         />
+                        </div>
                     </CHECKBOX>
                     <DATE>
                         <a>모집일정</a>
+                        <div>
                         <a>
                             {startDate}
                         </a>
+                        <a>~</a>
                         <a>
                             {endDate}
                         </a>
+                        </div>
                     </DATE>
                     <BUTTONS>
                         <button onClick={moveToUpdate}>수정</button>
