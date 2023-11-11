@@ -8,26 +8,35 @@ const CONTAINER = styled.div`
   background-color: whitesmoke;
   width: 90%;
 `
+
 const CONTENTS= styled.div`
   width: 95%;
   margin-left: 2%;
   height: 550px;
-`;
+`
+
 const H2 = styled.h2`
   margin-left: 5%;
-`;
+`
 
 const CONTENT = styled.table`
   display: flex;
   align-items: center;
-  a {
-    position: relative;
-    margin-right: 3%;
+  position: relative;
+  margin: 10px 45px;
+    textarea{
+      margin: 10px 65px;
+      white-space: pre-line;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 `
 const BUTTONS = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  margin-top: 30px;
   button{
     margin-left:1%;
     padding: 8px 25px; /* Increase size, adjust as needed */
@@ -39,23 +48,53 @@ const BUTTONS = styled.div`
     }
   }
 `
+
 const IMAGE = styled.div`
   display: flex;
+  flex-direction: row;
   align-items: center;
+  & > * {
+    margin: 45px 20px 10px; 20px;
+  }
   img {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     &:last-child {
-      width: 180px;
-      height: 100px;
+      width: 300px;
+      height: 150px;
     }
   }
 `
-const CHECKBOX=styled.div`
- 
-  `
-const DATE = styled.div`
 
+const IMAGEINPUT=styled.div`
+  display: flex;
+  margin-left: 13%;
+  & > div:nth-child(2) {
+    margin-left: 120px;
+  }
+`
+
+const CHECKBOX=styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 2.5%;
+  margin-top: 10px;
+  & > div:not(:first-child) {
+    margin-left: 5%;
+  }
+`
+
+const DATE = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 2.5%;
+  margin-top: 30px;
+  & > div:not(:first-child){
+      margin-left: 50px;
+    input{
+      margin-left:10px;
+    }
+  }
 `
 const DecorateUpdatePage=()=>{
     const navigate = useNavigate();
@@ -113,6 +152,11 @@ const DecorateUpdatePage=()=>{
                     <IMAGE>
                         <p>프로필 사진</p>
                         <img src={clubImage} alt="프로필사진" />
+                        <p>배경 사진</p>
+                        <img src={backgroundImage} alt="배경사진" />
+                    </IMAGE>
+                    <IMAGEINPUT>
+                        <div>
                         <input
                             type="file"
                             onChange={event => {
@@ -123,8 +167,8 @@ const DecorateUpdatePage=()=>{
                                 reader.readAsDataURL(event.target.files[0]);
                             }}
                         />
-                        <p>배경 사진</p>
-                        <img src={backgroundImage} alt="배경사진" />
+                        </div>
+                        <div>
                         <input
                             type="file"
                             onChange={event => {
@@ -135,19 +179,23 @@ const DecorateUpdatePage=()=>{
                                 reader.readAsDataURL(event.target.files[0]);
                             }}
                         />
-                    </IMAGE>
+                        </div>
+                    </IMAGEINPUT>
                     <CONTENT>
-                        <span>소개</span>
+                        <a>소개</a>
                         <textarea
                             name="contents"
-                            cols="100"
+                            cols="80"
                             rows="5"
                             value={introduction}
                             onChange={onChange}
                         ></textarea>
                     </CONTENT>
                     <CHECKBOX>
+                        <div>
                         <a>모집여부</a>
+                        </div>
+                        <div>
                         <a>모집</a>
                         <input
                             type="radio"
@@ -156,6 +204,8 @@ const DecorateUpdatePage=()=>{
                             checked={isFinished === false}
                             onChange={event => setDecorate({...decorate, isFinished: event.target.value === '모집'})}
                         />
+                        </div>
+                        <div>
                         <a>모집안함</a>
                         <input
                             type="radio"
@@ -164,13 +214,20 @@ const DecorateUpdatePage=()=>{
                             checked={isFinished === true}
                             onChange={event => setDecorate({...decorate, isFinished: event.target.value === '모집안함'})}
                         />
+                        </div>
                     </CHECKBOX>
                     <DATE>
-                        <span>모집일정</span>
-                        <span>시작날짜</span>
+                        <div>
+                        <a>모집일정</a>
+                        </div>
+                        <div>
+                        <a>시작날짜</a>
                         <input type="text" name="title" value={startDate} onChange={onChange} />
-                        <span>종료날짜</span>
+                        </div>
+                        <div>
+                        <a>종료날짜</a>
                         <input type="text" name="title" value={endDate} onChange={onChange} />
+                        </div>
                     </DATE>
                     <BUTTONS>
                         <button onClick={updateBoard}>수정</button>
