@@ -1,6 +1,6 @@
 import React from "react";
 import './userList.css';
-
+import ApplicationList from './ApplicationList';
 import { DataGrid } from '@mui/x-data-grid';
 import { userRows } from '../../dummyData';
 import { DeleteOutline } from '@mui/icons-material';
@@ -41,6 +41,7 @@ export default function UserList() {
                 checkboxSelection
                 autoPageSize
             />
+            <ApplicationList />
         </div>
     );
 }
