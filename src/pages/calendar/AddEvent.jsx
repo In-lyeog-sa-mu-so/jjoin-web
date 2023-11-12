@@ -1,37 +1,63 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import TextField from '@material-ui/core/TextField';
 import styled from 'styled-components';
+import api from '../../Axios';
 
 function AddEvent() {
-  const dateTime = useRef();
-  const plan = useRef();
-  const content = useRef();
-  const navigate = useNavigate();
+    const [event, setEvent] = useState({
+        clubId: null,
+        startDate: null,
+        endDate: null,
+        title: '',
+        content: '',
+    });
 
-  const addContent = () => {
-    const new_item = {
-      date: dateTime.current.value,
-      title: plan.current.value,
-      content: content.current.value,
-      completed: false,
+    const onChange = (e) => {
+        const { value, name } = e.target;
+        setEvent({
+            ...event,
+            [name]: value,
+        });
     };
-    if (new_item.date === '') {
-      window.alert('날짜를 입력해주세요');
-      return;
+
+    const navigate = useNavigate();
+  
+    const addContent = () => {
+        const new_item = {
+        clubId: event.clubId,
+        startDate: event.startDate,
+        endDate: event.endDate,
+        title: event.title,
+        content: event.content,
+    };
+
+    if (new_item.startDate === '' || new_item.endDate === '') {
+        window.alert('날짜를 입력해주세요');
+        return;
     } else if (new_item.title === '') {
-      window.alert('일정 제목을 입력해주세요');
-      return;
+        window.alert('일정 제목을 입력해주세요');
+        return;
     } else if (new_item.content === '') {
-      window.alert('일정 내용을 입력해주세요.');
-      return;
+        window.alert('일정 내용을 입력해주세요.');
+        return;
     }
-    // 여기에 백에다가 전송 로직
-    window.alert('일정이 등록되었습니다!');
+
+    api.post(`/manager/club/${event.clubId}/plan`, new_item)
+    .then(response => {
+        // 성공적으로 전송되었을 때의 처리
+        window.alert('일정이 등록되었습니다!');
+        navigate('/calendar');
+    })
+    .catch(error => {
+        // 에러 처리
+        console.error('Error posting event', error);
+        window.alert('일정 등록에 실패했습니다.');
+    });
+
     navigate('/calendar');
-    return;
   };
 
   return (
@@ -43,28 +69,42 @@ function AddEvent() {
           </h1>
           <hr />
           <TextField
-            style={{ marginBottom: '3rem' }}
-            label='날짜 선택'
+            style={{ marginBottom: '1rem' }}
+            name='startDate'
+            label='시작 날짜'
             type='datetime-local'
             defaultValue='0000-00-00T00:00'
             InputLabelProps={{
               shrink: true,
             }}
-            inputRef={dateTime}
+            onChange={onChange}
+          />
+          <TextField
+            style={{ marginBottom: '2rem' }}
+            name='endDate'
+            label='종료 날짜'
+            type='datetime-local'
+            defaultValue='0000-00-00T00:00'
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onChange={onChange}
           />
           <input
             type='text'
+            name='title'
             style={{
               borderRadius: '5px',
               border: '1px solid #888',
               padding: '16px',
               fontSize: '16px',
-              marginBottom: '3rem',
+              marginBottom: '2rem',
             }}
             placeholder='일정 제목'
-            ref={plan}
+            onChange={onChange}
           />
           <textarea
+            name='content'
             style={{
               borderRadius: '5px',
               border: '1px solid #888',
@@ -75,7 +115,7 @@ function AddEvent() {
               resize: 'vertical', // 사용자가 수직으로만 크기 조절 가능하도록 설정
             }}
             placeholder='일정 내용'
-            ref={content}
+            onChange={onChange}
           />
 
           <BtnGroup>

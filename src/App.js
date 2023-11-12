@@ -19,6 +19,7 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-route
 import { Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components';
+import EditEvent from "./pages/calendar/EditEvent";
 
 // 새로운 버튼 컴포넌트 정의
 const AddEventButton = () => {
@@ -59,7 +60,8 @@ function App() {
                     <Route path="/update" element={<DecorateFixPage/>}/>
                     <Route path="/users" element={<UserList/>} />
                     <Route path='/upload' element={<AddEvent/>} exact />
-                    <Route path='/detail/:defid' element={<EventDetails/>} exact />
+                    <Route path='/calendar/:defid' element={<EventDetails/>} exact />
+                    <Route path="/calendar/edit/:defid" element={<EditEvent />} />
                     <Route path="/apply" element={<ApplyFormPage/>} />
                     <Route path="/apply/fix" element={<ApplyFormFixPage/>}/>
                 </Routes>

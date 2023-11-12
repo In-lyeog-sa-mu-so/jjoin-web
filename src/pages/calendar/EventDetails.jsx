@@ -3,84 +3,144 @@ import Button from '@material-ui/core/Button';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import RedditIcon from '@material-ui/icons/Reddit';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate, useParams } from 'react-router-dom'; 
+import api from '../../Axios';
+
+// 더미 데이터
+const dummyData = [
+    {
+      id: '1',
+      startDate: '2023-11-16T15:00',
+      endDate: '2023-11-16T17:00',
+      title: 'Test Event 1',
+      content: 'This is a test event 1',
+    },
+    {
+      id: '2',
+      startDate: '2023-11-11T10:00',
+      endDate: '2023-11-13T07:00',
+      title: 'Test Event 2',
+      content: 'This is a test event 2',
+    },
+];
 
 function EventDetails(props) {
     const navigate = useNavigate();
+    const { defid } = useParams();
+    
+    let primaryData = dummyData.find(event => event.id === defid);
 
-    let calendarId = props.match.params.defid;
-    let primaryData;
+    const deleteEvent = () => {
+      api.delete(`/manager/club/clubId/plan/${defid}`) // 백엔드 엔드포인트로 수정하세요.
+      .then(() => {
+        window.alert('일정이 삭제되었습니다.');
+        navigate('/calendar'); // 삭제 후 캘린더 페이지로 이동
+      })
+      .catch(error => {
+        console.error('Error deleting event', error);
+        window.alert('일정 삭제에 실패했습니다.');
+        navigate('/calendar'); // 삭제 후 캘린더 페이지로 이동
+      });
+    };
 
-//   for (let i = 0; i < data.length; i++) {
-//     if (data[i].id === calendarId) {
-//       primaryData = data[i];
-//     }
-//   }
+  // "일정 수정" 버튼 클릭 시 EditEvent 컴포넌트로 이동
+  const goToEditPage = () => {
+    navigate(`/calendar/edit/${defid}`);
+  };
 
   return (
     <>
       <Container>
         <Modal>
           <GoBack
-            onClick={() => navigate(-1)}
+            onClick={() => navigate('/calendar')}
           >
             <ExitToAppIcon style={{ color: '#EC7063' }} />
           </GoBack>
           <h1>
-            <AlarmIcon /> &nbsp;상세 일정 보기
+            <AlarmIcon /> &nbsp;상세 일정
           </h1>
           <h2>
             <CalendarTodayIcon style={{ color: '#85C1E9' }} />
-            &nbsp; 날짜: {primaryData
-              ? primaryData.date.split('T')[0]
+            &nbsp; 시작 날짜: {primaryData ? primaryData.startDate.split('T')[0]
               : ' '}{' '}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <AccessTimeIcon style={{ color: '#85C1E9' }} />
+            &nbsp; 시작 시간: &nbsp;
             {primaryData
-              ? primaryData.date.split('T')[1].split(':')[0] > 11
+              ? primaryData.startDate.split('T')[1].split(':')[0] > 11
                 ? '오후'
                 : '오전'
               : ''}
             &nbsp;&nbsp;
             {primaryData
-              ? primaryData.date.split('T')[1].split(':')[0] > 12
-                ? primaryData.date.split('T')[1].split(':')[0] -
+              ? primaryData.startDate.split('T')[1].split(':')[0] > 12
+                ? primaryData.startDate.split('T')[1].split(':')[0] -
                   12 +
                   ':' +
-                  primaryData.date.split('T')[1].split(':')[1]
-                : primaryData.date.split('T')[1].split(':')[0] +
+                  primaryData.startDate.split('T')[1].split(':')[1]
+                : primaryData.startDate.split('T')[1].split(':')[0] +
                   ':' +
-                  primaryData.date.split('T')[1].split(':')[1]
+                  primaryData.startDate.split('T')[1].split(':')[1]
+              : ''}
+            <br />
+            <br />
+            <CalendarTodayIcon style={{ color: '#85C1E9' }} />
+            &nbsp; 종료 날짜: {primaryData ? primaryData.endDate.split('T')[0]
+              : ' '}{' '}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <AccessTimeIcon style={{ color: '#85C1E9' }} />
+            &nbsp; 종료 시간: &nbsp;
+            {primaryData
+              ? primaryData.endDate.split('T')[1].split(':')[0] > 11
+                ? '오후'
+                : '오전'
+              : ''}
+            &nbsp;&nbsp;
+            {primaryData
+              ? primaryData.endDate.split('T')[1].split(':')[0] > 12
+                ? primaryData.endDate.split('T')[1].split(':')[0] -
+                  12 +
+                  ':' +
+                  primaryData.endDate.split('T')[1].split(':')[1]
+                : primaryData.endDate.split('T')[1].split(':')[0] +
+                  ':' +
+                  primaryData.endDate.split('T')[1].split(':')[1]
               : ''}
           </h2>
           <h2>
             <RedditIcon style={{ color: '#85C1E9' }} />
-            &nbsp; 할일: {primaryData ? primaryData.title : ''}
+            &nbsp; 제목: {primaryData ? primaryData.title : ''}
           </h2>
+          <h3>
+            <RedditIcon style={{ color: '#85C1E9' }} />
+            &nbsp; 내용: {primaryData ? primaryData.content : ''}
+          </h3>
           <hr />
-
           <BtnGroup>
             <Button
-              variant='contained'
-              style={{ marginRight: '50px' }}
-              onClick={() => navigate(-1)}
+                variant='contained'
+                style={{ marginRight: '50px' }}
+                onClick={deleteEvent}
             >
-              일정 삭제
+                일정 삭제
             </Button>
             <Button
-              variant='contained'
-              color='primary'
-              style={{ marginTop: '5px' }}
-              onClick={() => navigate(-1)}
+                variant='contained'
+                color='primary'
+                style={{ marginRight: '5px' }}
+                onClick={goToEditPage}
             >
-              일정 완료
+                일정 수정
             </Button>
           </BtnGroup>
         </Modal>
       </Container>
       <Container2
-        onClick={() => navigate(-1)}
+        onClick={() => navigate('/calendar')}
       />
     </>
   );
@@ -97,6 +157,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
 const Container2 = styled.div`
   position: absolute;
   top: 0;
@@ -104,14 +165,15 @@ const Container2 = styled.div`
   width: 100%;
   height: 100%;
 `;
+
 const Modal = styled.div`
   display: flex;
   flex-direction: column;
   background: #fff;
   padding: 24px 50px;
   border-radius: 4px;
-  width: 600px;
-  height: 400px;
+  width: 1200px;
+  height: 700px;
   box-sizing: border-box;
   z-index: 10;
   & h1 {
@@ -121,18 +183,22 @@ const Modal = styled.div`
   & h2 {
     color: #34495e;
   }
-
+  & h3 {
+    color: #34495e;
+  }
   & Button {
     min-width: 200px;
   }
 `;
+
 const GoBack = styled.div`
   width: 30px;
   height: 30px;
   cursor: pointer;
   position: relative;
-  left: -30px;
+  left: -20px;
 `;
+
 const BtnGroup = styled.div`
   margin: 0 auto;
   @media only screen and (max-width: 768px) {
