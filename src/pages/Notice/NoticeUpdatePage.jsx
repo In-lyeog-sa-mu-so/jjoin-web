@@ -70,7 +70,7 @@ const NoticeUpdatePage = () => {
     });
 
     const { title, updateddata, contents } = notice; //비구조화 할당
-
+    const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
     const onChange = (event) => {
         const { value, name } = event.target;
         setNotice({
@@ -80,7 +80,7 @@ const NoticeUpdatePage = () => {
     };
     const getBoard = async () => {
         try {
-            const resp = await axios.get(`https://1f118712-b219-41ed-affe-7cdb92c95f04.mock.pstmn.io/notice/${id}`);
+            const resp = await axios.get(`${baseUrl}/notice/${id}`);
             if(resp && resp.data) {
                 setNotice(resp.data);
             } else {
@@ -93,7 +93,7 @@ const NoticeUpdatePage = () => {
 
     const updateBoard = async () => {
         try {
-            await axios.patch(`https://1f118712-b219-41ed-affe-7cdb92c95f04.mock.pstmn.io/notice`, notice);
+            await axios.patch(`${baseUrl}/notice/${id}`, notice);
             alert('수정되었습니다.');
             navigate('/notice/' + id);
         } catch (error) {

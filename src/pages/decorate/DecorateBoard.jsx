@@ -15,7 +15,6 @@ const CONTENTS= styled.div`
 const H2 = styled.h2`
   margin-left: 5%;
 `;
-
 const CONTENT = styled.table`
   display: flex;
   align-items: center;
@@ -75,7 +74,6 @@ const CHECKBOX=styled.div`
   }
 
 `
-
 const DATE = styled.div`
   display: flex;
   align-items: center;

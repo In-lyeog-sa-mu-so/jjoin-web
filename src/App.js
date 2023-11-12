@@ -7,9 +7,11 @@ import NoticeReadPage from "./pages/Notice/NoticeReadPage";
 import NoticeWritePage from "./pages/Notice/NoticeWritePage";
 import NoticeUpdatePage from "./pages/Notice/NoticeUpdatePage";
 import DecoratePage from "./pages/decorate/DecoratePage";
-import DecorateUpdatePage from "./pages/decorate/DecorateUpdatePage";
+import DecorateFixPage from "./pages/decorate/DecorateFixPage";
 import Home from './pages/home/Home';
 import UserList from "./pages/userList/UserList";
+import ApplyFormMakePage from "./pages/apply/ApplyFormMakePage";
+import ApplyFormFixPage from "./pages/apply/ApplyFormFixPage";
 import EventCalendar from "./pages/calendar/EventCalendar";
 import AddEvent from "./pages/calendar/AddEvent";
 import EventDetails from "./pages/calendar/EventDetails";
@@ -60,6 +62,7 @@ function App() {
                     <Route path='/upload' element={<AddEvent/>} exact />
                     <Route path='/detail/:defid' element={<EventDetails/>} exact />
                     <Route path="/apply" element={<ApplicationForm/>} />
+                    <Route path="/apply/fix" elemetn={<ApplyFormFixPage/>}/>
                 </Routes>
             </div>
         </Router>
