@@ -14,59 +14,66 @@ import ApplyFormPage from "./pages/apply/ApplyFormPage";
 import ApplyFormFixPage from "./pages/apply/ApplyFormFixPage";
 import EventCalendar from "./pages/calendar/EventCalendar";
 import AddEvent from "./pages/calendar/AddEvent";
+import EditEvent from "./pages/calendar/EditEvent";
 import EventDetails from "./pages/calendar/EventDetails";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import { Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components';
-import EditEvent from "./pages/calendar/EditEvent";
+import {RecoilRoot} from 'recoil';
 
 // 새로운 버튼 컴포넌트 정의
 const AddEventButton = () => {
     const navigate = useNavigate();
-  
+
     return (
-      <PositionBtn>
-        <Fab
-          color='primary'
-          aria-label='add'
-          onClick={() => navigate('/upload')}
-        >
-          <AddIcon />
-        </Fab>
-      </PositionBtn>
+        <PositionBtn>
+            <Fab
+                color='primary'
+                aria-label='add'
+                onClick={() => navigate('/upload')}
+            >
+                <AddIcon />
+            </Fab>
+        </PositionBtn>
     );
 };
 
 function App() {
     return (
-        <Router>
-            <Topbar />
-            <div className="container">
-                <Sidebar />
+        <RecoilRoot>
+            <Router>
+                <Topbar />
                 <Routes>
-                    <Route path='/calendar' element={
-                        <>
-                            <EventCalendar />
-                            <AddEventButton />
-                        </>
+                    <Route exact path="/manager" element={<Home />} />
+                    <Route path='*' element={
+                        <div className="container">
+                            <Sidebar />
+                            <Routes>
+                                <Route path='/manager/club/{clubId}/calendar' element={
+                                    <>
+                                        <EventCalendar />
+                                        <AddEventButton />
+                                    </>
+                                } />
+                                <Route path="/manager/club/:clubId/notice" element={<NoticeListPage/>}/>
+                                <Route path="/manager/club/:clubId/notice/:id" element={<NoticeReadPage/>} />
+                                <Route path="/manager/club/:clubId/write" element={<NoticeWritePage/>} />
+                                <Route path="/manager/club/:clubId/update/:id" element={<NoticeUpdatePage/>}/>
+                                <Route path="/manager/club/:clubId/information" element={<DecoratePage />} />
+                                <Route path="/manager/club/:clubId/information/fix" element={<DecorateFixPage/>}/>
+                                <Route path="/manager/club/:clubId/users" element={<UserList/>} />
+                                <Route path='/manager/club/:clubId/upload' element={<AddEvent/>} exact />
+                                <Route path='/manager/club/:clubId/detail/:defid' element={<EventDetails/>} exact />
+                                <Route path="/manager/club/:clubId/apply" element={<ApplyFormPage/>} />
+                                <Route path="/manager/club/:clubId/apply/fix" element={<ApplyFormFixPage/>}/>
+                                <Route path="/manager/club/:clubId/calendar/edit/:defid" element={<EditEvent />} />
+                            </Routes>
+                        </div>
                     } />
-                    <Route exact path="/" element={<Home />} />
-                    <Route path="/notice" element={<NoticeListPage/>}/>
-                    <Route path="/notice/:id" element={<NoticeReadPage/>} />
-                    <Route path="/write" element={<NoticeWritePage/>} />
-                    <Route path="/update/:id" element={<NoticeUpdatePage/>}/>
-                    <Route path="/decorate" element={<DecoratePage />} />
-                    <Route path="/update" element={<DecorateFixPage/>}/>
-                    <Route path="/users" element={<UserList/>} />
-                    <Route path='/upload' element={<AddEvent/>} exact />
-                    <Route path='/calendar/:defid' element={<EventDetails/>} exact />
-                    <Route path="/calendar/edit/:defid" element={<EditEvent />} />
-                    <Route path="/apply" element={<ApplyFormPage/>} />
-                    <Route path="/apply/fix" element={<ApplyFormFixPage/>}/>
                 </Routes>
-            </div>
-        </Router>
+            </Router>
+        </RecoilRoot>
     );
 }
 

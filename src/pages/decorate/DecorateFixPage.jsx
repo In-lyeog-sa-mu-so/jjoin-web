@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { useNavigate} from 'react-router-dom';
+import { useParams, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -92,6 +92,7 @@ const DATE = styled.div`
 `
 const DecorateFixPage=()=>{
     const navigate = useNavigate();
+    const { clubId } = useParams();
     const [decorate, setDecorate] = useState({
         clubImage: null,
         backgroundImage: null,
@@ -111,7 +112,7 @@ const DecorateFixPage=()=>{
     const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
     const getBoard = async () => {
         try {
-            const resp = await axios.get(`${baseUrl}/decorate`);
+            const resp = await axios.get(`${baseUrl}/manager/club/${clubId}/information`);
             if(resp && resp.data) {
                 setDecorate(resp.data);
             } else {
@@ -123,15 +124,15 @@ const DecorateFixPage=()=>{
     };
     const updateBoard = async () => {
         try {
-            await axios.patch(`${baseUrl}/decorate`, decorate);
+            await axios.patch(`${baseUrl}/manager/club/${clubId}/information`, decorate);
             alert('수정되었습니다.');
-            navigate('/decorate');
+            navigate(`/manager/club/${clubId}/information`);
         } catch (error) {
             console.error('Error updating the board: ', error);
         }
     };
     const backToDetail = () => {
-        navigate('/decorate');
+        navigate(`/manager/club/${clubId}/information`);
     };
 
     useEffect(() => {

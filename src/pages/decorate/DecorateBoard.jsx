@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const CONTAINER = styled.div`
@@ -89,9 +89,9 @@ const DATE = styled.div`
 
 const DecorateBoard = ({ clubImage, backgroundImage, introduction, isFinished, startDate, endDate }) => {
     const navigate = useNavigate();
-
+    const { clubId } = useParams();
     const moveToUpdate = () => {
-        navigate('/update');
+        navigate(`/manager/club/${clubId}/information/fix`);
     };
 
     return (<>

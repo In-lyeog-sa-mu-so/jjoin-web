@@ -4,12 +4,12 @@ import axios from 'axios';
 import Board from './Board';
 
 const NoticeReadPage = () => {
-    const { id } = useParams();
+    const { id,clubId } = useParams();
     const [notice, setNotice] = useState({});
     const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
     const getBoard = async () => {
         try {
-            const resp = await axios.get(`${baseUrl}/notice/${id}`);
+            const resp = await axios.get(`${baseUrl}/manager/club/${clubId}/notice/${id}`);
             if(resp && resp.data) {
                 setNotice(resp.data);
             } else {

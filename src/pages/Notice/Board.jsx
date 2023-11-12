@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -16,12 +16,10 @@ const CONTENTS= styled.div`
 const H2 = styled.h2`
   margin-left: 5%;
 `;
-
 const TITLE = styled.div`
   border-bottom : 2px solid black;
   display: flex;
 `;
-
 const DATE = styled.div`
   border-bottom : 2px solid black;
   a{
@@ -34,7 +32,6 @@ const DATE = styled.div`
   }
   height: 10%;
 `;
-
 const CONTENT = styled.table`
   min-height: 300px;
   a{
@@ -58,24 +55,24 @@ const BUTTONS = styled.div`
 `
 const Board = ({ id, title, contents, updateddata }) => {
     const navigate = useNavigate();
-
+    const { clubId } = useParams();
     const moveToUpdate = () => {
-        navigate('/update/' + id);
+        navigate(`/manager/club/${clubId}/update/${id}`);
     };
 
     const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
 
     const deleteBoard = async () => {
         if (window.confirm('게시글을 삭제하시겠습니까?')) {
-            await axios.delete(`${baseUrl}/notice/${id}`).then((res) => {
+            await axios.delete(`${baseUrl}/manager/club/${clubId}/notice/${id}`).then((res) => {
                 alert('삭제되었습니다.');
-                navigate('/notice');
+                navigate(`/manager/club/${clubId}/notice`);
             });
         }
     };
 
     const moveToList = () => {
-        navigate('/notice');
+        navigate(`/manager/club/${clubId}/notice`);
     };
 
     return (<>
