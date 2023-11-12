@@ -38,6 +38,10 @@ const ADDCONTENT = styled.div`
   button{
     margin-left:20px;
   }
+  input{
+    width: 300px;
+    margin-right: 30px;
+  }
 `
 const H2 = styled.h2`
   margin-left: 5%;
@@ -62,6 +66,11 @@ const ApplyFormFixPage = () => {
     const [applyform, setapplyform] = useState([]); // 초기값을 빈 배열로 설정
     const navigate = useNavigate();
     const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
+    const onChange = (e, index) => {
+        const newApplyform = [...applyform];
+        newApplyform[index].QuestionContent = e.target.value;
+        setapplyform(newApplyform);
+    };
     const getApply = async () => {
         try {
             const resp = await axios.get(`${baseUrl}/apply`);
@@ -76,7 +85,12 @@ const ApplyFormFixPage = () => {
     };
     const updateApply = async () => {
         try {
-            await axios.patch(`${baseUrl}/apply`);
+            for (const question of applyform) {
+                await axios.patch(`${baseUrl}/apply`, {
+                    question_id: question.question_id,
+                    QuestionContent: question.QuestionContent
+                });
+            }
             alert('수정되었습니다.');
             navigate('/apply');
         } catch (error) {
@@ -84,8 +98,9 @@ const ApplyFormFixPage = () => {
         }
     };
     const addApply = () => {
-        setapplyform([...applyform,[]]);
-    }
+        const newQuestionId = applyform.length + 1;
+        setapplyform([...applyform, { QuestionContent: "", question_id: newQuestionId }]);
+    };
 
     const deleteApply = (index) => {
         const newFields = [...applyform];
@@ -125,8 +140,11 @@ const ApplyFormFixPage = () => {
                         <ADDCONTENT>
                             {Array.isArray(applyform) && applyform.map((question, index) => (
                                 <div key={index}>
-                                    <span>{question.QuestionContent}</span>
-                                    <a></a>
+                                    <input
+                                        type="text"
+                                        value={question.QuestionContent}
+                                        onChange={(e) => onChange(e, index)}
+                                    />
                                     <button onClick={() => deleteApply(index)}>삭제</button>
                                 </div>
                             ))}
