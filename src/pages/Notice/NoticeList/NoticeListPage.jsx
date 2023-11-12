@@ -55,11 +55,12 @@ const Container = styled.div`
 function NoticeList() {
     const navigate = useNavigate();
     const [noticeList, setNoticeList] = useState([]);
+    const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
     /*const [page, setPage] = useState(0);
     const size = 10;*/
     const getBoardList = async () => {
         try {
-            const resp = await axios.get(`https://1f118712-b219-41ed-affe-7cdb92c95f04.mock.pstmn.io/notice`);
+            const resp = await axios.get(`${baseUrl}/notice`);
             if(resp && resp.data) {
                 setNoticeList(resp.data);
             } else {

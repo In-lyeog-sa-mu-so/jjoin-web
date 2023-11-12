@@ -12,11 +12,11 @@ const DecoratePage = () => {
         endDate: null,
     });
 
-    const baseUrl="https://1f118712-b219-41ed-affe-7cdb92c95f04.mock.pstmn.io";
+    const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
 
     const getBoard = async () => {
         try {
-            const resp = await axios.get(baseUrl+ "/" + "decorate");
+            const resp = await axios.get(`${baseUrl}/decorate`);
             if(resp && resp.data) {
                 setDecorate(resp.data);
             } else {
