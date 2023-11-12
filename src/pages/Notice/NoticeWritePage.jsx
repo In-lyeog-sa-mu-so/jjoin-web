@@ -70,7 +70,7 @@ const NoticeWrite = () => {
     });
 
     const { title, updateddata, contents } = notice; //비구조화 할당
-
+    const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
     const onChange = (event) => {
         const { value, name } = event.target;
         setNotice({
@@ -80,7 +80,7 @@ const NoticeWrite = () => {
     };
 
     const saveBoard = async () => {
-        await axios.post(`https://1f118712-b219-41ed-affe-7cdb92c95f04.mock.pstmn.io/notice`, notice).then((res) => {
+        await axios.post(`${baseUrl}/notice`, notice).then((res) => {
             alert('등록되었습니다.');
             navigate('/notice');
         });
