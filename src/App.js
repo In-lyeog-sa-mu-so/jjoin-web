@@ -10,12 +10,11 @@ import DecoratePage from "./pages/decorate/DecoratePage";
 import DecorateFixPage from "./pages/decorate/DecorateFixPage";
 import Home from './pages/home/Home';
 import UserList from "./pages/userList/UserList";
-import ApplyFormMakePage from "./pages/apply/ApplyFormMakePage";
+import ApplyFormPage from "./pages/apply/ApplyFormPage";
 import ApplyFormFixPage from "./pages/apply/ApplyFormFixPage";
 import EventCalendar from "./pages/calendar/EventCalendar";
 import AddEvent from "./pages/calendar/AddEvent";
 import EventDetails from "./pages/calendar/EventDetails";
-import ApplicationForm from "./pages/apply/ApplicationForm";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import { Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
@@ -57,12 +56,12 @@ function App() {
                     <Route path="/write" element={<NoticeWritePage/>} />
                     <Route path="/update/:id" element={<NoticeUpdatePage/>}/>
                     <Route path="/decorate" element={<DecoratePage />} />
-                    <Route path="/update" element={<DecorateUpdatePage/>}/>
+                    <Route path="/update" element={<DecorateFixPage/>}/>
                     <Route path="/users" element={<UserList/>} />
                     <Route path='/upload' element={<AddEvent/>} exact />
                     <Route path='/detail/:defid' element={<EventDetails/>} exact />
-                    <Route path="/apply" element={<ApplicationForm/>} />
-                    <Route path="/apply/fix" elemetn={<ApplyFormFixPage/>}/>
+                    <Route path="/apply" element={<ApplyFormPage/>} />
+                    <Route path="/apply/fix" element={<ApplyFormFixPage/>}/>
                 </Routes>
             </div>
         </Router>

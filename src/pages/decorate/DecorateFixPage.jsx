@@ -18,7 +18,6 @@ const CONTENTS= styled.div`
 const H2 = styled.h2`
   margin-left: 5%;
 `
-
 const CONTENT = styled.table`
   display: flex;
   align-items: center;
@@ -31,7 +30,6 @@ const CONTENT = styled.table`
       align-items: center;
       justify-content: center;
     }
-  }
 `
 const BUTTONS = styled.div`
   display: flex;
@@ -48,13 +46,12 @@ const BUTTONS = styled.div`
     }
   }
 `
-
 const IMAGE = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   & > * {
-    margin: 45px 20px 10px; 20px;
+    margin: 45px 20px 10px 20px;
   }
   img {
     width: 150px;
@@ -65,7 +62,6 @@ const IMAGE = styled.div`
     }
   }
 `
-
 const IMAGEINPUT=styled.div`
   display: flex;
   margin-left: 13%;
@@ -73,7 +69,6 @@ const IMAGEINPUT=styled.div`
     margin-left: 120px;
   }
 `
-
 const CHECKBOX=styled.div`
   display: flex;
   align-items: center;
@@ -83,7 +78,6 @@ const CHECKBOX=styled.div`
     margin-left: 5%;
   }
 `
-
 const DATE = styled.div`
   display: flex;
   align-items: center;
@@ -129,7 +123,7 @@ const DecorateFixPage=()=>{
     };
     const updateBoard = async () => {
         try {
-            await axios.patch(baseUrl+ "/" + "decorate", decorate);
+            await axios.patch(`${baseUrl}/decorate`, decorate);
             alert('수정되었습니다.');
             navigate('/decorate');
         } catch (error) {
