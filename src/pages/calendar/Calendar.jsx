@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import 'react-calendar/dist/Calendar.css';
 import moment from "moment";
 import api from '../../Axios.js';
+import AddEvent from './AddEvent.jsx';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -135,70 +136,51 @@ const Modal = ({ isOpen, onClose, onSave }) => {
   };
 
 const EventCalendar = () => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedDates, setSelectedDates] = useState([]);
-  const [events, setEvents] = useState({});
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [clubId, setClubId] = useState(''); // 예를 들어 '123'과 같이 실제 clubId로 초기화
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedDates, setSelectedDates] = useState([]);
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [clubId, setClubId] = useState(''); // 예를 들어 '123'과 같이 실제 clubId로 초기화
+    const [eventDetails, setEventDetails] = useState({
+      title: '', 
+      content: '', 
+      startTime: '00:00', 
+      endTime: '00:00'
+    });
 
-  const handleSelectRange = (range) => {
-    setSelectedDates(range);
-  };
-
-  const openModalToCreateEvent = () => {
-    if (selectedDates.length > 0) {
-      setModalOpen(true);
-    }
-  };
-
-  const saveEvent = ({ title, content }) => {
-    const newEvent = {
-      title,
-      content,
-      startDate: selectedDates[0],
-      endDate: selectedDates.length > 1 ? selectedDates[1] : selectedDates[0],
+    const handleSelectRange = (range) => {
+        setSelectedDates(range);
     };
-    const dateStr = selectedDates[0].toISOString().split('T')[0];
-    setEvents({ ...events, [dateStr]: newEvent });
 
-    // axios를 사용하여 서버에 일정을 등록
-    api.post(`/manager/club/${clubId}/plan`, newEvent)
-      .then(response => {
-        // 성공적으로 데이터가 전송되었을 때의 처리
-        console.log('Event successfully saved', response.data);
-      })
-      .catch(error => {
-        // 에러 처리
-        console.error('There was an error saving the event', error);
-      });
-  };
+    const openModalToCreateEvent = () => {
+        if (selectedDates.length > 0) {
+          setModalOpen(true);
+        }
+    };
+    
+    const handleEventDetailsChange = (e) => {
+        setEventDetails({ ...eventDetails, [e.target.name]: e.target.value });
+    };
 
-  const deleteEvent = (dateStr) => {
-    const updatedEvents = { ...events };
-    const eventToDelete = updatedEvents[dateStr];
-    if (!eventToDelete) {
-      console.error('Event to delete not found');
-      return;
+    const handleSaveEvent = () => {
+        const newEvent = {
+          ...eventDetails,
+          startDate: moment(selectedDates[0]).format('YYYY-MM-DD') + ' ' + eventDetails.startTime,
+          endDate: (selectedDates.length > 1 ? moment(selectedDates[1]) : moment(selectedDates[0])).format('YYYY-MM-DD') + ' ' + eventDetails.endTime,
+        };
+
+        // axios를 사용하여 서버에 일정을 등록
+        api.post(`/manager/club/${clubId}/plan`, newEvent)
+            .then(response => {
+            // 성공적으로 데이터가 전송되었을 때의 처리
+                alert('등록 완료되었습니다.');
+                setModalOpen(false);
+                console.log('Event successfully saved', response.data);
+            })
+            .catch(error => {
+                // 에러 처리
+                console.error('There was an error saving the event', error);
+            });
     }
-
-    delete updatedEvents[dateStr];
-    setEvents(updatedEvents);
-
-    // planId는 이벤트를 구별하는 식별자입니다. 여기서는 dateStr을 planId로 사용하고 있습니다.
-    // 실제 애플리케이션에서는 서버로부터 받은 고유한 planId를 사용해야 합니다.
-    const planId = dateStr; // 혹은 eventToDelete.id 등 실제 planId를 사용해야 합니다.
-
-    // axios를 사용하여 서버에 DELETE 요청을 보냅니다.
-    api.delete(`/manager/club/${clubId}/plan/${planId}`)
-      .then(response => {
-        // 성공적으로 데이터가 삭제되었을 때의 처리를 작성합니다.
-        console.log('Event successfully deleted', response.data);
-      })
-      .catch(error => {
-        // 에러 처리를 작성합니다.
-        console.error('There was an error deleting the event', error);
-      });
-  };
 
   return (
     <div>
@@ -210,26 +192,16 @@ const EventCalendar = () => {
         formatDay={(locale, date) => moment(date).format("DD")}
         showNeighboringMonth={false}
       />
+      <div className='text-gray-500 mt-4'>
+        {moment(selectedDate).format("YYYY년 MM월 DD일")}
+      </div>
       <button onClick={openModalToCreateEvent}>일정 등록</button>
+      <AddEvent />
       <Modal
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
-        onSave={saveEvent}
+        onSave={handleSaveEvent}
       />
-      {selectedDates.length > 0 && events[selectedDates[0].toISOString().split('T')[0]] && (
-        <div>
-          <h3>일정</h3>
-          <p>제목: {events[selectedDates[0].toISOString().split('T')[0]].title}</p>
-          <p>내용: {events[selectedDates[0].toISOString().split('T')[0]].content}</p>
-          <p>
-            {new Intl.DateTimeFormat('ko-KR').format(events[selectedDates[0].toISOString().split('T')[0]].startDate)} ~ 
-            {new Intl.DateTimeFormat('ko-KR').format(events[selectedDates[0].toISOString().split('T')[0]].endDate)}
-          </p>
-          <button onClick={() => deleteEvent(selectedDates[0].toISOString().split('T')[0])}>
-            삭제
-          </button>
-        </div>
-      )}
     </div>
   );
 };
