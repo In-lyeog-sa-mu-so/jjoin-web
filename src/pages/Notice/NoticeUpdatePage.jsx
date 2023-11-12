@@ -61,7 +61,7 @@ const BUTTONS = styled.div`
 `
 const NoticeUpdatePage = () => {
     const navigate = useNavigate();
-    const { id } = useParams();
+    const { clubId,id } = useParams();
     const [notice, setNotice] = useState({
         id: 0,
         title: '',
@@ -80,7 +80,7 @@ const NoticeUpdatePage = () => {
     };
     const getBoard = async () => {
         try {
-            const resp = await axios.get(`${baseUrl}/notice/${id}`);
+            const resp = await axios.get(`${baseUrl}/manager/club/${clubId}/notice/${id}`);
             if(resp && resp.data) {
                 setNotice(resp.data);
             } else {
@@ -93,16 +93,16 @@ const NoticeUpdatePage = () => {
 
     const updateBoard = async () => {
         try {
-            await axios.patch(`${baseUrl}/notice/${id}`, notice);
+            await axios.patch(`${baseUrl}/manager/club/${clubId}/notice/${id}`, notice);
             alert('수정되었습니다.');
-            navigate('/notice/' + id);
+            navigate(`/manager/club/${clubId}/notice/${id}`);
         } catch (error) {
             console.error('Error updating the board: ', error);
         }
     };
 
     const backToDetail = () => {
-        navigate('/notice/' + id);
+        navigate(`/manager/club/${clubId}/notice/${id}`);
     };
 
     useEffect(() => {

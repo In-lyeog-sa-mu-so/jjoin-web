@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import axios from 'axios';
 import styled from "styled-components";
 import CommonTable from "./CommonTable";
@@ -10,16 +10,13 @@ const Tr = styled.tr`
     cursor: pointer;
   }
 `;
-
 const Td = styled.td`
   padding: 10px 5px;
   border-bottom: 2px solid lightgray;
 `;
-
 const H2 = styled.h2`
   padding-left: 5%;
 `;
-
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: inherit; // 혹은 원하는 색상
@@ -28,7 +25,6 @@ const StyledLink = styled(Link)`
     text-decoration: underline;
 }
 `;
-
 const Container = styled.div`
   float: right;  
   display: flex;
@@ -58,9 +54,10 @@ function NoticeList() {
     const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
     /*const [page, setPage] = useState(0);
     const size = 10;*/
+    const { clubId } = useParams();
     const getBoardList = async () => {
         try {
-            const resp = await axios.get(`${baseUrl}/notice`);
+            const resp = await axios.get(`${baseUrl}/manager/club/${clubId}/notice`);
             if(resp && resp.data) {
                 setNoticeList(resp.data);
             } else {
@@ -72,9 +69,9 @@ function NoticeList() {
     };
     useEffect(() => {
         getBoardList(); // 1) 게시글 목록 조회 함수 호출
-    }, []);
+    }, [clubId]);
     const moveToWrite = () => {
-        navigate('/write');
+        navigate(`/manager/club/${clubId}/write`);
     };
 
     return (
@@ -94,7 +91,7 @@ function NoticeList() {
                     <Tr key={notice.id}>
                         <Td>{notice.id}</Td>
                         <Td>
-                            <StyledLink to={`/notice/${notice.id}`}>
+                            <StyledLink to={`/manager/club/${clubId}/notice/${notice.id}`}>
                                 {notice.title}
                             </StyledLink>
                         </Td>

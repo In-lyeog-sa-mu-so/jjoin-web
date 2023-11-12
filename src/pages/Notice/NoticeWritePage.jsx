@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -62,14 +62,14 @@ const BUTTONS = styled.div`
 
 const NoticeWrite = () => {
     const navigate = useNavigate();
-
+    const { clubId } = useParams();
     const [notice, setNotice] = useState({
         title: '',
         updateddata: '',
         contents: '',
     });
 
-    const { title, updateddata, contents } = notice; //비구조화 할당
+    const { id, title, updateddata, contents } = notice; //비구조화 할당
     const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
     const onChange = (event) => {
         const { value, name } = event.target;
@@ -80,14 +80,14 @@ const NoticeWrite = () => {
     };
 
     const saveBoard = async () => {
-        await axios.post(`${baseUrl}/notice`, notice).then((res) => {
+        await axios.post(`${baseUrl}/manager/club/${clubId}/notice`, notice).then((res) => {
             alert('등록되었습니다.');
-            navigate('/notice');
+            navigate(`/manager/club/${clubId}/notice`);
         });
     };
 
     const backToList = () => {
-        navigate('/notice');
+        navigate(`/manager/club/${clubId}/notice`);
     };
 
     return (

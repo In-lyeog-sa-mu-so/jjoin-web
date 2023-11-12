@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import { useParams} from 'react-router-dom';
 import DecorateBoard from "./DecorateBoard";
 
 const DecoratePage = () => {
@@ -13,10 +14,10 @@ const DecoratePage = () => {
     });
 
     const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
-
+    const { clubId } = useParams();
     const getBoard = async () => {
         try {
-            const resp = await axios.get(`${baseUrl}/decorate`);
+            const resp = await axios.get(`${baseUrl}/manager/club/${clubId}/information`);
             if(resp && resp.data) {
                 setDecorate(resp.data);
             } else {
