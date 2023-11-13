@@ -10,13 +10,30 @@ const H2 = styled.h2`
   justify-content: center;
   margin-top: 50px;
 `
+const CLICK = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 60px;
+  gap: 20px;
+`
 const StyledLink = styled(Link)`
   text-decoration: none;
-  color: inherit; // 혹은 원하는 색상
   &:hover {
     font-weight: bold;
     text-decoration: underline;
+    background-color: lightblue;
 }
+  display: inline-block;
+  width: 400px;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  border: 1px solid black;
+  border-radius: 25px;  // 타원 형태를 만들기 위한 border-radius 값입니다.
+  background-color: #f8f9fa;  // 배경 색상입니다. 원하는 색상으로 변경하세요.
+  color: #343a40;  // 텍스트 색상입니다. 원하는 색상으로 변경하세요.
 `;
 function MainPage(){
     const [clubList, setClubList] = useRecoilState(clubListState);
@@ -41,7 +58,7 @@ function MainPage(){
     return(
         <div>
             <H2>동아리 관리</H2>
-            <div>
+            <CLICK>
                 {clubList&&clubList.map((club) => (
                     <div key={club.id}>
                         <div>
@@ -51,7 +68,7 @@ function MainPage(){
                         </div>
                     </div>
                 ))}
-            </div>
+            </CLICK>
         </div>
     );
 }
