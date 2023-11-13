@@ -16,7 +16,7 @@ import EventCalendar from "./pages/calendar/EventCalendar";
 import AddEvent from "./pages/calendar/AddEvent";
 import EditEvent from "./pages/calendar/EditEvent";
 import EventDetails from "./pages/calendar/EventDetails";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import { Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components';
@@ -45,7 +45,8 @@ function App() {
             <Router>
                 <Topbar />
                 <Routes>
-                    <Route exact path="/manager" element={<Home />} />
+                    <Route path="/" element={<Navigate to="/manager" />} />
+                    <Route path="/manager" element={<Home />} />
                     <Route path='*' element={
                         <div className="container">
                             <Sidebar />
