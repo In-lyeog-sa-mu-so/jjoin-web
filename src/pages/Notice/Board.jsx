@@ -26,9 +26,7 @@ const DATE = styled.div`
     position: relative;
     top: 13px;
     font-size: 16px;
-    &:first-child{
-      margin-right: 2%;
-    }
+    margin-right: 2%;
   }
   height: 10%;
 `;
@@ -53,7 +51,7 @@ const BUTTONS = styled.div`
     }
   }
 `
-const Board = ({ id, title, contents, updateddata }) => {
+const Board = ({ id, title, content, createdDate, updatedDate}) => {
     const navigate = useNavigate();
     const { clubId } = useParams();
     const moveToUpdate = () => {
@@ -84,12 +82,14 @@ const Board = ({ id, title, contents, updateddata }) => {
                         <h1>{title}</h1>
                     </TITLE>
                     <DATE>
-                        <a>작성일</a>
-                        <a>{updateddata}</a>
+                        <a>최초 작성 날짜</a>
+                        <a>{createdDate}</a>
+                        <a>수정된 날짜</a>
+                        <a>{updatedDate}</a>
                     </DATE>
                     <CONTENT>
                         <a>
-                            {contents}
+                            {content}
                         </a>
                     </CONTENT>
                     <BUTTONS>

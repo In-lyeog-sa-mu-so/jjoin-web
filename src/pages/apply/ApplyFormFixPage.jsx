@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -65,17 +65,25 @@ const BUTTONS = styled.div`
 const ApplyFormFixPage = () => {
     const [applyform, setapplyform] = useState([]); // 초기값을 빈 배열로 설정
     const navigate = useNavigate();
+    const { clubId } = useParams();
     const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
     const onChange = (e, index) => {
         const newApplyform = [...applyform];
         newApplyform[index].QuestionContent = e.target.value;
+        newApplyform[index].isModified = newApplyform[index].originalContent !== e.target.value;
         setapplyform(newApplyform);
     };
     const getApply = async () => {
         try {
-            const resp = await axios.get(`${baseUrl}/apply`);
+            const resp = await axios.get(`${baseUrl}/manager/club/${clubId}/application`);
             if(resp && resp.data) {
-                setapplyform(resp.data);
+                setapplyform(resp.data.map(question => ({
+                    ...question,
+                    originalContent: question.QuestionContent,
+                    isDeleted: false,
+                    isNew: false,
+                    isModified: false
+                })));
             } else {
                 console.error('No data received');
             }
@@ -83,32 +91,31 @@ const ApplyFormFixPage = () => {
             console.error('Error fetching data: ', error);
         }
     };
+    const deleteApply = (index) => {
+        const newFields = [...applyform];
+        newFields[index].isDeleted = true;
+        setapplyform(newFields);
+    };
+    const addApply = () => {
+        const newQuestionId = Math.max(...applyform.map(question => question.isDeleted ? -Infinity : question.question_id), 0) + 1;
+        setapplyform([...applyform, { QuestionContent: "", question_id: newQuestionId, isNew: true }]);
+    };
     const updateApply = async () => {
         try {
-            for (const question of applyform) {
-                await axios.patch(`${baseUrl}/apply`, {
-                    question_id: question.question_id,
-                    QuestionContent: question.QuestionContent
-                });
-            }
+            const requestBody = {
+                added: applyform.filter(question => question.isNew).map(question => ({ question_id: question.question_id, QuestionContent: question.QuestionContent })),
+                modified: applyform.filter(question => question.isModified).map(question => ({ question_id: question.question_id, QuestionContent: question.QuestionContent })),
+                deleted: applyform.filter(question => question.isDeleted).map(question => ({question_id: question.question_id})),
+            };
+            await axios.patch(`${baseUrl}/apply`, requestBody);
             alert('수정되었습니다.');
-            navigate('/apply');
+            navigate(`/manager/club/${clubId}/apply`);
         } catch (error) {
             console.error('Error updating the board: ', error);
         }
     };
-    const addApply = () => {
-        const newQuestionId = applyform.length + 1;
-        setapplyform([...applyform, { QuestionContent: "", question_id: newQuestionId }]);
-    };
-
-    const deleteApply = (index) => {
-        const newFields = [...applyform];
-        newFields.splice(index, 1);
-        setapplyform(newFields);
-    }
     const backToDetail = () => {
-        navigate('/apply');
+        navigate(`/manager/club/${clubId}/apply`);
     };
 
     useEffect(() => {
@@ -139,14 +146,16 @@ const ApplyFormFixPage = () => {
                         </div>
                         <ADDCONTENT>
                             {Array.isArray(applyform) && applyform.map((question, index) => (
-                                <div key={index}>
-                                    <input
-                                        type="text"
-                                        value={question.QuestionContent}
-                                        onChange={(e) => onChange(e, index)}
-                                    />
-                                    <button onClick={() => deleteApply(index)}>삭제</button>
-                                </div>
+                                !question.isDeleted && (
+                                    <div key={index}>
+                                        <input
+                                            type="text"
+                                            value={question.QuestionContent}
+                                            onChange={(e) => onChange(e, index)}
+                                        />
+                                        <button onClick={() => deleteApply(index)}>삭제</button>
+                                    </div>
+                                )
                             ))}
                         </ADDCONTENT>
                     </CONTENT>

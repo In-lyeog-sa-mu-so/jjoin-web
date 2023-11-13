@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -56,15 +56,17 @@ const BUTTONS = styled.div`
 `
 const ApplyFormPage = () => {
     const [applyform, setapplyform] = useState([]); // 초기값을 빈 배열로 설정
+
     const navigate = useNavigate();
+    const {clubId} = useParams();
     const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
 
     const moveToUpdate = () => {
-        navigate('/apply/fix');
+        navigate(`/manager/club/${clubId}/apply/fix`);
     };
     const getApply = async () => {
         try {
-            const resp = await axios.get(`${baseUrl}/apply`);
+            const resp = await axios.get(`${baseUrl}/manager/club/${clubId}/application`);
             if(resp && resp.data) {
                 setapplyform(resp.data);
             } else {
