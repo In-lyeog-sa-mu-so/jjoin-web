@@ -94,14 +94,14 @@ const DecorateFixPage=()=>{
     const navigate = useNavigate();
     const { clubId } = useParams();
     const [decorate, setDecorate] = useState({
-        clubImage: null,
-        backgroundImage: null,
+        clubImageUuid: null,
+        backgroundImageUuid: null,
         introduction: "",
         isFinished: false,
         startDate: null,
         endDate: null,
     });
-    const {clubImage,backgroundImage,introduction,isFinished,startDate,endDate}=decorate;
+    const {clubImageUuid,backgroundImageUuid,introduction,isFinished,startDate,endDate}=decorate;
     const onChange = (event) => {
         const { value, name } = event.target;
         setDecorate({
@@ -146,9 +146,9 @@ const DecorateFixPage=()=>{
                 <CONTENTS>
                     <IMAGE>
                         <p>프로필 사진</p>
-                        <img src={clubImage} alt="프로필사진" />
+                        <img src={clubImageUuid} alt="프로필사진" />
                         <p>배경 사진</p>
-                        <img src={backgroundImage} alt="배경사진" />
+                        <img src={backgroundImageUuid} alt="배경사진" />
                     </IMAGE>
                     <IMAGEINPUT>
                         <div>
@@ -157,7 +157,7 @@ const DecorateFixPage=()=>{
                             onChange={event => {
                                 const reader = new FileReader();
                                 reader.onloadend = () => {
-                                    setDecorate({...decorate, clubImage: reader.result});
+                                    setDecorate({...decorate, clubImageUuid: reader.result});
                                 };
                                 reader.readAsDataURL(event.target.files[0]);
                             }}
@@ -169,7 +169,7 @@ const DecorateFixPage=()=>{
                             onChange={event => {
                                 const reader = new FileReader();
                                 reader.onloadend = () => {
-                                    setDecorate({...decorate, backgroundImage: reader.result});
+                                    setDecorate({...decorate, backgroundImageUuid: reader.result});
                                 };
                                 reader.readAsDataURL(event.target.files[0]);
                             }}
@@ -179,7 +179,7 @@ const DecorateFixPage=()=>{
                     <CONTENT>
                         <a>소개</a>
                         <textarea
-                            name="contents"
+                            name="introduction"
                             cols="80"
                             rows="5"
                             value={introduction}
@@ -217,11 +217,11 @@ const DecorateFixPage=()=>{
                         </div>
                         <div>
                         <a>시작날짜</a>
-                        <input type="text" name="title" value={startDate} onChange={onChange} />
+                        <input type="text" name="startDate" value={startDate} onChange={onChange} />
                         </div>
                         <div>
                         <a>종료날짜</a>
-                        <input type="text" name="title" value={endDate} onChange={onChange} />
+                        <input type="text" name="endDate" value={endDate} onChange={onChange} />
                         </div>
                     </DATE>
                     <BUTTONS>
