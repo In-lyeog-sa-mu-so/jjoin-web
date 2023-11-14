@@ -29,8 +29,9 @@ const NoticeReadPage = () => {
             <Board
                 id = {notice.id}
                 title={notice.title}
-                contents={notice.contents}
-                updateddata={notice.updateddata}
+                content={notice.content}
+                createdDate={notice.createdDate}
+                updatedDate={notice.updatedDate}
             />
         </div>
     );

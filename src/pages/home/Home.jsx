@@ -26,14 +26,17 @@ const StyledLink = styled(Link)`
     background-color: lightblue;
 }
   display: inline-block;
-  width: 400px;
-  padding: 10px 20px;
   text-align: center;
-  text-decoration: none;
+  font-size: 20px;
+  width: 500px;
+  line-height: 50px;
+  height: 50px;
+  padding: 10px 20px;
+  justify-content: center;
   border: 1px solid black;
-  border-radius: 25px;  // 타원 형태를 만들기 위한 border-radius 값입니다.
-  background-color: #f8f9fa;  // 배경 색상입니다. 원하는 색상으로 변경하세요.
-  color: #343a40;  // 텍스트 색상입니다. 원하는 색상으로 변경하세요.
+  border-radius: 25px;
+  background-color: #f8f9fa;
+  color: #343a40;
 `;
 function MainPage(){
     const [clubList, setClubList] = useRecoilState(clubListState);

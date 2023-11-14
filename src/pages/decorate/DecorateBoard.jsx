@@ -87,7 +87,7 @@ const DATE = styled.div`
   }
 `
 
-const DecorateBoard = ({ clubImage, backgroundImage, introduction, isFinished, startDate, endDate }) => {
+const DecorateBoard = ({ clubImageUuid, backgroundImageUuid, introduction, isFinished, startDate, endDate }) => {
     const navigate = useNavigate();
     const { clubId } = useParams();
     const moveToUpdate = () => {
@@ -101,9 +101,9 @@ const DecorateBoard = ({ clubImage, backgroundImage, introduction, isFinished, s
                 <CONTENTS>
                     <IMAGE>
                         <p>프로필 사진</p>
-                        <img src={clubImage} alt="프로필사진"/>
+                        <img src={clubImageUuid} alt="프로필사진"/>
                         <p>배경 사진</p>
-                        <img src={backgroundImage} alt="배경사진"/>
+                        <img src={backgroundImageUuid} alt="배경사진"/>
                     </IMAGE>
                     <CONTENT>
                         <a>소개</a>

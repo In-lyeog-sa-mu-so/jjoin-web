@@ -5,12 +5,11 @@ import DecorateBoard from "./DecorateBoard";
 
 const DecoratePage = () => {
     const [decorate, setDecorate] = useState({
-        clubImage: null,
-        backgroundImage: null,
+        clubImageUuid: null,
+        backgroundImageUuid: null,
         introduction: "",
-        isFinished: false,
         startDate: null,
-        endDate: null,
+        endDate: null
     });
 
     const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
@@ -36,10 +35,9 @@ const DecoratePage = () => {
         <div>
             <div>
                 <DecorateBoard
-                clubImage={decorate.clubImage}
-                backgroundImage={decorate.backgroundImage}
+                clubImageUuid={decorate.clubImageUuid}
+                backgroundImageUuid={decorate.backgroundImageUuid}
                 introduction= {decorate.introduction}
-                isFinished= {decorate.isFinished}
                 startDate={decorate.startDate}
                 endDate={decorate.endDate}
                 />

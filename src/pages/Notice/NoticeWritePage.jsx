@@ -27,6 +27,10 @@ const TITLE = styled.div`
     width: 400px;
     height: 30px;
   }
+  select{
+    margin-left:30px;
+    height: 30px;
+  }
 `;
 
 const CONTENT = styled.table`
@@ -65,17 +69,23 @@ const NoticeWrite = () => {
     const { clubId } = useParams();
     const [notice, setNotice] = useState({
         title: '',
-        updateddata: '',
-        contents: '',
+        content: '',
+        isPrivate: 1
     });
 
-    const { id, title, updateddata, contents } = notice; //비구조화 할당
+    const { title, content } = notice; //비구조화 할당
     const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
     const onChange = (event) => {
         const { value, name } = event.target;
+        let modifiedValue = value;
+
+        if(name === 'isPrivate') {
+            modifiedValue = value === '전체' ? 0 : 1;
+        }
+
         setNotice({
             ...notice,
-            [name]: value,
+            [name]: modifiedValue,
         });
     };
 
@@ -96,16 +106,22 @@ const NoticeWrite = () => {
             <CONTAINER>
                 <CONTENTS>
                     <TITLE>
+                        <div>
                         <span>제목</span>
                         <input type="text" name="title" value={title} onChange={onChange} />
+                        </div>
+                        <select name="isPrivate" onChange={onChange}>
+                            <option>동아리원</option>
+                            <option>전체</option>
+                        </select>
                     </TITLE>
                     <CONTENT>
                         <span>내용</span>
                         <textarea
-                            name="contents"
+                            name="content"
                             cols="30"
                             rows="10"
-                            value={contents}
+                            value={content}
                             onChange={onChange}
                         ></textarea>
                     </CONTENT>
