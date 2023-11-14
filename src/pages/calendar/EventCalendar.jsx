@@ -63,7 +63,7 @@ const AddEventButton = () => {
 };
 
 function EventCalendar() {
-  const { clubId } = useParams();
+  const { clubId, defId } = useParams();
   const [eventList, setEventList] = useState([]);
   const navigate = useNavigate();
   
@@ -88,7 +88,7 @@ function EventCalendar() {
           title: val.title,
           start: val.start_date,
           end: val.end_date,
-          publicId: val.id, // 예시 id
+          defId: val.id, // 예시 id
           color: val.completed ? '#E74C3C' : '#ABEBC6',
         }));
         setEventList(eventData);
@@ -116,7 +116,7 @@ function EventCalendar() {
   };
 
   const handleEventClick = () => {
-    // navigate(`manager/club/${clubId}/plan/${defId}`);
+    navigate(`manager/club/${clubId}/plan/${defId}`);
   };
 
     return (

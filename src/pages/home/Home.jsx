@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import {Link} from "react-router-dom";
-import axios from 'axios';
+import api from '../../Axios';
 import styled from 'styled-components';
 import {useRecoilState} from 'recoil';
 import { clubListState } from '../../state';
@@ -39,11 +39,10 @@ const StyledLink = styled(Link)`
 `;
 function MainPage(){
     const [clubList, setClubList] = useRecoilState(clubListState);
-    const baseUrl="https://18821b90-7c6b-4217-b68e-e5775ac40a41.mock.pstmn.io";
 
     const getClubList = async () => {
         try {
-            const resp = await axios.get(`${baseUrl}/manager`);
+            const resp = await api.get(`/manager/club`);
             if(resp && resp.data) {
                 setClubList(resp.data);
             } else {

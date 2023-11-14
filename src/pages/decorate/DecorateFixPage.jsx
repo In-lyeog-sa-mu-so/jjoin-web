@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useParams, useNavigate} from 'react-router-dom';
-import axios from 'axios';
+import api from '../../Axios';
 import styled from 'styled-components';
 
 const CONTAINER = styled.div`
@@ -138,10 +138,10 @@ const DecorateFixPage=()=>{
             [name]: value,
         });
     };
-    const baseUrl="https://18821b90-7c6b-4217-b68e-e5775ac40a41.mock.pstmn.io";
+    
     const getBoard = async () => {
         try {
-            const resp = await axios.get(`${baseUrl}/manager/club/${clubId}/information`);
+            const resp = await api.get(`/manager/club/${clubId}/information`);
             if(resp && resp.data) {
                 setDecorate(resp.data);
             } else {
@@ -153,7 +153,7 @@ const DecorateFixPage=()=>{
     };
     const updateBoard = async () => {
         try {
-            await axios.patch(`${baseUrl}/manager/club/${clubId}/information`, decorate);
+            await api.patch(`/manager/club/${clubId}/information`, decorate);
             alert('수정되었습니다.');
             navigate(`/manager/club/${clubId}/information`);
         } catch (error) {

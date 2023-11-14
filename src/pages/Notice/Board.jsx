@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../Axios';
 import styled from 'styled-components';
 
 const CONTAINER = styled.div`
@@ -67,11 +67,9 @@ const Board = ({ id, title, content, createdDate, updatedDate}) => {
         navigate(`/manager/club/${clubId}/update/${id}`);
     };
 
-    const baseUrl="https://18821b90-7c6b-4217-b68e-e5775ac40a41.mock.pstmn.io";
-
     const deleteBoard = async () => {
         if (window.confirm('게시글을 삭제하시겠습니까?')) {
-            await axios.delete(`${baseUrl}/manager/club/${clubId}/notice/${id}`).then((res) => {
+            await api.delete(`/manager/club/${clubId}/notice/${id}`).then((res) => {
                 alert('삭제되었습니다.');
                 navigate(`/manager/club/${clubId}/notice`);
             });

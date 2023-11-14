@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useNavigate, useParams} from "react-router-dom";
-import axios from 'axios';
+import api from '../../../Axios';
 import styled from "styled-components";
 import CommonTable from "./CommonTable";
 import { useLocation } from 'react-router-dom';
@@ -65,14 +65,14 @@ function useQuery() {
 function NoticeList() {
     const navigate = useNavigate();
     const [noticeList, setNoticeList] = useState([]);
-    const baseUrl="https://18821b90-7c6b-4217-b68e-e5775ac40a41.mock.pstmn.io";
+    
     const {clubId} = useParams();
     const query = useQuery();
     const page = query.get('page');
     const size = query.get('size');
     const getBoardList = async () => {
         try {
-            const resp = await axios.get(`${baseUrl}/manager/club/${clubId}/notice?page=${page}&size=${size}`);
+            const resp = await api.get(`/manager/club/${clubId}/notice?page=${page}&size=${size}`);
             if(resp && resp.data) {
                 setNoticeList(resp.data);
             } else {

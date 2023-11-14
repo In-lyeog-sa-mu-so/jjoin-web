@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
 import styled from 'styled-components'
+import api from '../../Axios';
 
 const CONTAINER = styled.div`
   margin-left: 5%;
@@ -85,7 +85,7 @@ const NoticeUpdatePage = () => {
     });
 
     const { title, content } = notice; //비구조화 할당
-    const baseUrl="https://18821b90-7c6b-4217-b68e-e5775ac40a41.mock.pstmn.io";
+    
     const onChange = (event) => {
         const { value, name } = event.target;
         setNotice({
@@ -95,7 +95,7 @@ const NoticeUpdatePage = () => {
     };
     const getBoard = async () => {
         try {
-            const resp = await axios.get(`${baseUrl}/manager/club/${clubId}/notice/${id}`);
+            const resp = await api.get(`/manager/club/${clubId}/notice/${id}`);
             if(resp && resp.data) {
                 setNotice(resp.data);
             } else {
@@ -108,7 +108,7 @@ const NoticeUpdatePage = () => {
 
     const updateBoard = async () => {
         try {
-            await axios.patch(`${baseUrl}/manager/club/${clubId}/notice/${id}`, notice);
+            await api.patch(`/manager/club/${clubId}/notice/${id}`, notice);
             alert('수정되었습니다.');
             navigate(`/manager/club/${clubId}/notice/${id}`);
         } catch (error) {
