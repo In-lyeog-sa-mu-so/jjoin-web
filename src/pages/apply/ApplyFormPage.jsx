@@ -5,7 +5,6 @@ import styled from 'styled-components';
 
 const CONTAINER = styled.div`
   margin-left: 5%;
-  background-color: whitesmoke;
   width: 90%;
 `
 const CONTENTS= styled.div`
@@ -21,15 +20,23 @@ const CONTENT = styled.div`
   span{
     min-width: 100px;
     max-width: 200px;
+    font-weight: 500;
+    color: #495057;
   }
   a{
-    width: 300px;
+    width: 500px;
     height: 30px;
     background-color: white;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border: 1px solid rgba(150,150,150,0.1);
+    display: block;
   }
+
   div{
     display: flex;
   }
+
 `
 const ADDCONTENT = styled.div`
   display: flex;
@@ -45,10 +52,15 @@ const BUTTONS = styled.div`
   margin-bottom: 10px;
   button{
     margin-left:1%;
-    padding: 8px 25px; /* Increase size, adjust as needed */
+    padding: 12px 25px; /* Increase size, adjust as needed */
     background-color: lightgrey; /* Change color */
     font-size: 15px;
     cursor: pointer;
+    border-radius: 10px;
+    border: none;
+    background: darkblue;
+    color: white;
+
     &:hover {
       background-color: darkgrey;
     }

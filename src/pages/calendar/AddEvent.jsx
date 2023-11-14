@@ -160,6 +160,7 @@ const Container2 = styled.div`
   width: 100%;
   height: 100%;
 `;
+
 const Modal = styled.div`
   display: flex;
   flex-direction: column;

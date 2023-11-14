@@ -5,7 +5,7 @@ import { Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
-import api from "../../Axios";
+import axios from 'axios';
 
 const data = [
     {
@@ -64,11 +64,24 @@ const AddEventButton = () => {
 
 function EventCalendar() {
   const { clubId } = useParams();
-  const [events, setEvents] = useState([]);
+  const [eventList, setEventList] = useState([]);
   const navigate = useNavigate();
   
+  const getEventList = async () => {
+    try {
+      const resp = await axios.get(`/manager/club/${clubId}/plan`);
+      if(resp && resp.data) {
+          setEventList(resp.data);
+      } else {
+          console.error('No data received');
+      }
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    }
+  };
+
   useEffect(() => {
-    api.get(`/manager/club/${clubId}/plan`) // 백엔드 엔드포인트
+    axios.get(`/manager/club/${clubId}/plan`) // 백엔드 엔드포인트
       .then(response => {
         // 백엔드에서 받은 데이터를 적절히 변환하여 상태에 저장합니다.
         const eventData = response.data.map(val => ({
@@ -78,12 +91,12 @@ function EventCalendar() {
           publicId: val.id, // 예시 id
           color: val.completed ? '#E74C3C' : '#ABEBC6',
         }));
-        setEvents(eventData);
+        setEventList(eventData);
       })
       .catch(error => {
         console.error('Error fetching events', error);
       });
-  }, []);
+  }, [clubId]);
 
   const data_list = data.map((val) => {
     return {
@@ -102,8 +115,8 @@ function EventCalendar() {
     setBtn(!btn);
   };
 
-  const handleEventClick = (e) => {
-    navigate('/plan/' + e.event._def.extendedProps.publicId);
+  const handleEventClick = () => {
+    // navigate(`manager/club/${clubId}/plan/${defId}`);
   };
 
     return (
