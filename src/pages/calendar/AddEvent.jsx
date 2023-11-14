@@ -25,36 +25,28 @@ function AddEvent() {
     };
   
     const addContent = () => {
-      // const new_item = {
-      //   startDate: event.startDate,
-      //   endDate: event.endDate,
-      //   title: event.title,
-      //   content: event.content,
-      // };
+      if (event.startDate === '' || event.endDate === '') {
+          alert('날짜를 입력해주세요');
+          return;
+      } else if (event.title === '') {
+          alert('일정 제목을 입력해주세요');
+          return;
+      } else if (event.content === '') {
+          alert('일정 내용을 입력해주세요.');
+          return;
+      }
 
-    if (event.startDate === '' || event.endDate === '') {
-        window.alert('날짜를 입력해주세요');
-        return;
-    } else if (event.title === '') {
-        window.alert('일정 제목을 입력해주세요');
-        return;
-    } else if (event.content === '') {
-        window.alert('일정 내용을 입력해주세요.');
-        return;
-    }
+      api.post(`/manager/club/${clubId}/plan`, event)
+      .then(response => {
+          console.log(event);
+          alert('일정이 등록되었습니다!');
+      })
+      .catch(error => {
+          console.error('Error posting event', error);
+          alert('일정 등록에 실패했습니다.');
+      });
 
-    api.post(`/manager/club/${clubId}/plan`, event)
-    .then(response => {
-        // 성공적으로 전송되었을 때의 처리
-        alert('일정이 등록되었습니다!');
-    })
-    .catch(error => {
-        // 에러 처리
-        console.error('Error posting event', error);
-        alert('일정 등록에 실패했습니다.');
-    });
-
-    navigate(`/manager/club/${clubId}/plan`);
+      navigate(`/manager/club/${clubId}/plan`);
   };
 
   return (

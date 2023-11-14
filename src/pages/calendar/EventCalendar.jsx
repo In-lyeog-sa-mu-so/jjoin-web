@@ -6,55 +6,18 @@ import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../Axios';
+import { useRecoilState } from 'recoil';
+import { eventListState } from '../../state';
 
-const data = [
-    {
-        "eventId" : 1,
-		"content" : "update plan success",
-		"end_date" : "2023-11-20 12:50:00",
-		"start_date" : "2023-11-18 23:59:59",
-		"title" : "update plan test",
-	},
-	{
-        "eventId" : 2,
-		"content" : "This is 3rd test plan",
-		"end_date" : "2023-11-06 23:59:59",
-		"start_date" : "2023-11-01 23:59:59",
-		"title" : "3rd test plan",
-	},
-	{
-        "eventId" : 3,
-		"content" : "make plan success",
-		"end_date" : "2023-11-20 23:59:59",
-		"start_date" : "2023-11-18 23:59:59",
-		"title" : "make plan test",
-	},
-    {
-        "eventId" : 4,
-		"content" : "make plan success",
-		"end_date" : "2023-11-16 14:00:00",
-		"start_date" : "2023-11-16 15:00:00",
-		"title" : "창의문제해결 프로젝트 발표",
-	},
-    {
-        "eventId" : 5,
-		"content" : "make plan success",
-		"end_date" : "2023-11-16 13:00:00",
-		"start_date" : "2023-11-16 15:00:00",
-		"title" : "알고리즘 스터디",
-	},
-]
-
-// 새로운 버튼 컴포넌트 정의
 const AddEventButton = () => {
   const navigate = useNavigate();
-
+  const { clubId } = useParams();
   return (
       <PositionBtn>
           <Fab
               color='primary'
               aria-label='add'
-              onClick={() => navigate('/manager/club/:clubId/plan/upload')}
+              onClick={() => navigate(`/manager/club/${clubId}/plan/upload`)}
           >
               <AddIcon />
           </Fab>
@@ -63,78 +26,53 @@ const AddEventButton = () => {
 };
 
 function EventCalendar() {
-  const { clubId, defId } = useParams();
-  const [eventList, setEventList] = useState([]);
+  const { clubId } = useParams();
+  const [eventList, setEventList] = useRecoilState(eventListState);
   const navigate = useNavigate();
   
-  // const getEventList = async () => {
-  //   try {
-  //     const resp = await api.get(`/manager/club/${clubId}/plan`);
-  //     if(resp && resp.data) {
-  //         setEventList(resp.data);
-  //     } else {
-  //         console.error('No data received');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching data: ', error);
-  //   }
-  // };
+  const getEventList = async () => {
+    try {
+      const resp = await api.get(`/manager/club/${clubId}/plan`);
+      if(resp && resp.data) {
+          const formattedEvents = resp.data.data.map(event => ({
+            title: event.title,
+            start: event.startDate,
+            end: event.endDate,
+            id: event.id,  // 고유 식별자를 추가
+            color: '#ABEBC6', // #E74C3C
+        }));
+        setEventList(formattedEvents);
+      } else {
+          console.error('No data received');
+      }
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    }
+  };
 
   useEffect(() => {
-    api.get(`/manager/club/${clubId}/plan`) // 백엔드 엔드포인트
-      .then(response => {
-        // 백엔드에서 받은 데이터를 적절히 변환하여 상태에 저장합니다.
-        const eventData = response.data.map(val => ({
-          title: val.title,
-          content: val.content,
-          start: val.start_date,
-          end: val.end_date,
-          defId: val.id, // 예시 id
-          color: val.completed ? '#E74C3C' : '#ABEBC6',
-        }));
-        setEventList(eventData);
-      })
-      .catch(error => {
-        console.error('Error fetching events', error);
-      });
+    getEventList();
   }, [clubId]);
 
-  const data_list = data.map((val) => {
-    return {
-      title: val.title,
-      start: val.start_date,
-      end: val.end_date,
-      publicId: val.id,
-      completed: val.completed,
-      color: val.completed ? '#E74C3C' : '#ABEBC6',
-    };
-  });
-
-  // const completedDate = data_list.filter((val) => val.completed);
-  // const [btn, setBtn] = useState(true);
-  // const btnEvent = () => {
-  //   setBtn(!btn);
-  // };
-
-  const handleEventClick = () => {
-    navigate(`manager/club/${clubId}/plan/${defId}`);
+  const handleEventClick = (eventInfo) => {
+    navigate(`/manager/club/${clubId}/plan/${eventInfo.event.id}`);
   };
 
     return (
         <div>
-        <FullCalendar
-            plugins={[dayGridPlugin]}
-            headerToolbar={{
-                start: 'prev next today',
-                center: 'title',
-                end: '',
-            }}
-            titleFormat={{ year: 'numeric', month: 'short' }}
-            events={data_list}  // 더미는 data_list, 연동은 eventList
-            eventClick={handleEventClick}
-            height={'100vh'}
-        />
-        <AddEventButton />
+          <FullCalendar
+              plugins={[dayGridPlugin]}
+              headerToolbar={{
+                  start: 'prev next today',
+                  center: 'title',
+                  end: '',
+              }}
+              titleFormat={{ year: 'numeric', month: 'short' }}
+              events={eventList}
+              eventClick={handleEventClick}
+              height={'100vh'}
+          />
+          <AddEventButton />
         </div>
     );
 }

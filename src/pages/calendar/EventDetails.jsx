@@ -9,52 +9,45 @@ import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom'; 
 import api from '../../Axios';
 
-// 더미 데이터
-const dummyData = [
-    {
-      id: '1',
-      startDate: '2023-11-16T15:00',
-      endDate: '2023-11-16T17:00',
-      title: 'Test Event 1',
-      content: 'This is a test event 1',
-    },
-    {
-      id: '2',
-      startDate: '2023-11-11T10:00',
-      endDate: '2023-11-13T07:00',
-      title: 'Test Event 2',
-      content: 'This is a test event 2',
-    },
-];
-
-function EventDetails(props) {
+function EventDetails() {
     const navigate = useNavigate();
-    const { defid, clubId } = useParams();
-    const [event, setEvent] = useState({});
+    const { clubId, defid } = useParams();
+    const [event, setEvent] = useState({
+      startDate: '',
+      endDate: '',
+      title: '',
+      content: '',
+    });
+    
+    const getEvent = async () => {
+      try {
+        const resp = await api.get(`/manager/club/${clubId}/plan/${defid}`);
+        if (resp && resp.data) {
+          console.log(resp.data);
+          setEvent(resp.data);
+        } else {
+          console.error('No data received');
+        }
+      } catch (error) {
+          console.error('Error fetching data: ', error);
+      }
+    };
 
     useEffect(() => {
-      // 백엔드에서 데이터를 로드하는 로직
-      api.get(`/manager/club/${clubId}/plan/${defid}`) // 엔드포인트 수정 필요
-        .then(response => {
-          setEvent(response.data);
-        })
-        .catch(error => {
-          console.error('Error fetching event data', error);
-        });
+      getEvent();
     }, [clubId, defid]);
-
-    // let eventDetail = event.find(e => e.id === defid);
-    let primaryData = dummyData.find(event => event.id === defid);
+      
+    // let primaryData = dummyData.find(event => event.id === defid);
 
     const deleteEvent = () => {
-      api.delete(`/manager/club/${clubId}/plan/${defid}`) // 백엔드 엔드포인트로 수정
+      api.delete(`/manager/club/${clubId}/plan/${defid}`)
       .then(() => {
-        window.alert('일정이 삭제되었습니다.');
+        alert('일정이 삭제되었습니다.');
         navigate(`/manager/club/${clubId}/plan`); // 삭제 후 캘린더 페이지로 이동
       })
       .catch(error => {
         console.error('Error deleting event', error);
-        window.alert('일정 삭제에 실패했습니다.');
+        alert('일정 삭제에 실패했습니다.');
         navigate(`/manager/club/${clubId}/plan`); // 삭제 후 캘린더 페이지로 이동
       });
     };
@@ -78,59 +71,59 @@ function EventDetails(props) {
           </h1>
           <h2>
             <CalendarTodayIcon style={{ color: '#85C1E9' }} />
-            &nbsp; 시작 날짜: {primaryData ? primaryData.startDate.split('T')[0]
+            &nbsp; 시작 날짜: {event ? event.startDate.split('T')[0]
               : ' '}{' '}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <AccessTimeIcon style={{ color: '#85C1E9' }} />
             &nbsp; 시작 시간: &nbsp;
-            {primaryData
-              ? primaryData.startDate.split('T')[1].split(':')[0] > 11
+            {event
+              ? event.startDate.split('T')[1].split(':')[0] > 11
                 ? '오후'
                 : '오전'
               : ''}
             &nbsp;&nbsp;
-            {primaryData
-              ? primaryData.startDate.split('T')[1].split(':')[0] > 12
-                ? primaryData.startDate.split('T')[1].split(':')[0] -
+            {event
+              ? event.startDate.split('T')[1].split(':')[0] > 12
+                ? event.startDate.split('T')[1].split(':')[0] -
                   12 +
                   ':' +
-                  primaryData.startDate.split('T')[1].split(':')[1]
-                : primaryData.startDate.split('T')[1].split(':')[0] +
+                  event.startDate.split('T')[1].split(':')[1]
+                : event.startDate.split('T')[1].split(':')[0] +
                   ':' +
-                  primaryData.startDate.split('T')[1].split(':')[1]
+                  event.startDate.split('T')[1].split(':')[1]
               : ''}
             <br />
             <br />
             <CalendarTodayIcon style={{ color: '#85C1E9' }} />
-            &nbsp; 종료 날짜: {primaryData ? primaryData.endDate.split('T')[0]
+            &nbsp; 종료 날짜: {event ? event.endDate.split('T')[0]
               : ' '}{' '}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <AccessTimeIcon style={{ color: '#85C1E9' }} />
             &nbsp; 종료 시간: &nbsp;
-            {primaryData
-              ? primaryData.endDate.split('T')[1].split(':')[0] > 11
+            {event
+              ? event.endDate.split('T')[1].split(':')[0] > 11
                 ? '오후'
                 : '오전'
               : ''}
             &nbsp;&nbsp;
-            {primaryData
-              ? primaryData.endDate.split('T')[1].split(':')[0] > 12
-                ? primaryData.endDate.split('T')[1].split(':')[0] -
+            {event
+              ? event.endDate.split('T')[1].split(':')[0] > 12
+                ? event.endDate.split('T')[1].split(':')[0] -
                   12 +
                   ':' +
-                  primaryData.endDate.split('T')[1].split(':')[1]
-                : primaryData.endDate.split('T')[1].split(':')[0] +
+                  event.endDate.split('T')[1].split(':')[1]
+                : event.endDate.split('T')[1].split(':')[0] +
                   ':' +
-                  primaryData.endDate.split('T')[1].split(':')[1]
+                  event.endDate.split('T')[1].split(':')[1]
               : ''}
           </h2>
           <h2>
             <RedditIcon style={{ color: '#85C1E9' }} />
-            &nbsp; 제목: {primaryData ? primaryData.title : ''}
+            &nbsp; 제목: {event ? event.title : ''}
           </h2>
           <h3>
             <RedditIcon style={{ color: '#85C1E9' }} />
-            &nbsp; 내용: {primaryData ? primaryData.content : ''}
+            &nbsp; 내용: {event ? event.content : ''}
           </h3>
           <hr />
           <BtnGroup>
