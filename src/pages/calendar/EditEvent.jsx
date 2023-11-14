@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../Axios';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import styled from 'styled-components';
+import BorderColorIcon from '@material-ui/icons/BorderColor';
 
 function EditEvent() {
   const { defid, clubId } = useParams();
@@ -14,18 +16,21 @@ function EditEvent() {
     endDate: '',
     title: '',
     content: '',
-});
+  });
+
+  const onChange = (e) => {
+    const { value, name } = e.target;
+    setEvent({
+        ...event,
+        [name]: value,
+    });
+  };
 
   useEffect(() => {
     // 백엔드에서 데이터를 로드하는 로직
     api.get(`/manager/club/${clubId}/plan/${defid}`) // 엔드포인트 수정 필요
       .then(response => {
-        setEvent({
-          startDate: response.data.startDate,
-          endDate: response.data.endDate,
-          title: response.data.title,
-          content: response.data.content,
-        });
+        setEvent(response.data);
       })
       .catch(error => {
         console.error('Error fetching event data', error);
@@ -33,16 +38,12 @@ function EditEvent() {
   }, [defid]);
   // 수정을 처리하는 함수
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEvent({ ...event, [name]: value });
-  };
-
   const handleEdit = () => {
     // 수정 로직 구현
     // axios.put
     api.put(`/manager/club/${clubId}/plan/${defid}`, event) // 엔드포인트 수정 필요
       .then(() => {
+        alert('수정되었습니다.');
         navigate(`/manager/club/${clubId}/plan`); // 수정 후 캘린더 페이지로 이동
       })
       .catch(error => {
@@ -51,37 +52,136 @@ function EditEvent() {
   };
 
   return (
-    <div>
-      {/* 수정 폼 구현 */}
-      <TextField
-        label="Start Date"
-        type="datetime-local"
-        name="startDate"
-        value={event.startDate}
-        onChange={handleInputChange}
+    <>
+    <Container>
+        <Modal>
+          <h1>
+            <BorderColorIcon /> &nbsp;일정 수정하기
+          </h1>
+          <hr />
+          <TextField
+            style={{ marginBottom: '1rem' }}
+            name='startDate'
+            label='시작 날짜'
+            type='datetime-local'
+            defaultValue={event.startDate}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onChange={onChange}
+          />
+          <TextField
+            style={{ marginBottom: '2rem' }}
+            name='endDate'
+            label='종료 날짜'
+            type='datetime-local'
+            defaultValue={event.endDate}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onChange={onChange}
+          />
+          <input
+            type='text'
+            name='title'
+            style={{
+              borderRadius: '5px',
+              border: '1px solid #888',
+              padding: '16px',
+              fontSize: '16px',
+              marginBottom: '2rem',
+            }}
+            placeholder='일정 제목'
+            onChange={onChange}
+          />
+          <textarea
+            name='content'
+            style={{
+              borderRadius: '5px',
+              border: '1px solid #888',
+              padding: '16px',
+              fontSize: '16px',
+              marginBottom: '3rem',
+              height: '150px',
+              resize: 'vertical', // 사용자가 수직으로만 크기 조절 가능하도록 설정
+            }}
+            placeholder='일정 내용'
+            onChange={onChange}
+          />
+
+          <BtnGroup>
+            <Button
+              variant='contained'
+              style={{ marginRight: '50px' }}
+              onClick={() => navigate(`/manager/club/${clubId}/plan/${defid}`)}
+            >
+              뒤로가기
+            </Button>
+            <Button 
+              variant='contained'
+              color='primary'
+              style={{ marginTop: '5px' }}
+              onClick={handleEdit}
+            >
+              수정 완료
+              </Button>
+          </BtnGroup>
+        </Modal>
+      </Container>
+      <Container2
+        onClick={() => navigate(`/manager/club/${clubId}/plan/${defid}`)}
       />
-      <TextField
-        label="End Date"
-        type="datetime-local"
-        name="endDate"
-        value={event.endDate}
-        onChange={handleInputChange}
-      />
-      <TextField
-        label="Title"
-        name="title"
-        value={event.title}
-        onChange={handleInputChange}
-      />
-      <TextField
-        label="Content"
-        name="content"
-        value={event.content}
-        onChange={handleInputChange}
-      />
-      <Button onClick={handleEdit}>수정 완료</Button>
-    </div>
+    </>
   );
 }
+
+const Container = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Container2 = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+`;
+
+const Modal = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  padding: 24px 50px;
+  border-radius: 4px;
+  width: 800px;
+  height: 650px;
+  box-sizing: border-box;
+  z-index: 10;
+  & h1 {
+    text-align: center;
+    color: #af7ac5;
+  }
+
+  & Button {
+    min-width: 200px;
+  }
+`;
+
+const BtnGroup = styled.div`
+  margin: 0 auto;
+  @media only screen and (max-width: 768px) {
+    & Button {
+      width: 100%;
+    }
+  }
+`;
 
 export default EditEvent;

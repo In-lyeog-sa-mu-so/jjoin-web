@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import RedditIcon from '@material-ui/icons/Reddit';
@@ -30,7 +30,20 @@ const dummyData = [
 function EventDetails(props) {
     const navigate = useNavigate();
     const { defid, clubId } = useParams();
-    
+    const [event, setEvent] = useState({});
+
+    useEffect(() => {
+      // 백엔드에서 데이터를 로드하는 로직
+      api.get(`/manager/club/${clubId}/plan/${defid}`) // 엔드포인트 수정 필요
+        .then(response => {
+          setEvent(response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching event data', error);
+        });
+    }, [defid]);
+
+    // let eventDetail = event.find(e => e.id === defid);
     let primaryData = dummyData.find(event => event.id === defid);
 
     const deleteEvent = () => {

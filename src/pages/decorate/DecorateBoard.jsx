@@ -1,11 +1,19 @@
 import React from 'react';
-import { useParams,useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const CONTAINER = styled.div`
   margin-left: 5%;
-  background-color: whitesmoke;
+  background-color: white;
   width: 90%;
+
+  * > p {
+    border-bottom: 3px solid darkblue;
+    line-height: 24px;
+    min-width: 100px;
+    width: fit-content;
+    text-align: center;
+  }
 `
 const CONTENTS= styled.div`
   width: 95%;
@@ -17,20 +25,27 @@ const H2 = styled.h2`
 `;
 const CONTENT = styled.table`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  // align-items: center;
   a {
     position: relative;
-    margin: 10px 45px;
+    // margin: 10px 45px;
+    margin: 5px 20px;
     &:last-child{
       margin: 10px 25px;
-      width: 600px;
+      width: 650px;
       height: 100px;
-      border: 1px solid dimgray;
+      border: 1px solid #ddd;
       white-space: pre-line;
       display: flex;
       align-items: center;
       justify-content: center;
+      border-radius: 10px
     }
+  }
+
+  p {
+    margin: 20px;
   }
 `
 const BUTTONS = styled.div`
@@ -39,10 +54,15 @@ const BUTTONS = styled.div`
   margin-top: 30px;
   button{
     margin-left:1%;
-    padding: 8px 25px; /* Increase size, adjust as needed */
+    padding: 12px 25px; /* Increase size, adjust as needed */
     background-color: lightgrey; /* Change color */
     font-size: 15px;
     cursor: pointer;
+    border-radius: 10px;
+    border: none;
+    background: darkblue;
+    color: white;
+
     &:hover {
       background-color: darkgrey;
     }
@@ -51,9 +71,10 @@ const BUTTONS = styled.div`
 const IMAGE = styled.div`
   display: flex;
   flex-direction: row;
+  
   align-items: center;
   & > * {
-    margin: 45px 20px;
+    margin: 25px 20px;
   }
   img {
     width: 150px;
@@ -63,27 +84,40 @@ const IMAGE = styled.div`
       height: 150px;
     }
   }
+
 `
-const CHECKBOX=styled.div`
+const CHECKBOX = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 2.5%;
   margin-top: 30px;
   & > div:not(:first-child) {
     margin-left: 5%;
   }
 
+  p {
+    margin: 20px;
+  }
 `
+
+const SUBCHECKBOX = styled.div`
+  display: flex;
+  gap: 100px; 
+  margin: 20px;
+`
+
 const DATE = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 2.5%;
   margin-top: 30px;
   & > div{
     margin-left: 5%;
     a:not(:first-child){
       margin-left: 10px;
     }
+  }
+
+  p {
+    margin: 20px;
   }
 `
 
@@ -100,42 +134,48 @@ const DecorateBoard = ({ clubImageUuid, backgroundImageUuid, introduction, isFin
             <CONTAINER>
                 <CONTENTS>
                     <IMAGE>
+                      <div>
                         <p>프로필 사진</p>
                         <img src={clubImageUuid} alt="프로필사진"/>
+                        </div>
+                        <div>
                         <p>배경 사진</p>
                         <img src={backgroundImageUuid} alt="배경사진"/>
+                        </div>
                     </IMAGE>
                     <CONTENT>
-                        <a>소개</a>
+                        <p>소개</p>
                         <a>
                             {introduction}
                         </a>
                     </CONTENT>
                     <CHECKBOX>
                         <div>
-                        <a>모집여부</a>
+                          <p>모집여부</p>
                         </div>
-                        <div>
-                        <a>모집</a>
-                        <input
-                            type="checkbox"
-                            name="모집"
-                            checked={!isFinished}
-                            disabled={true}
-                        />
-                        </div>
-                        <div>
-                        <a>모집안함</a>
-                        <input
-                            type="checkbox"
-                            name="모집안함"
-                            checked={isFinished}
-                            disabled={true}
-                        />
-                        </div>
+                        <SUBCHECKBOX>
+                          <div>
+                            <a>모집</a>
+                            <input
+                                type="checkbox"
+                                name="모집"
+                                checked={!isFinished}
+                                disabled={true}
+                            />
+                          </div>
+                          <div>
+                            <a>모집안함</a>
+                            <input
+                                type="checkbox"
+                                name="모집안함"
+                                checked={isFinished}
+                                disabled={true}
+                            />
+                          </div>
+                        </SUBCHECKBOX>
                     </CHECKBOX>
                     <DATE>
-                        <a>모집일정</a>
+                        <p>모집일정</p>
                         <div>
                         <a>
                             {startDate}
