@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
-import axios from 'axios';
+import api from '../../Axios';
 import styled from 'styled-components';
 
 const CONTAINER = styled.div`
@@ -98,7 +98,7 @@ const ApplyFormFixPage = () => {
     const [applyform, setapplyform] = useState([]); // 초기값을 빈 배열로 설정
     const navigate = useNavigate();
     const { clubId } = useParams();
-    const baseUrl="https://18821b90-7c6b-4217-b68e-e5775ac40a41.mock.pstmn.io";
+    
     const onChange = (e, index) => {
         const newApplyform = [...applyform];
         newApplyform[index].QuestionContent = e.target.value;
@@ -109,7 +109,7 @@ const ApplyFormFixPage = () => {
     };
     const getApply = async () => {
         try {
-            const resp = await axios.get(`${baseUrl}/manager/club/${clubId}/application`);
+            const resp = await api.get(`/manager/club/${clubId}/application`);
             if(resp && resp.data) {
                 setapplyform(resp.data.map(question => ({
                     ...question,
@@ -141,7 +141,7 @@ const ApplyFormFixPage = () => {
                 modified: applyform.filter(question => question.isModified).map(question => ({ question_id: question.question_id, QuestionContent: question.QuestionContent })),
                 deleted: applyform.filter(question => question.isDeleted).map(question => ({question_id: question.question_id})),
             };
-            await axios.patch(`${baseUrl}/manager/club/${clubId}/application`, requestBody);
+            await api.patch(`/manager/club/${clubId}/application`, requestBody);
             alert('수정되었습니다.');
             navigate(`/manager/club/${clubId}/apply`);
         } catch (error) {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../Axios';
 import styled from 'styled-components';
 
 const CONTAINER = styled.div`
@@ -95,7 +95,7 @@ const NoticeWrite = () => {
     });
 
     const { title, content } = notice; //비구조화 할당
-    const baseUrl="https://18821b90-7c6b-4217-b68e-e5775ac40a41.mock.pstmn.io";
+    
     const onChange = (event) => {
         const { value, name } = event.target;
         let modifiedValue = value;
@@ -111,7 +111,7 @@ const NoticeWrite = () => {
     };
 
     const saveBoard = async () => {
-        await axios.post(`${baseUrl}/manager/club/${clubId}/notice`, notice).then((res) => {
+        await api.post(`/manager/club/${clubId}/notice`, notice).then((res) => {
             alert('등록되었습니다.');
             navigate(`/manager/club/${clubId}/notice`);
         });

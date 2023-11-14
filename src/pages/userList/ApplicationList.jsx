@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../Axios';
 
 const SignupList = () => {
   const navigate = useNavigate();
   const { clubId } = useParams();
   const [signups, setSignups] = useState([]);
 
-  const baseUrl="https://0ff33e21-0dba-4cd7-9b86-65372e66ab7e.mock.pstmn.io";
   const getSignupList = async () => {
     try {
-        const resp = await axios.get(`${baseUrl}/manager/club/${clubId}/application`);
+        const resp = await api.get(`/manager/club/${clubId}/application`);
         if(resp && resp.data) {
             setSignups(resp.data);
         } else {

@@ -25,8 +25,8 @@ function App() {
             <Router>
                 <Topbar />
                 <Routes>
-                    <Route path="/" element={<Navigate to="/manager" />} />
-                    <Route path="/manager" element={<Home />} />
+                    <Route path="/" element={<Navigate to="/manager/club" />} />
+                    <Route path="/manager/club" element={<Home />} />
                     <Route path='*' element={
                         <div className="container">
                             <Sidebar />

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
-import axios from 'axios';
+import api from '../../Axios';
 import styled from 'styled-components';
 
 const CONTAINER = styled.div`
@@ -78,14 +78,13 @@ const ApplyFormPage = () => {
 
     const navigate = useNavigate();
     const {clubId} = useParams();
-    const baseUrl="https://18821b90-7c6b-4217-b68e-e5775ac40a41.mock.pstmn.io";
 
     const moveToUpdate = () => {
         navigate(`/manager/club/${clubId}/apply/fix`);
     };
     const getApply = async () => {
         try {
-            const resp = await axios.get(`${baseUrl}/manager/club/${clubId}/application`);
+            const resp = await api.get(`/manager/club/${clubId}/application`);
             if(resp && resp.data) {
                 setapplyform(resp.data);
             } else {
