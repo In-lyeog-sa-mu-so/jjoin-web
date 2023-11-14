@@ -41,7 +41,7 @@ function EventDetails(props) {
         .catch(error => {
           console.error('Error fetching event data', error);
         });
-    }, [defid]);
+    }, [clubId, defid]);
 
     // let eventDetail = event.find(e => e.id === defid);
     let primaryData = dummyData.find(event => event.id === defid);

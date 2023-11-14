@@ -46,13 +46,12 @@ function AddEvent() {
     api.post(`/manager/club/${clubId}/plan`, event)
     .then(response => {
         // 성공적으로 전송되었을 때의 처리
-        window.alert('일정이 등록되었습니다!');
-        navigate(`/manager/club/${clubId}/plan`);
+        alert('일정이 등록되었습니다!');
     })
     .catch(error => {
         // 에러 처리
         console.error('Error posting event', error);
-        window.alert('일정 등록에 실패했습니다.');
+        alert('일정 등록에 실패했습니다.');
     });
 
     navigate(`/manager/club/${clubId}/plan`);

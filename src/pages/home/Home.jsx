@@ -37,14 +37,15 @@ const StyledLink = styled(Link)`
   background-color: #f8f9fa;
   color: #343a40;
 `;
+
 function MainPage(){
     const [clubList, setClubList] = useRecoilState(clubListState);
 
     const getClubList = async () => {
         try {
             const resp = await api.get(`/manager/club`);
-            if(resp && resp.data) {
-                setClubList(resp.data);
+            if (resp && resp.data) {
+                setClubList(resp.data.data);
             } else {
                 console.error('No data received');
             }
@@ -59,17 +60,29 @@ function MainPage(){
     return(
         <div>
             <H2>동아리 관리</H2>
-            <CLICK>
-                {clubList&&clubList.map((club) => (
-                    <div key={club.id}>
-                        <div>
-                            <StyledLink to={`/manager/club/${club.id}/users`}>
-                                <span>{club.name}</span>
-                            </StyledLink>
+            {clubList && clubList.length > 0 ? (
+                <CLICK>
+                    {clubList.map((club) => (
+                        <div key={club.id}>
+                            <div>
+                                <StyledLink to={`/manager/club/${club.id}/users`}>
+                                    <span>{club.name}</span>
+                                </StyledLink>
+                            </div>
                         </div>
-                    </div>
-                ))}
-            </CLICK>
+                    ))}
+                </CLICK>
+            ) : (
+                <div style={{ 
+                    textAlign: 'center', 
+                    padding: '20px', 
+                    fontSize: '50px', 
+                    margin: '100px',
+                    color: '#888' 
+                }}>
+                    등록된 동아리가 없습니다. 😔
+                </div>
+            )}
         </div>
     );
 }

@@ -35,18 +35,18 @@ function EditEvent() {
       .catch(error => {
         console.error('Error fetching event data', error);
       });
-  }, [defid]);
+  }, [clubId, defid]);
   // 수정을 처리하는 함수
 
-  const handleEdit = () => {
+  const handleEdit = async () => {
     // 수정 로직 구현
-    // axios.put
-    api.put(`/manager/club/${clubId}/plan/${defid}`, event) // 엔드포인트 수정 필요
+    await api.put(`/manager/club/${clubId}/plan/${defid}`, event) // 엔드포인트 수정 필요
       .then(() => {
         alert('수정되었습니다.');
         navigate(`/manager/club/${clubId}/plan`); // 수정 후 캘린더 페이지로 이동
       })
       .catch(error => {
+        alert('수정 실패!');
         console.error('Error updating event', error);
       });
   };
