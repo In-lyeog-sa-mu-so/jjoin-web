@@ -16,7 +16,7 @@ export default function Topbar() {
                     {/* topbarIcon */}
                     <div className="topbarIconContainer">
                         <NotificationsNoneIcon />
-                        <span className="topIconBadge">2</span>
+                        <span className="topIconBadge">3</span>
                     </div>
                     <div className="topbarIconContainer">
                         <GridViewIcon />

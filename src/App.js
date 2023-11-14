@@ -16,7 +16,7 @@ import EventCalendar from "./pages/calendar/EventCalendar";
 import AddEvent from "./pages/calendar/AddEvent";
 import EditEvent from "./pages/calendar/EditEvent";
 import EventDetails from "./pages/calendar/EventDetails";
-import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate, useParams } from 'react-router-dom';
 import {RecoilRoot} from 'recoil';
 
 function App() {
@@ -31,11 +31,7 @@ function App() {
                         <div className="container">
                             <Sidebar />
                             <Routes>
-                                <Route path='/manager/club/:clubId/plan' element={
-                                    <>
-                                        <EventCalendar />
-                                    </>
-                                } />
+                                <Route path='/manager/club/:clubId/plan' element={<EventCalendar />} />
                                 <Route path="/manager/club/:clubId/notice" element={<NoticeListPage/>}/>
                                 <Route path="/manager/club/:clubId/notice/:id" element={<NoticeReadPage/>} />
                                 <Route path="/manager/club/:clubId/write" element={<NoticeWritePage/>} />
@@ -44,7 +40,7 @@ function App() {
                                 <Route path="/manager/club/:clubId/information/fix" element={<DecorateFixPage/>}/>
                                 <Route path="/manager/club/:clubId/users" element={<UserList/>} />
                                 <Route path='/manager/club/:clubId/plan/upload' element={<AddEvent/>} exact />
-                                <Route path='/manager/club/:clubId/detail/:defid' element={<EventDetails/>} exact />
+                                <Route path='/manager/club/:clubId/plan/:defid' element={<EventDetails/>} />
                                 <Route path="/manager/club/:clubId/apply" element={<ApplyFormPage/>} />
                                 <Route path="/manager/club/:clubId/apply/fix" element={<ApplyFormFixPage/>}/>
                                 <Route path="/manager/club/:clubId/plan/edit/:defid" element={<EditEvent />} />
