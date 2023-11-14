@@ -5,7 +5,7 @@ import { Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../Axios';
 
 const data = [
     {
@@ -41,7 +41,7 @@ const data = [
 		"content" : "make plan success",
 		"end_date" : "2023-11-16 13:00:00",
 		"start_date" : "2023-11-16 15:00:00",
-		"title" : "암호학 수업",
+		"title" : "알고리즘 스터디",
 	},
 ]
 
@@ -67,25 +67,26 @@ function EventCalendar() {
   const [eventList, setEventList] = useState([]);
   const navigate = useNavigate();
   
-  const getEventList = async () => {
-    try {
-      const resp = await axios.get(`/manager/club/${clubId}/plan`);
-      if(resp && resp.data) {
-          setEventList(resp.data);
-      } else {
-          console.error('No data received');
-      }
-    } catch (error) {
-      console.error('Error fetching data: ', error);
-    }
-  };
+  // const getEventList = async () => {
+  //   try {
+  //     const resp = await api.get(`/manager/club/${clubId}/plan`);
+  //     if(resp && resp.data) {
+  //         setEventList(resp.data);
+  //     } else {
+  //         console.error('No data received');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching data: ', error);
+  //   }
+  // };
 
   useEffect(() => {
-    axios.get(`/manager/club/${clubId}/plan`) // 백엔드 엔드포인트
+    api.get(`/manager/club/${clubId}/plan`) // 백엔드 엔드포인트
       .then(response => {
         // 백엔드에서 받은 데이터를 적절히 변환하여 상태에 저장합니다.
         const eventData = response.data.map(val => ({
           title: val.title,
+          content: val.content,
           start: val.start_date,
           end: val.end_date,
           defId: val.id, // 예시 id
@@ -109,11 +110,11 @@ function EventCalendar() {
     };
   });
 
-  const completedDate = data_list.filter((val) => val.completed);
-  const [btn, setBtn] = useState(true);
-  const btnEvent = () => {
-    setBtn(!btn);
-  };
+  // const completedDate = data_list.filter((val) => val.completed);
+  // const [btn, setBtn] = useState(true);
+  // const btnEvent = () => {
+  //   setBtn(!btn);
+  // };
 
   const handleEventClick = () => {
     navigate(`manager/club/${clubId}/plan/${defId}`);
@@ -129,7 +130,7 @@ function EventCalendar() {
                 end: '',
             }}
             titleFormat={{ year: 'numeric', month: 'short' }}
-            events={btn ? data_list : completedDate}
+            events={data_list}  // 더미는 data_list, 연동은 eventList
             eventClick={handleEventClick}
             height={'100vh'}
         />
