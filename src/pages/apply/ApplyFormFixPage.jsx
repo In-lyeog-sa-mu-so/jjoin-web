@@ -70,7 +70,9 @@ const ApplyFormFixPage = () => {
     const onChange = (e, index) => {
         const newApplyform = [...applyform];
         newApplyform[index].QuestionContent = e.target.value;
-        newApplyform[index].isModified = newApplyform[index].originalContent !== e.target.value;
+        if (!newApplyform[index].isNew) { // 추가된 항목이 아닐 경우에만 수정 여부를 판단
+            newApplyform[index].isModified = newApplyform[index].originalContent !== e.target.value;
+        }
         setapplyform(newApplyform);
     };
     const getApply = async () => {
@@ -103,11 +105,11 @@ const ApplyFormFixPage = () => {
     const updateApply = async () => {
         try {
             const requestBody = {
-                added: applyform.filter(question => question.isNew).map(question => ({ question_id: question.question_id, QuestionContent: question.QuestionContent })),
+                added: applyform.filter(question => question.isNew).map(question => ({ QuestionContent: question.QuestionContent })),
                 modified: applyform.filter(question => question.isModified).map(question => ({ question_id: question.question_id, QuestionContent: question.QuestionContent })),
                 deleted: applyform.filter(question => question.isDeleted).map(question => ({question_id: question.question_id})),
             };
-            await axios.patch(`${baseUrl}/apply`, requestBody);
+            await axios.patch(`${baseUrl}/manager/club/${clubId}/application`, requestBody);
             alert('수정되었습니다.');
             navigate(`/manager/club/${clubId}/apply`);
         } catch (error) {
