@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import SearchIcon from '@material-ui/icons/Search';
 import { Fab } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import api from "../../Axios";
 
 const data = [
@@ -45,12 +45,30 @@ const data = [
 	},
 ]
 
+// 새로운 버튼 컴포넌트 정의
+const AddEventButton = () => {
+  const navigate = useNavigate();
+
+  return (
+      <PositionBtn>
+          <Fab
+              color='primary'
+              aria-label='add'
+              onClick={() => navigate('/manager/club/:clubId/plan/upload')}
+          >
+              <AddIcon />
+          </Fab>
+      </PositionBtn>
+  );
+};
+
 function EventCalendar() {
+  const { clubId } = useParams();
   const [events, setEvents] = useState([]);
   const navigate = useNavigate();
   
   useEffect(() => {
-    api.get('/manager/club/${clubId}/plan') // 백엔드 엔드포인트
+    api.get(`/manager/club/${clubId}/plan`) // 백엔드 엔드포인트
       .then(response => {
         // 백엔드에서 받은 데이터를 적절히 변환하여 상태에 저장합니다.
         const eventData = response.data.map(val => ({
@@ -85,7 +103,7 @@ function EventCalendar() {
   };
 
   const handleEventClick = (e) => {
-    navigate('/calendar/' + e.event._def.extendedProps.publicId);
+    navigate('/plan/' + e.event._def.extendedProps.publicId);
   };
 
     return (
@@ -102,35 +120,20 @@ function EventCalendar() {
             eventClick={handleEventClick}
             height={'100vh'}
         />
-        <PositionBtn>
-            <Fab
-            color='secondary'
-            aria-label='filter'
-            variant='extended'
-            onClick={btnEvent}
-            >
-            <SearchIcon />
-            <p style={{ fontSize: '1rem' }}>
-                {btn ? '완료된 일정 보기' : '모든 일정 보기'}
-            </p>
-            </Fab>
-        </PositionBtn>
+        <AddEventButton />
         </div>
     );
 }
 
 const PositionBtn = styled.div`
-    position: fixed;
-    top: 80%;
-    right: 10px;
-    z-index: 10;
-    @media only screen and (max-width: 768px) {
-        top: 70%;
-        left: 10px;
-        & p {
-        display: none;
-        }
-    }
+  position: fixed;
+  top: 90%;
+  right: 50px;
+  z-index: 10;
+  @media only screen and (max-width: 768px) {
+    top: 90%;
+    left: 10px;
+  }
 `;
 
 export default EventCalendar;

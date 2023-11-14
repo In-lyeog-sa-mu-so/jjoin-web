@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
 function EditEvent() {
-  const { defid } = useParams();
+  const { defid, clubId } = useParams();
   const navigate = useNavigate();
 
   // 수정할 일정 데이터 로드 및 처리 로직
@@ -15,10 +15,10 @@ function EditEvent() {
     title: '',
     content: '',
 });
-  // 백엔드에서 데이터를 가져오거나, 글로벌 상태 관리 라이브러리에서 데이터를 로드
+
   useEffect(() => {
     // 백엔드에서 데이터를 로드하는 로직
-    api.get(`/manager/club/{clubId}/plan/${defid}`) // 엔드포인트 수정 필요
+    api.get(`/manager/club/${clubId}/plan/${defid}`) // 엔드포인트 수정 필요
       .then(response => {
         setEvent({
           startDate: response.data.startDate,
@@ -41,9 +41,9 @@ function EditEvent() {
   const handleEdit = () => {
     // 수정 로직 구현
     // axios.put
-    api.put(`/manager/club/{clubId}/plan/${defid}`, event) // 엔드포인트 수정 필요
+    api.put(`/manager/club/${clubId}/plan/${defid}`, event) // 엔드포인트 수정 필요
       .then(() => {
-        navigate('/calendar'); // 수정 후 캘린더 페이지로 이동
+        navigate(`/manager/club/${clubId}/plan`); // 수정 후 캘린더 페이지로 이동
       })
       .catch(error => {
         console.error('Error updating event', error);

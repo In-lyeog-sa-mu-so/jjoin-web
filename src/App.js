@@ -17,27 +17,7 @@ import AddEvent from "./pages/calendar/AddEvent";
 import EditEvent from "./pages/calendar/EditEvent";
 import EventDetails from "./pages/calendar/EventDetails";
 import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
-import { Fab } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import styled from 'styled-components';
 import {RecoilRoot} from 'recoil';
-
-// 새로운 버튼 컴포넌트 정의
-const AddEventButton = () => {
-    const navigate = useNavigate();
-
-    return (
-        <PositionBtn>
-            <Fab
-                color='primary'
-                aria-label='add'
-                onClick={() => navigate('/upload')}
-            >
-                <AddIcon />
-            </Fab>
-        </PositionBtn>
-    );
-};
 
 function App() {
     return (
@@ -51,10 +31,9 @@ function App() {
                         <div className="container">
                             <Sidebar />
                             <Routes>
-                                <Route path='/manager/club/{clubId}/calendar' element={
+                                <Route path='/manager/club/:clubId/plan' element={
                                     <>
                                         <EventCalendar />
-                                        <AddEventButton />
                                     </>
                                 } />
                                 <Route path="/manager/club/:clubId/notice" element={<NoticeListPage/>}/>
@@ -64,11 +43,11 @@ function App() {
                                 <Route path="/manager/club/:clubId/information" element={<DecoratePage />} />
                                 <Route path="/manager/club/:clubId/information/fix" element={<DecorateFixPage/>}/>
                                 <Route path="/manager/club/:clubId/users" element={<UserList/>} />
-                                <Route path='/manager/club/:clubId/upload' element={<AddEvent/>} exact />
+                                <Route path='/manager/club/:clubId/plan/upload' element={<AddEvent/>} exact />
                                 <Route path='/manager/club/:clubId/detail/:defid' element={<EventDetails/>} exact />
                                 <Route path="/manager/club/:clubId/apply" element={<ApplyFormPage/>} />
                                 <Route path="/manager/club/:clubId/apply/fix" element={<ApplyFormFixPage/>}/>
-                                <Route path="/manager/club/:clubId/calendar/edit/:defid" element={<EditEvent />} />
+                                <Route path="/manager/club/:clubId/plan/edit/:defid" element={<EditEvent />} />
                             </Routes>
                         </div>
                     } />
@@ -77,16 +56,5 @@ function App() {
         </RecoilRoot>
     );
 }
-
-const PositionBtn = styled.div`
-  position: fixed;
-  top: 90%;
-  right: 50px;
-  z-index: 10;
-  @media only screen and (max-width: 768px) {
-    top: 90%;
-    left: 10px;
-  }
-`;
 
 export default App;
