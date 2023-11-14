@@ -5,8 +5,16 @@ import styled from 'styled-components';
 
 const CONTAINER = styled.div`
   margin-left: 5%;
-  background-color: whitesmoke;
+  background-color: white;
   width: 90%;
+  border-top: 1px solid black;
+  * > p {
+    border-bottom: 3px solid darkblue;
+    line-height: 24px;
+    min-width: 100px;
+    width: fit-content;
+    text-align: center;
+  }
 `
 
 const CONTENTS= styled.div`
@@ -17,30 +25,45 @@ const CONTENTS= styled.div`
 
 const H2 = styled.h2`
   margin-left: 5%;
+  span{
+    font-size: 13px;
+    color: gray;
+    margin-left: 10px;
+  }
 `
 const CONTENT = styled.table`
   display: flex;
-  align-items: center;
+  flex-direction: column;
   position: relative;
-  margin: 10px 45px;
+  margin-left: 20px;
+  margin-top: 10px;
     textarea{
-      margin: 10px 65px;
+      width: 650px;
+      height: 100px;
+      border: 1px solid #ddd;
       white-space: pre-line;
       display: flex;
       align-items: center;
       justify-content: center;
+      border-radius: 10px;
+      resize: none;
     }
 `
 const BUTTONS = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 30px;
+  border-bottom: 30px;
   button{
-    margin-left:1%;
-    padding: 8px 25px; /* Increase size, adjust as needed */
-    background-color: lightgrey; /* Change color */
+    margin-right:1%;
+    padding: 12px 25px; /* Increase size, adjust as needed */ /* Change color */
     font-size: 15px;
     cursor: pointer;
+    border-radius: 10px;
+    border: none;
+    background: darkblue;
+    color: white;
+
     &:hover {
       background-color: darkgrey;
     }
@@ -51,7 +74,7 @@ const IMAGE = styled.div`
   flex-direction: row;
   align-items: center;
   & > * {
-    margin: 45px 20px 10px 20px;
+    margin: 10px 20px 10px 20px;
   }
   img {
     width: 150px;
@@ -64,7 +87,7 @@ const IMAGE = styled.div`
 `
 const IMAGEINPUT=styled.div`
   display: flex;
-  margin-left: 13%;
+  margin-left: 6%;
   & > div:nth-child(2) {
     margin-left: 120px;
   }
@@ -87,6 +110,12 @@ const DATE = styled.div`
       margin-left: 50px;
     input{
       margin-left:10px;
+      width: 100px;
+      height: 30px;
+      background-color: white;
+      border-radius: 5px;
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+      border: 1px solid rgba(150,150,150,0.1);
     }
   }
 `
@@ -109,7 +138,7 @@ const DecorateFixPage=()=>{
             [name]: value,
         });
     };
-    const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
+    const baseUrl="https://18821b90-7c6b-4217-b68e-e5775ac40a41.mock.pstmn.io";
     const getBoard = async () => {
         try {
             const resp = await axios.get(`${baseUrl}/manager/club/${clubId}/information`);
@@ -140,15 +169,18 @@ const DecorateFixPage=()=>{
     }, []);
 
     return (
-        <div>
-            <H2>홍보페이지 수정</H2>
+        <div><H2>홍보페이지 관리 <span> > 수정</span></H2>
             <CONTAINER>
                 <CONTENTS>
                     <IMAGE>
+                        <div>
                         <p>프로필 사진</p>
                         <img src={clubImageUuid} alt="프로필사진" />
+                        </div>
+                        <div>
                         <p>배경 사진</p>
                         <img src={backgroundImageUuid} alt="배경사진" />
+                        </div>
                     </IMAGE>
                     <IMAGEINPUT>
                         <div>
@@ -177,7 +209,7 @@ const DecorateFixPage=()=>{
                         </div>
                     </IMAGEINPUT>
                     <CONTENT>
-                        <a>소개</a>
+                        <p>소개</p>
                         <textarea
                             name="introduction"
                             cols="80"
@@ -188,7 +220,7 @@ const DecorateFixPage=()=>{
                     </CONTENT>
                     <CHECKBOX>
                         <div>
-                        <a>모집여부</a>
+                        <p>모집여부</p>
                         </div>
                         <div>
                         <a>모집</a>
@@ -213,7 +245,7 @@ const DecorateFixPage=()=>{
                     </CHECKBOX>
                     <DATE>
                         <div>
-                        <a>모집일정</a>
+                        <p>모집일정</p>
                         </div>
                         <div>
                         <a>시작날짜</a>

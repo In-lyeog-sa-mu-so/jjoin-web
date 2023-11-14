@@ -21,6 +21,8 @@ const H2 = styled.h2`
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: inherit; // 혹은 원하는 색상
+  float: left;
+  margin-left: 200px;
   &:hover {
     font-weight: bold;
     text-decoration: underline;
@@ -31,10 +33,19 @@ const Container = styled.div`
   display: flex;
   padding-bottom:10px;
   margin-right:5%;
-  & > button {
-    height: 25px;
-    margin-left: 10px;
+  button{
+    width: 80px;
+    height: 40px;
+    margin-top: 20px;
+    margin-left:1%;
+    background-color: darkblue; /* Change color */
+    font-size: 15px;
+    color: white;
+    border-radius: 10px;
     cursor: pointer;
+    &:hover {
+      background-color: darkgrey;
+    }
   }
   & > input {
     height: 20px;
@@ -54,7 +65,7 @@ function useQuery() {
 function NoticeList() {
     const navigate = useNavigate();
     const [noticeList, setNoticeList] = useState([]);
-    const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
+    const baseUrl="https://18821b90-7c6b-4217-b68e-e5775ac40a41.mock.pstmn.io";
     const {clubId} = useParams();
     const query = useQuery();
     const page = query.get('page');

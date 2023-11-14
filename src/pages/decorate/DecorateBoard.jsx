@@ -6,6 +6,7 @@ const CONTAINER = styled.div`
   margin-left: 5%;
   background-color: white;
   width: 90%;
+  border-top: 1px solid black;
 
   * > p {
     border-bottom: 3px solid darkblue;
@@ -22,6 +23,11 @@ const CONTENTS= styled.div`
 `;
 const H2 = styled.h2`
   margin-left: 5%;
+  span{
+    font-size: 13px;
+    color: gray;
+    margin-left: 10px;
+  }
 `;
 const CONTENT = styled.table`
   display: flex;
@@ -54,8 +60,7 @@ const BUTTONS = styled.div`
   margin-top: 30px;
   button{
     margin-left:1%;
-    padding: 12px 25px; /* Increase size, adjust as needed */
-    background-color: lightgrey; /* Change color */
+    padding: 12px 25px; /* Increase size, adjust as needed */ /* Change color */
     font-size: 15px;
     cursor: pointer;
     border-radius: 10px;
@@ -71,7 +76,6 @@ const BUTTONS = styled.div`
 const IMAGE = styled.div`
   display: flex;
   flex-direction: row;
-  
   align-items: center;
   & > * {
     margin: 25px 20px;
@@ -130,7 +134,7 @@ const DecorateBoard = ({ clubImageUuid, backgroundImageUuid, introduction, isFin
 
     return (<>
         <div>
-            <H2>홍보페이지 관리</H2>
+            <H2>홍보페이지 관리 <span> > 조회</span></H2>
             <CONTAINER>
                 <CONTENTS>
                     <IMAGE>

@@ -5,16 +5,20 @@ import styled from 'styled-components';
 
 const CONTAINER = styled.div`
   margin-left: 5%;
-  background-color: #EFEFEF;
   width: 90%;
 `
 const CONTENTS= styled.div`
   width: 95%;
-  margin-left: 3%;
-  height: 550px;
+  margin-left: 2%;
+  height: 100%;
 `;
 const H2 = styled.h2`
-  margin-left: 5%;
+  margin-left: 7%;
+  span{
+    font-size: 13px;
+    color: gray;
+    margin-left: 10px;
+  }
 `;
 
 const TITLE = styled.div`
@@ -26,10 +30,18 @@ const TITLE = styled.div`
     margin-left: 20px;
     width: 400px;
     height: 30px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border: 1px solid rgba(150,150,150,0.1);
   }
   select{
     margin-left:30px;
     height: 30px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border: 1px solid rgba(150,150,150,0.1);
   }
 `;
 
@@ -41,8 +53,13 @@ const CONTENT = styled.table`
   font-weight: bold;
   textarea{
     margin-left: 20px;
-    min-height: 300px;
-    min-width: 94%;
+    height: 300px;
+    width: 94%;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border: 1px solid rgba(150,150,150,0.1);
+    resize: none;
   }
 `
 const BUTTONS = styled.div`
@@ -53,11 +70,15 @@ const BUTTONS = styled.div`
     margin-left: 10px;
   }
   button{
-    padding: 8px 20px; /* Increase size, adjust as needed */
-    background-color: lightgrey; /* Change color */
+    margin-right:1%;
+    padding: 12px 25px; /* Increase size, adjust as needed */ /* Change color */
     font-size: 15px;
     cursor: pointer;
-    margin-right:5px;
+    border-radius: 10px;
+    border: none;
+    background: darkblue;
+    color: white;
+
     &:hover {
       background-color: darkgrey;
     }
@@ -74,7 +95,7 @@ const NoticeWrite = () => {
     });
 
     const { title, content } = notice; //비구조화 할당
-    const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
+    const baseUrl="https://18821b90-7c6b-4217-b68e-e5775ac40a41.mock.pstmn.io";
     const onChange = (event) => {
         const { value, name } = event.target;
         let modifiedValue = value;
@@ -102,7 +123,7 @@ const NoticeWrite = () => {
 
     return (
         <div>
-            <H2>공지등록</H2>
+            <H2>공지사항 <span>> 공지등록</span></H2>
             <CONTAINER>
                 <CONTENTS>
                     <TITLE>
