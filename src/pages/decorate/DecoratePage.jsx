@@ -12,7 +12,7 @@ const DecoratePage = () => {
         endDate: null
     });
 
-    const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
+    const baseUrl="https://18821b90-7c6b-4217-b68e-e5775ac40a41.mock.pstmn.io";
     const { clubId } = useParams();
     const getBoard = async () => {
         try {

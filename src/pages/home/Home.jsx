@@ -22,7 +22,6 @@ const StyledLink = styled(Link)`
   text-decoration: none;
   &:hover {
     font-weight: bold;
-    text-decoration: underline;
     background-color: lightblue;
 }
   display: inline-block;
@@ -40,7 +39,7 @@ const StyledLink = styled(Link)`
 `;
 function MainPage(){
     const [clubList, setClubList] = useRecoilState(clubListState);
-    const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
+    const baseUrl="https://18821b90-7c6b-4217-b68e-e5775ac40a41.mock.pstmn.io";
 
     const getClubList = async () => {
         try {
@@ -66,7 +65,7 @@ function MainPage(){
                     <div key={club.id}>
                         <div>
                             <StyledLink to={`/manager/club/${club.id}/users`}>
-                                {club.name}
+                                <span>{club.name}</span>
                             </StyledLink>
                         </div>
                     </div>

@@ -5,30 +5,34 @@ import styled from 'styled-components';
 
 const CONTAINER = styled.div`
   margin-left: 5%;
-  background-color: #EFEFEF;
   width: 90%;
 `
 const CONTENTS= styled.div`
   width: 95%;
   margin-left: 2%;
-  height: 550px;
+  height: 100%;
 `;
 const H2 = styled.h2`
-  margin-left: 5%;
+  margin-left: 7%;
+  span{
+    font-size: 13px;
+    color: gray;
+    margin-left: 10px;
+  }
 `;
 const TITLE = styled.div`
-  border-bottom : 2px solid black;
+  border-bottom : 2px solid darkblue;
   display: flex;
 `;
 const DATE = styled.div`
   border-bottom : 2px solid black;
-  a{
+  padding-bottom: 30px;
+  span{
     position: relative;
     top: 13px;
     font-size: 16px;
     margin-right: 2%;
   }
-  height: 10%;
 `;
 const CONTENT = styled.table`
   min-height: 300px;
@@ -40,11 +44,16 @@ const CONTENT = styled.table`
 const BUTTONS = styled.div`
   display: flex;
   justify-content: flex-end;
+  padding-bottom: 2%;
+  border-top : 2px solid black;
   button{
+    margin-top: 20px;
     margin-left:1%;
     padding: 8px 25px; /* Increase size, adjust as needed */
-    background-color: lightgrey; /* Change color */
+    background-color: darkblue; /* Change color */
     font-size: 15px;
+    color: white;
+    border-radius: 10px;
     cursor: pointer;
     &:hover {
       background-color: darkgrey;
@@ -58,7 +67,7 @@ const Board = ({ id, title, content, createdDate, updatedDate}) => {
         navigate(`/manager/club/${clubId}/update/${id}`);
     };
 
-    const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
+    const baseUrl="https://18821b90-7c6b-4217-b68e-e5775ac40a41.mock.pstmn.io";
 
     const deleteBoard = async () => {
         if (window.confirm('게시글을 삭제하시겠습니까?')) {
@@ -75,17 +84,17 @@ const Board = ({ id, title, content, createdDate, updatedDate}) => {
 
     return (<>
         <div>
-            <H2>공지사항</H2>
+            <H2>공지사항 <span>> 공지상세</span></H2>
             <CONTAINER>
                 <CONTENTS>
                     <TITLE>
                         <h1>{title}</h1>
                     </TITLE>
                     <DATE>
-                        <a>최초 작성 날짜</a>
-                        <a>{createdDate}</a>
-                        <a>수정된 날짜</a>
-                        <a>{updatedDate}</a>
+                        <span>최초 작성 날짜</span>
+                        <span>{createdDate}</span>
+                        <span>수정된 날짜</span>
+                        <span>{updatedDate}</span>
                     </DATE>
                     <CONTENT>
                         <a>

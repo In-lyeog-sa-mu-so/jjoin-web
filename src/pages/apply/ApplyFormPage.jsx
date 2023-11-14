@@ -6,6 +6,7 @@ import styled from 'styled-components';
 const CONTAINER = styled.div`
   margin-left: 5%;
   width: 90%;
+  border-top: 1px solid black;
 `
 const CONTENTS= styled.div`
   width: 95%;
@@ -17,6 +18,7 @@ const CONTENTS= styled.div`
 const CONTENT = styled.div`
   padding-top: 30px;
   margin-left: 5%;
+  margin-top:20px;
   span{
     min-width: 100px;
     max-width: 200px;
@@ -45,6 +47,11 @@ const ADDCONTENT = styled.div`
 `
 const H2 = styled.h2`
   margin-left: 5%;
+  span{
+    font-size: 13px;
+    color: gray;
+    margin-left: 10px;
+  }
 `
 const BUTTONS = styled.div`
   display: flex;
@@ -71,7 +78,7 @@ const ApplyFormPage = () => {
 
     const navigate = useNavigate();
     const {clubId} = useParams();
-    const baseUrl="https://7f43ee63-b0b8-4e87-9c96-a7c2c01a39f5.mock.pstmn.io";
+    const baseUrl="https://18821b90-7c6b-4217-b68e-e5775ac40a41.mock.pstmn.io";
 
     const moveToUpdate = () => {
         navigate(`/manager/club/${clubId}/apply/fix`);
@@ -95,7 +102,7 @@ const ApplyFormPage = () => {
 
     return(
         <div>
-            <H2>신청서 관리</H2>
+            <H2>신청서 관리 <span> > 조회</span></H2>
             <CONTAINER>
                 <CONTENTS>
                     <CONTENT>
