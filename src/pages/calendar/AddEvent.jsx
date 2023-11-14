@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import TextField from '@material-ui/core/TextField';
@@ -7,10 +7,11 @@ import styled from 'styled-components';
 import api from '../../Axios';
 
 function AddEvent() {
+    const navigate = useNavigate();
+    const { clubId } = useParams();
     const [event, setEvent] = useState({
-        clubId: null,
-        startDate: null,
-        endDate: null,
+        startDate: '',
+        endDate: '',
         title: '',
         content: '',
     });
@@ -22,34 +23,31 @@ function AddEvent() {
             [name]: value,
         });
     };
-
-    const navigate = useNavigate();
   
     const addContent = () => {
-        const new_item = {
-        clubId: event.clubId,
-        startDate: event.startDate,
-        endDate: event.endDate,
-        title: event.title,
-        content: event.content,
-    };
+      // const new_item = {
+      //   startDate: event.startDate,
+      //   endDate: event.endDate,
+      //   title: event.title,
+      //   content: event.content,
+      // };
 
-    if (new_item.startDate === '' || new_item.endDate === '') {
+    if (event.startDate === '' || event.endDate === '') {
         window.alert('날짜를 입력해주세요');
         return;
-    } else if (new_item.title === '') {
+    } else if (event.title === '') {
         window.alert('일정 제목을 입력해주세요');
         return;
-    } else if (new_item.content === '') {
+    } else if (event.content === '') {
         window.alert('일정 내용을 입력해주세요.');
         return;
     }
 
-    api.post(`/manager/club/${event.clubId}/plan`, new_item)
+    api.post(`/manager/club/${clubId}/plan`, event)
     .then(response => {
         // 성공적으로 전송되었을 때의 처리
         window.alert('일정이 등록되었습니다!');
-        navigate('/calendar');
+        navigate(`/manager/club/${clubId}/plan`);
     })
     .catch(error => {
         // 에러 처리
@@ -57,7 +55,7 @@ function AddEvent() {
         window.alert('일정 등록에 실패했습니다.');
     });
 
-    navigate('/calendar');
+    navigate(`/manager/club/${clubId}/plan`);
   };
 
   return (
@@ -122,7 +120,7 @@ function AddEvent() {
             <Button
               variant='contained'
               style={{ marginRight: '50px' }}
-              onClick={() => navigate('/calendar')}
+              onClick={() => navigate(-1)}
             >
               뒤로가기
             </Button>
@@ -138,7 +136,7 @@ function AddEvent() {
         </Modal>
       </Container>
       <Container2
-        onClick={() => navigate('/calendar')}
+        onClick={() => navigate(`/manager/club/${clubId}/plan`)}
       />
     </>
   );

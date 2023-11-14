@@ -29,26 +29,26 @@ const dummyData = [
 
 function EventDetails(props) {
     const navigate = useNavigate();
-    const { defid } = useParams();
+    const { defid, clubId } = useParams();
     
     let primaryData = dummyData.find(event => event.id === defid);
 
     const deleteEvent = () => {
-      api.delete(`/manager/club/clubId/plan/${defid}`) // 백엔드 엔드포인트로 수정하세요.
+      api.delete(`/manager/club/${clubId}/plan/${defid}`) // 백엔드 엔드포인트로 수정
       .then(() => {
         window.alert('일정이 삭제되었습니다.');
-        navigate('/calendar'); // 삭제 후 캘린더 페이지로 이동
+        navigate(`/manager/club/${clubId}/plan`); // 삭제 후 캘린더 페이지로 이동
       })
       .catch(error => {
         console.error('Error deleting event', error);
         window.alert('일정 삭제에 실패했습니다.');
-        navigate('/calendar'); // 삭제 후 캘린더 페이지로 이동
+        navigate(`/manager/club/${clubId}/plan`); // 삭제 후 캘린더 페이지로 이동
       });
     };
 
   // "일정 수정" 버튼 클릭 시 EditEvent 컴포넌트로 이동
   const goToEditPage = () => {
-    navigate(`/calendar/edit/${defid}`);
+    navigate(`/manager/club/${clubId}/plan/edit/${defid}`);
   };
 
   return (
@@ -56,7 +56,7 @@ function EventDetails(props) {
       <Container>
         <Modal>
           <GoBack
-            onClick={() => navigate('/calendar')}
+            onClick={() => navigate(`/manager/club/${clubId}/plan`)}
           >
             <ExitToAppIcon style={{ color: '#EC7063' }} />
           </GoBack>
@@ -140,7 +140,7 @@ function EventDetails(props) {
         </Modal>
       </Container>
       <Container2
-        onClick={() => navigate('/calendar')}
+        onClick={() => navigate(`/manager/club/${clubId}/plan`)}
       />
     </>
   );

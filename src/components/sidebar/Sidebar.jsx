@@ -28,7 +28,7 @@ export default function Sidebar() {
                             </li>
                             <li className="sidebarListItem">
                                 <CalendarMonthIcon className="sidebarIcon" />
-                                <Link to={`/manager/club/${club.id}/calendar`}>일정등록</Link>
+                                <Link to={`/manager/club/${club.id}/plan`}>일정등록</Link>
                             </li>
                             <li className="sidebarListItem">
                                 <CampaignIcon className="sidebarIcon" />
