@@ -84,9 +84,9 @@ const ApplyFormPage = () => {
     };
     const getApply = async () => {
         try {
-            const resp = await api.get(`/manager/club/${clubId}/application`);
+            const resp = await api.get(`/manager/club/${clubId}/question`);
             if(resp && resp.data) {
-                setapplyform(resp.data);
+                setapplyform(resp.data.data);
             } else {
                 console.error('No data received');
             }
@@ -122,9 +122,9 @@ const ApplyFormPage = () => {
                         <a></a>
                     </div>
                     <ADDCONTENT>
-                        {Array.isArray(applyform) && applyform.map((question, index) => (
-                            <div key={index}>
-                                <span>{question.QuestionContent}</span>
+                        {applyform&&applyform.map((apply) => (
+                            <div key={apply.question_id}>
+                                <span>{apply.QuestionContent}</span>
                                 <a></a>
                             </div>
                         ))}

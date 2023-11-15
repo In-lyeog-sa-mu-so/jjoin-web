@@ -120,7 +120,6 @@ function NoticeList() {
                     <button onClick={() => moveToPage(index)}>{index + 1}</button>
                 ))}
             </PAGEBUTTON>
-            <br />
             <Container>
                 <button onClick={moveToWrite}>글쓰기</button>
             </Container>
