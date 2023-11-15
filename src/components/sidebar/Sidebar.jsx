@@ -1,16 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./sidebar.css";
 import PersonIcon from "@mui/icons-material/Person";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import CampaignIcon from "@mui/icons-material/Campaign";
 import DescriptionIcon from "@mui/icons-material/Description";
-import { Link, useParams } from "react-router-dom";
-import {useRecoilValue} from 'recoil';
+import { Link } from "react-router-dom";
+import {useRecoilState} from 'recoil';
 import { clubListState } from '../../state';
+import api from '../../Axios';
 
 export default function Sidebar() {
-    const clubList = useRecoilValue(clubListState);
+    const [clubList, setClubList] = useRecoilState(clubListState);
+
+    useEffect(() => {
+        const fetchClubList = async () => {
+            try {
+                const resp = await api.get('/manager/club');
+                if (resp && resp.data) {
+                    setClubList(resp.data.data);
+                } else {
+                    console.error('No data received');
+                }
+            } catch (error) {
+                console.error('Error fetching data: ', error);
+            }
+        };
+
+        fetchClubList();
+    }, []);
+    // const clubList = useRecoilValue(clubListState);
     return (
         <div className="sidebar">
             <div className="sidebarWrapper">

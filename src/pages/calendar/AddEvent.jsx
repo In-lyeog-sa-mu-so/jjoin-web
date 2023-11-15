@@ -40,13 +40,13 @@ function AddEvent() {
       .then(response => {
           console.log(event);
           alert('일정이 등록되었습니다!');
+          navigate(`/manager/club/${clubId}/plan`);
       })
       .catch(error => {
           console.error('Error posting event', error);
           alert('일정 등록에 실패했습니다.');
+          navigate(`/manager/club/${clubId}/plan`);
       });
-
-      navigate(`/manager/club/${clubId}/plan`);
   };
 
   return (

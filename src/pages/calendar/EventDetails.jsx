@@ -12,12 +12,7 @@ import api from '../../Axios';
 function EventDetails() {
     const navigate = useNavigate();
     const { clubId, defid } = useParams();
-    const [event, setEvent] = useState({
-      startDate: '',
-      endDate: '',
-      title: '',
-      content: '',
-    });
+    const [event, setEvent] = useState({});
     
     const getEvent = async () => {
       try {
@@ -36,8 +31,6 @@ function EventDetails() {
     useEffect(() => {
       getEvent();
     }, [clubId, defid]);
-      
-    // let primaryData = dummyData.find(event => event.id === defid);
 
     const deleteEvent = () => {
       api.delete(`/manager/club/${clubId}/plan/${defid}`)
@@ -71,18 +64,17 @@ function EventDetails() {
           </h1>
           <h2>
             <CalendarTodayIcon style={{ color: '#85C1E9' }} />
-            &nbsp; 시작 날짜: {event ? event.startDate.split('T')[0]
-              : ' '}{' '}
+            &nbsp; 시작 날짜: {event.startDate ? event.startDate.split('T')[0] : ' '}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <AccessTimeIcon style={{ color: '#85C1E9' }} />
             &nbsp; 시작 시간: &nbsp;
-            {event
+            {event.startDate
               ? event.startDate.split('T')[1].split(':')[0] > 11
                 ? '오후'
                 : '오전'
               : ''}
             &nbsp;&nbsp;
-            {event
+            {event.startDate
               ? event.startDate.split('T')[1].split(':')[0] > 12
                 ? event.startDate.split('T')[1].split(':')[0] -
                   12 +
@@ -95,18 +87,17 @@ function EventDetails() {
             <br />
             <br />
             <CalendarTodayIcon style={{ color: '#85C1E9' }} />
-            &nbsp; 종료 날짜: {event ? event.endDate.split('T')[0]
-              : ' '}{' '}
+            &nbsp; 종료 날짜: {event.endDate ? event.endDate.split('T')[0] : ' '}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <AccessTimeIcon style={{ color: '#85C1E9' }} />
             &nbsp; 종료 시간: &nbsp;
-            {event
+            {event.endDate
               ? event.endDate.split('T')[1].split(':')[0] > 11
                 ? '오후'
                 : '오전'
               : ''}
             &nbsp;&nbsp;
-            {event
+            {event.endDate
               ? event.endDate.split('T')[1].split(':')[0] > 12
                 ? event.endDate.split('T')[1].split(':')[0] -
                   12 +
