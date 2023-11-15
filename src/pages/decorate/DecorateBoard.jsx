@@ -182,11 +182,11 @@ const DecorateBoard = ({ clubImageUuid, backgroundImageUuid, introduction, isFin
                         <p>모집일정</p>
                         <div>
                         <a>
-                            {startDate}
+                            {startDate? startDate.split('T')[0] : ' '}
                         </a>
                         <a>~</a>
                         <a>
-                            {endDate}
+                            {endDate? endDate.split('T')[0] : ' '}
                         </a>
                         </div>
                     </DATE>

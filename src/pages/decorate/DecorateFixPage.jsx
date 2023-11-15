@@ -153,7 +153,7 @@ const DecorateFixPage=()=>{
     };
     const updateBoard = async () => {
         try {
-            await api.patch(`/manager/club/${clubId}/information`, decorate);
+            await api.put(`/manager/club/${clubId}/information`, decorate);
             alert('수정되었습니다.');
             navigate(`/manager/club/${clubId}/information`);
         } catch (error) {

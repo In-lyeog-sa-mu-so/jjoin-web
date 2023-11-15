@@ -30,8 +30,8 @@ const NoticeReadPage = () => {
                 id = {notice.id}
                 title={notice.title}
                 content={notice.content}
-                createdDate={notice.createdDate}
-                updatedDate={notice.updatedDate}
+                createdDate={notice.createdDate ? notice.createdDate.split('T')[0] : ' '}
+                updatedDate={notice.updatedDate ? notice.updatedDate.split('T')[0] : ' '}
             />
         </div>
     );

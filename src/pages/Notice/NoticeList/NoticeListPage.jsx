@@ -3,11 +3,10 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import api from '../../../Axios';
 import styled from "styled-components";
 import CommonTable from "./CommonTable";
-import { useLocation } from 'react-router-dom';
 
 const Tr = styled.tr`
   &:hover {
-    background-color: #eceaea;
+    background-color: aliceblue;
     cursor: pointer;
   }
 `;
@@ -25,7 +24,6 @@ const StyledLink = styled(Link)`
   margin-left: 200px;
   &:hover {
     font-weight: bold;
-    text-decoration: underline;
   }
 `;
 const Container = styled.div`
@@ -53,28 +51,22 @@ const Container = styled.div`
     border: 2px solid gray;
   }
 `;
-
 /*const PageButton = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 5%;
 `;*/
-function useQuery() {
-    return new URLSearchParams(useLocation().search);
-}
+
 function NoticeList() {
     const navigate = useNavigate();
     const [noticeList, setNoticeList] = useState([]);
     
     const {clubId} = useParams();
-    const query = useQuery();
-    const page = query.get('page');
-    const size = query.get('size');
     const getBoardList = async () => {
         try {
-            const resp = await api.get(`/manager/club/${clubId}/notice?page=${page}&size=${size}`);
+            const resp = await api.get(`/manager/club/${clubId}/notice?page=0&size=10`);
             if(resp && resp.data) {
-                setNoticeList(resp.data);
+                setNoticeList(resp.data.data);
             } else {
                 console.error('No data received');
             }
@@ -84,7 +76,7 @@ function NoticeList() {
     };
     useEffect(() => {
         getBoardList(); // 1) 게시글 목록 조회 함수 호출
-    }, [clubId,page]);
+    }, [clubId]);
     const moveToWrite = () => {
         navigate(`/manager/club/${clubId}/write`);
     };
@@ -101,7 +93,7 @@ function NoticeList() {
                                 {notice.title}
                             </StyledLink>
                         </Td>
-                        <Td>{notice.updatedDate}</Td>
+                        <Td>{notice.updatedDate ? notice.updatedDate.split('T')[0] : ' '}</Td>
                     </Tr>
                 ))}
             </CommonTable>

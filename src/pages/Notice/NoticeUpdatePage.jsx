@@ -108,7 +108,7 @@ const NoticeUpdatePage = () => {
 
     const updateBoard = async () => {
         try {
-            await api.patch(`/manager/club/${clubId}/notice/${id}`, notice);
+            await api.put(`/manager/club/${clubId}/notice/${id}`, notice);
             alert('수정되었습니다.');
             navigate(`/manager/club/${clubId}/notice/${id}`);
         } catch (error) {
