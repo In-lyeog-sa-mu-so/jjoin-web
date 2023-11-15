@@ -97,7 +97,7 @@ const ApplyFormPage = () => {
 
     useEffect(() => {
         getApply();
-    }, []);
+    }, [clubId]);
 
     return(
         <div>

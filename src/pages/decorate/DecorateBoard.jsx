@@ -19,7 +19,7 @@ const CONTAINER = styled.div`
 const CONTENTS= styled.div`
   width: 95%;
   margin-left: 2%;
-  height: 550px;
+  height: 400px;
 `;
 const H2 = styled.h2`
   margin-left: 5%;
@@ -57,7 +57,7 @@ const CONTENT = styled.table`
 const BUTTONS = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 10px;
   button{
     margin-left:1%;
     padding: 12px 25px; /* Increase size, adjust as needed */ /* Change color */
@@ -93,7 +93,7 @@ const IMAGE = styled.div`
 const CHECKBOX = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 30px;
+  margin-top: 10px;
   & > div:not(:first-child) {
     margin-left: 5%;
   }
@@ -112,7 +112,7 @@ const SUBCHECKBOX = styled.div`
 const DATE = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 30px;
+  margin-top: 10px;
   & > div{
     margin-left: 5%;
     a:not(:first-child){
@@ -140,11 +140,11 @@ const DecorateBoard = ({ clubImageUuid, backgroundImageUuid, introduction, isFin
                     <IMAGE>
                       <div>
                         <p>프로필 사진</p>
-                        <img src={clubImageUuid} alt="프로필사진"/>
+                        <img src={`https://jjoin.dcs-hyungjoon.com/images/${clubImageUuid}`} alt="프로필사진"/>
                         </div>
                         <div>
                         <p>배경 사진</p>
-                        <img src={backgroundImageUuid} alt="배경사진"/>
+                        <img src={`https://jjoin.dcs-hyungjoon.com/images/${backgroundImageUuid}`} alt="배경사진"/>
                         </div>
                     </IMAGE>
                     <CONTENT>

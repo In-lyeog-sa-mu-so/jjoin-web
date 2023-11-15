@@ -175,11 +175,11 @@ const DecorateFixPage=()=>{
                     <IMAGE>
                         <div>
                         <p>프로필 사진</p>
-                        <img src={clubImageUuid} alt="프로필사진" />
+                        <img src={`https://jjoin.dcs-hyungjoon.com/images/${clubImageUuid}`} alt="프로필사진" />
                         </div>
                         <div>
                         <p>배경 사진</p>
-                        <img src={backgroundImageUuid} alt="배경사진" />
+                        <img src={`https://jjoin.dcs-hyungjoon.com/images/${backgroundImageUuid}`} alt="배경사진" />
                         </div>
                     </IMAGE>
                     <IMAGEINPUT>
@@ -249,11 +249,11 @@ const DecorateFixPage=()=>{
                         </div>
                         <div>
                         <a>시작날짜</a>
-                        <input type="text" name="startDate" value={startDate} onChange={onChange} />
+                        <input type="text" name="startDate" value={startDate?startDate.split('T')[0] : ' '} onChange={onChange} />
                         </div>
                         <div>
                         <a>종료날짜</a>
-                        <input type="text" name="endDate" value={endDate} onChange={onChange} />
+                        <input type="text" name="endDate" value={endDate? endDate.split('T')[0] : ' '} onChange={onChange} />
                         </div>
                     </DATE>
                     <BUTTONS>

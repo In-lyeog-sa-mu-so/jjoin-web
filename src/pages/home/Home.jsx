@@ -65,7 +65,7 @@ function MainPage(){
                     {clubList.map((club) => (
                         <div key={club.id}>
                             <div>
-                                <StyledLink to={`/manager/club/${club.id}/users`}>
+                                <StyledLink to={`/manager/club/${club.id}/notice`}>
                                     <span>{club.name}</span>
                                 </StyledLink>
                             </div>

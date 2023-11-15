@@ -28,7 +28,7 @@ const DecoratePage = () => {
 
     useEffect(() => {
         getBoard();
-    }, []);
+    }, [clubId]);
 
     return(
         <div>

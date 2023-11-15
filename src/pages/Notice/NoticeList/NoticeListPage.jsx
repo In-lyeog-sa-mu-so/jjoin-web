@@ -51,20 +51,33 @@ const Container = styled.div`
     border: 2px solid gray;
   }
 `;
-/*const PageButton = styled.div`
+const PAGEBUTTON = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 5%;
-`;*/
+  margin-top: 20px;
+  button {
+    border: none;
+    font-size: 15px;
+    margin-right: 5px;
+    background-color: white;
+    color: ${props => props.current ? 'red' : 'black'};
+    &:hover {
+      font-weight:bold;
+      cursor: pointer;
+    }
+  }
+`;
 
 function NoticeList() {
     const navigate = useNavigate();
     const [noticeList, setNoticeList] = useState([]);
     
     const {clubId} = useParams();
-    const getBoardList = async () => {
+    const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 상태 추가
+
+    const getBoardList = async (page = 0) => { // page 파라미터 추가
         try {
-            const resp = await api.get(`/manager/club/${clubId}/notice?page=0&size=10`);
+            const resp = await api.get(`/manager/club/${clubId}/notice?page=${page}&size=10`);
             if(resp && resp.data) {
                 setNoticeList(resp.data.data);
             } else {
@@ -74,9 +87,14 @@ function NoticeList() {
             console.error('Error fetching data: ', error);
         }
     };
+
     useEffect(() => {
-        getBoardList(); // 1) 게시글 목록 조회 함수 호출
-    }, [clubId]);
+        getBoardList(currentPage); // 현재 페이지로 게시글 목록 조회 함수 호출
+    }, [clubId, currentPage]); // currentPage가 변경되면 useEffect 재실행
+
+    const moveToPage = (page) => { // 페이지 이동 함수 추가
+        setCurrentPage(page);
+    };
     const moveToWrite = () => {
         navigate(`/manager/club/${clubId}/write`);
     };
@@ -97,6 +115,11 @@ function NoticeList() {
                     </Tr>
                 ))}
             </CommonTable>
+            <PAGEBUTTON>
+                {[...Array(10)].map((_, index) => (
+                    <button onClick={() => moveToPage(index)}>{index + 1}</button>
+                ))}
+            </PAGEBUTTON>
             <br />
             <Container>
                 <button onClick={moveToWrite}>글쓰기</button>
