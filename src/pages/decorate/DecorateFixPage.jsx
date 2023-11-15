@@ -96,7 +96,6 @@ const CHECKBOX=styled.div`
   display: flex;
   align-items: center;
   margin-left: 2.5%;
-  margin-top: 10px;
   & > div:not(:first-child) {
     margin-left: 5%;
   }
@@ -105,7 +104,6 @@ const DATE = styled.div`
   display: flex;
   align-items: center;
   margin-left: 2.5%;
-  margin-top: 30px;
   & > div:not(:first-child){
       margin-left: 50px;
     input{
@@ -153,7 +151,7 @@ const DecorateFixPage=()=>{
     };
     const updateBoard = async () => {
         try {
-            await api.patch(`/manager/club/${clubId}/information`, decorate);
+            await api.put(`/manager/club/${clubId}/information`, decorate);
             alert('수정되었습니다.');
             navigate(`/manager/club/${clubId}/information`);
         } catch (error) {
@@ -175,11 +173,11 @@ const DecorateFixPage=()=>{
                     <IMAGE>
                         <div>
                         <p>프로필 사진</p>
-                        <img src={clubImageUuid} alt="프로필사진" />
+                        <img src={`https://jjoin.dcs-hyungjoon.com/images/${clubImageUuid}`} alt="프로필사진" />
                         </div>
                         <div>
                         <p>배경 사진</p>
-                        <img src={backgroundImageUuid} alt="배경사진" />
+                        <img src={`https://jjoin.dcs-hyungjoon.com/images/${backgroundImageUuid}`} alt="배경사진" />
                         </div>
                     </IMAGE>
                     <IMAGEINPUT>
@@ -249,11 +247,11 @@ const DecorateFixPage=()=>{
                         </div>
                         <div>
                         <a>시작날짜</a>
-                        <input type="text" name="startDate" value={startDate} onChange={onChange} />
+                        <input type="text" name="startDate" value={startDate?startDate.split('T')[0] : ' '} onChange={onChange} />
                         </div>
                         <div>
                         <a>종료날짜</a>
-                        <input type="text" name="endDate" value={endDate} onChange={onChange} />
+                        <input type="text" name="endDate" value={endDate? endDate.split('T')[0] : ' '} onChange={onChange} />
                         </div>
                     </DATE>
                     <BUTTONS>

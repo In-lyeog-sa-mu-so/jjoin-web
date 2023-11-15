@@ -3,11 +3,10 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import api from '../../../Axios';
 import styled from "styled-components";
 import CommonTable from "./CommonTable";
-import { useLocation } from 'react-router-dom';
 
 const Tr = styled.tr`
   &:hover {
-    background-color: #eceaea;
+    background-color: aliceblue;
     cursor: pointer;
   }
 `;
@@ -25,7 +24,6 @@ const StyledLink = styled(Link)`
   margin-left: 200px;
   &:hover {
     font-weight: bold;
-    text-decoration: underline;
   }
 `;
 const Container = styled.div`
@@ -53,28 +51,35 @@ const Container = styled.div`
     border: 2px solid gray;
   }
 `;
-
-/*const PageButton = styled.div`
+const PAGEBUTTON = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 5%;
-`;*/
-function useQuery() {
-    return new URLSearchParams(useLocation().search);
-}
+  margin-top: 20px;
+  button {
+    border: none;
+    font-size: 15px;
+    margin-right: 5px;
+    background-color: white;
+    color: ${props => props.current ? 'red' : 'black'};
+    &:hover {
+      font-weight:bold;
+      cursor: pointer;
+    }
+  }
+`;
+
 function NoticeList() {
     const navigate = useNavigate();
     const [noticeList, setNoticeList] = useState([]);
     
     const {clubId} = useParams();
-    const query = useQuery();
-    const page = query.get('page');
-    const size = query.get('size');
-    const getBoardList = async () => {
+    const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 상태 추가
+
+    const getBoardList = async (page = 0) => { // page 파라미터 추가
         try {
-            const resp = await api.get(`/manager/club/${clubId}/notice?page=${page}&size=${size}`);
+            const resp = await api.get(`/manager/club/${clubId}/notice?page=${page}&size=10`);
             if(resp && resp.data) {
-                setNoticeList(resp.data);
+                setNoticeList(resp.data.data);
             } else {
                 console.error('No data received');
             }
@@ -82,9 +87,14 @@ function NoticeList() {
             console.error('Error fetching data: ', error);
         }
     };
+
     useEffect(() => {
-        getBoardList(); // 1) 게시글 목록 조회 함수 호출
-    }, [clubId,page]);
+        getBoardList(currentPage); // 현재 페이지로 게시글 목록 조회 함수 호출
+    }, [clubId, currentPage]); // currentPage가 변경되면 useEffect 재실행
+
+    const moveToPage = (page) => { // 페이지 이동 함수 추가
+        setCurrentPage(page);
+    };
     const moveToWrite = () => {
         navigate(`/manager/club/${clubId}/write`);
     };
@@ -101,11 +111,15 @@ function NoticeList() {
                                 {notice.title}
                             </StyledLink>
                         </Td>
-                        <Td>{notice.updatedDate}</Td>
+                        <Td>{notice.updatedDate ? notice.updatedDate.split('T')[0] : ' '}</Td>
                     </Tr>
                 ))}
             </CommonTable>
-            <br />
+            <PAGEBUTTON>
+                {[...Array(10)].map((_, index) => (
+                    <button onClick={() => moveToPage(index)}>{index + 1}</button>
+                ))}
+            </PAGEBUTTON>
             <Container>
                 <button onClick={moveToWrite}>글쓰기</button>
             </Container>

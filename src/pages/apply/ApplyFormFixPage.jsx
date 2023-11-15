@@ -109,7 +109,7 @@ const ApplyFormFixPage = () => {
     };
     const getApply = async () => {
         try {
-            const resp = await api.get(`/manager/club/${clubId}/application`);
+            const resp = await api.get(`/manager/club/${clubId}/question`);
             if(resp && resp.data) {
                 setapplyform(resp.data.map(question => ({
                     ...question,
@@ -141,7 +141,7 @@ const ApplyFormFixPage = () => {
                 modified: applyform.filter(question => question.isModified).map(question => ({ question_id: question.question_id, QuestionContent: question.QuestionContent })),
                 deleted: applyform.filter(question => question.isDeleted).map(question => ({question_id: question.question_id})),
             };
-            await api.patch(`/manager/club/${clubId}/application`, requestBody);
+            await api.patch(`/manager/club/${clubId}/question`, requestBody);
             alert('수정되었습니다.');
             navigate(`/manager/club/${clubId}/apply`);
         } catch (error) {
