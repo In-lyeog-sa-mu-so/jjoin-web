@@ -26,20 +26,24 @@ function EditEvent() {
     });
   };
 
+  const getEvent = async () => {
+    try {
+        const resp = await api.get(`/manager/club/${clubId}/plan/${defid}`);
+      if (resp && resp.data) {
+          setEvent(resp.data);
+      } else {
+          console.error('No data received');
+      }
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    }
+  };
+
   useEffect(() => {
-    // 백엔드에서 데이터를 로드하는 로직
-    api.get(`/manager/club/${clubId}/plan/${defid}`) // 엔드포인트 수정 필요
-      .then(response => {
-        setEvent(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching event data', error);
-      });
-  }, [clubId, defid]);
-  // 수정을 처리하는 함수
+    getEvent();
+  }, []);
 
   const handleEdit = async () => {
-    // 수정 로직 구현
     await api.put(`/manager/club/${clubId}/plan/${defid}`, event) // 엔드포인트 수정 필요
       .then(() => {
         alert('수정되었습니다.');
@@ -64,7 +68,7 @@ function EditEvent() {
             name='startDate'
             label='시작 날짜'
             type='datetime-local'
-            defaultValue={event.startDate}
+            value={event.startDate}
             InputLabelProps={{
               shrink: true,
             }}
@@ -75,7 +79,7 @@ function EditEvent() {
             name='endDate'
             label='종료 날짜'
             type='datetime-local'
-            defaultValue={event.endDate}
+            value={event.endDate}
             InputLabelProps={{
               shrink: true,
             }}
@@ -91,7 +95,7 @@ function EditEvent() {
               fontSize: '16px',
               marginBottom: '2rem',
             }}
-            placeholder='일정 제목'
+            value={event.title}
             onChange={onChange}
           />
           <textarea
@@ -105,7 +109,7 @@ function EditEvent() {
               height: '150px',
               resize: 'vertical', // 사용자가 수직으로만 크기 조절 가능하도록 설정
             }}
-            placeholder='일정 내용'
+            value={event.content}
             onChange={onChange}
           />
 
