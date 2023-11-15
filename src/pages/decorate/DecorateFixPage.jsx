@@ -96,7 +96,6 @@ const CHECKBOX=styled.div`
   display: flex;
   align-items: center;
   margin-left: 2.5%;
-  margin-top: 10px;
   & > div:not(:first-child) {
     margin-left: 5%;
   }
@@ -105,7 +104,6 @@ const DATE = styled.div`
   display: flex;
   align-items: center;
   margin-left: 2.5%;
-  margin-top: 30px;
   & > div:not(:first-child){
       margin-left: 50px;
     input{
