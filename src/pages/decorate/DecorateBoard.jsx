@@ -57,7 +57,6 @@ const CONTENT = styled.table`
 const BUTTONS = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 10px;
   button{
     margin-left:1%;
     padding: 12px 25px; /* Increase size, adjust as needed */ /* Change color */
@@ -93,7 +92,6 @@ const IMAGE = styled.div`
 const CHECKBOX = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 10px;
   & > div:not(:first-child) {
     margin-left: 5%;
   }
@@ -112,7 +110,6 @@ const SUBCHECKBOX = styled.div`
 const DATE = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 10px;
   & > div{
     margin-left: 5%;
     a:not(:first-child){
