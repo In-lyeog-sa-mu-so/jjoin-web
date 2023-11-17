@@ -4,38 +4,54 @@ import api from '../../Axios';
 import styled from 'styled-components';
 import {useRecoilState} from 'recoil';
 import { clubListState } from '../../state';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const H2 = styled.h2`
   display: flex;
   justify-content: center;
   margin-top: 50px;
+  margin-bottom: 60px;
 `
 const CLICK = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 60px;
-  gap: 20px;
+  display: grid;
+  margin: 20px 250px;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 30px;
 `
+
 const StyledLink = styled(Link)`
-  text-decoration: none;
-  &:hover {
-    font-weight: bold;
-    background-color: lightblue;
-}
-  display: inline-block;
-  text-align: center;
-  font-size: 20px;
-  width: 500px;
-  line-height: 50px;
-  height: 50px;
-  padding: 10px 20px;
-  justify-content: center;
-  border: 1px solid black;
-  border-radius: 25px;
-  background-color: #f8f9fa;
-  color: #343a40;
+    text-decoration: none;
+    color:#5a6077;
+    font-weight: 500;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    background: white;
+    box-shadow: #ddd 0px 3px 8px;
+    border-radius: 12px;
+    width: 100%;
+    height: 200px;
+    justify-content: center;
+    background: linear-gradient(45deg, white 90%, var(--primary) 10%);
+    position: relative;
+    box-sizing: border-box;
+
+    &:hover {
+        border: 1.5px solid var(--primary);
+        background: linear-gradient(45deg, #eef3fe 90%, var(--primary) 10%);
+    }
+
+    &:hover svg{
+        display: block;
+    }
+
+    svg {
+        position: absolute;
+        bottom: 20px;
+        display: none;
+    }
 `;
 
 function MainPage(){
@@ -63,22 +79,19 @@ function MainPage(){
             {clubList && clubList.length > 0 ? (
                 <CLICK>
                     {clubList.map((club) => (
-                        <div key={club.id}>
-                            <div>
-                                <StyledLink to={`/manager/club/${club.id}/notice`}>
-                                    <span>{club.name}</span>
-                                </StyledLink>
-                            </div>
-                        </div>
+                        <StyledLink to={`/manager/club/${club.id}/notice`} key={club.id}>
+                            <span>{club.name}</span>
+                            <ArrowForwardIcon sx={{ color: 'var(--primary)' }} />
+                        </StyledLink>
                     ))}
                 </CLICK>
             ) : (
-                <div style={{ 
-                    textAlign: 'center', 
-                    padding: '20px', 
-                    fontSize: '50px', 
+                <div style={{
+                    textAlign: 'center',
+                    padding: '20px',
+                    fontSize: '50px',
                     margin: '100px',
-                    color: '#888' 
+                    color: '#888'
                 }}>
                     등록된 동아리가 없습니다. 😔
                 </div>
