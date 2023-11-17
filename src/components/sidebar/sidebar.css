@@ -17,7 +17,7 @@
 
 .sidebarTitle {
     font-size: 1.2rem;
-    color: darkblue;
+    color: var(--primary);
     cursor: pointer;
 }
 
