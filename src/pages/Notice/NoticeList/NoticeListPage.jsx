@@ -12,7 +12,7 @@ const Tr = styled.tr`
 `;
 const Td = styled.td`
   padding: 10px 5px;
-  border-bottom: 2px solid lightgray;
+  border-bottom: 2px solid #D2D2FF;
 `;
 const H2 = styled.h2`
   padding-left: 5%;

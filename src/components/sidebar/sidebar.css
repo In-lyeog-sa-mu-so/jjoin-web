@@ -1,6 +1,6 @@
 .sidebar {
-    height: 100%;
-    background-color: rgb(240, 239, 239);
+    height: 100vh;
+    background-color: #f7f7f5;
     position: sticky;
     top: 50px;
     width: 20%;
@@ -27,6 +27,7 @@
 }
 
 .sidebarListItem {
+    margin: 2px;
     padding: 5px;
     cursor: pointer;
     display: flex;
@@ -35,9 +36,14 @@
 }
 
 .sidebarListItem.active,
-.sidebarListItem:hover {
+.sidebarListItemActivated {
     background-color: rgb(212, 209, 235);
     font-weight: bold;
+    color: black;
+}
+
+.sidebarListItem:hover {
+    background-color: rgb(212, 209, 235);
     color: black;
 }
 
