@@ -64,8 +64,9 @@ export default function Sidebar() {
 
     useEffect(() => {
         const path = location.pathname;
-        const matches = path.match(/\/(\d+)\/(\w+)$/);
+        const matches = path.match(/\/(\d+)\/(\w+)(\/.*)?$/);
 
+        if (!matches) return;
         const clubId = matches[1];
         const menu = matches[2];
 
@@ -75,7 +76,6 @@ export default function Sidebar() {
         console.log(activatedClub, activatedMenu)
       }, [location]);
 
-    // const clubList = useRecoilValue(clubListState);
     return (
         <div className="sidebar">
             <div className="sidebarWrapper">
