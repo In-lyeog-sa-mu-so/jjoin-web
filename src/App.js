@@ -12,6 +12,8 @@ import Home from './pages/home/Home';
 import UserList from "./pages/userList/UserList";
 import ApplyFormPage from "./pages/apply/ApplyFormPage";
 import ApplyFormFixPage from "./pages/apply/ApplyFormFixPage";
+import ApplyFormAddPage from "./pages/apply/ApplyFormAddPage";
+import ApplyFormDeletePage from "./pages/apply/ApplyFormDeletePage";
 import EventCalendar from "./pages/calendar/EventCalendar";
 import AddEvent from "./pages/calendar/AddEvent";
 import EditEvent from "./pages/calendar/EditEvent";
@@ -43,6 +45,8 @@ function App() {
                                 <Route path='/manager/club/:clubId/plan/:defid' element={<EventDetails/>} />
                                 <Route path="/manager/club/:clubId/apply" element={<ApplyFormPage/>} />
                                 <Route path="/manager/club/:clubId/apply/fix" element={<ApplyFormFixPage/>}/>
+                                <Route path="/manager/club/:clubId/apply/add" element={<ApplyFormAddPage/>}/>
+                                <Route path="/manager/club/:clubId/apply/delete" element={<ApplyFormDeletePage/>}/>
                                 <Route path="/manager/club/:clubId/plan/edit/:defid" element={<EditEvent />} />
                             </Routes>
                         </div>

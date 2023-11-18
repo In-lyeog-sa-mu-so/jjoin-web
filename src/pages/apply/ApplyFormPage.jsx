@@ -74,18 +74,22 @@ const BUTTONS = styled.div`
   }
 `
 const ApplyFormPage = () => {
-    const [applyForm, setApplyForm] = useState([]); // 초기값을 빈 배열로 설정
-
+    const [applyForm, setApplyForm] = useState([]);
     const navigate = useNavigate();
     const {clubId} = useParams();
 
-    const moveToUpdate = () => {
+    const MoveToUpdate = () => {
         navigate(`/manager/club/${clubId}/apply/fix`);
+    };
+    const MoveToAdd = () => {
+        navigate(`/manager/club/${clubId}/apply/add`);
+    };
+    const MoveToDelete = () => {
+        navigate(`/manager/club/${clubId}/apply/delete`);
     };
     const getApply = async () => {
         try {
             const resp = await api.get(`/manager/club/${clubId}/question`);
-            console.log(resp);
             if(resp && resp.data) {
                 setApplyForm(resp.data.data);
             } else {
@@ -132,7 +136,9 @@ const ApplyFormPage = () => {
                         </ADDCONTENT>
                     </CONTENT>
                     <BUTTONS>
-                        <button onClick={moveToUpdate}>수정</button>
+                        <button onClick={MoveToAdd}>추가하기</button>
+                        <button onClick={MoveToUpdate}>수정하기</button>
+                        <button onClick={MoveToDelete}>삭제하기</button>
                     </BUTTONS>
                 </CONTENTS>
             </CONTAINER>
