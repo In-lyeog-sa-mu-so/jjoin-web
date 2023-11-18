@@ -74,7 +74,7 @@ const BUTTONS = styled.div`
   }
 `
 const ApplyFormPage = () => {
-    const [applyform, setapplyform] = useState([]); // 초기값을 빈 배열로 설정
+    const [applyForm, setApplyForm] = useState([]); // 초기값을 빈 배열로 설정
 
     const navigate = useNavigate();
     const {clubId} = useParams();
@@ -85,8 +85,9 @@ const ApplyFormPage = () => {
     const getApply = async () => {
         try {
             const resp = await api.get(`/manager/club/${clubId}/question`);
+            console.log(resp);
             if(resp && resp.data) {
-                setapplyform(resp.data.data);
+                setApplyForm(resp.data.data);
             } else {
                 console.error('No data received');
             }
@@ -121,14 +122,14 @@ const ApplyFormPage = () => {
                         <span>전화번호</span>
                         <a></a>
                     </div>
-                    <ADDCONTENT>
-                        {applyform&&applyform.map((apply) => (
-                            <div key={apply.question_id}>
-                                <span>{apply.QuestionContent}</span>
-                                <a></a>
-                            </div>
-                        ))}
-                    </ADDCONTENT>
+                        <ADDCONTENT>
+                            {applyForm && applyForm.map((apply) => (
+                                <div key={apply.id}>
+                                    <span>{apply.content}</span>
+                                    <a></a>
+                                </div>
+                            ))}
+                        </ADDCONTENT>
                     </CONTENT>
                     <BUTTONS>
                         <button onClick={moveToUpdate}>수정</button>
