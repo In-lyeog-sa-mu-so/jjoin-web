@@ -42,7 +42,7 @@ const ADDCONTENT = styled.div`
   flex-direction: column;
   align-items: flex-start;
   button{
-    margin-left:1%; 
+    margin-left:1%;
     width: 80px;
     font-size: 15px;
     cursor: pointer;
@@ -94,6 +94,7 @@ const BUTTONS = styled.div`
 `
 const ApplyFormDeletePage=()=>{
     const [applyForm, setApplyForm] = useState([]);
+    const [deletedIds, setDeletedIds] = useState([]);
     const navigate = useNavigate();
     const { clubId } = useParams();
 
@@ -116,12 +117,13 @@ const ApplyFormDeletePage=()=>{
     };
     const deleteApply = (index) => {
         const newFields = [...applyForm];
+        const deletedItem = newFields.splice(index, 1);
         setApplyForm(newFields);
+        setDeletedIds([...deletedIds, deletedItem[0].id]); // 삭제한 항목의 ID를 deletedIds 상태에 추가
     };
     const saveBoard = async () => {
         try {
-            const requestBody = applyForm.map(question => ({ id: question.id }));
-            await api.delete(`/manager/club/${clubId}/question`, requestBody);
+            await api.delete(`/manager/club/${clubId}/question`, { data: deletedIds }); // 삭제할 항목의 ID를 서버에 전송
             alert('삭제되었습니다.');
             navigate(`/manager/club/${clubId}/apply`);
         } catch (error) {

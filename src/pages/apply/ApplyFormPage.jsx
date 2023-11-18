@@ -5,8 +5,8 @@ import styled from 'styled-components';
 
 const CONTAINER = styled.div`
   margin-left: 5%;
-  width: 90%;
   border-top: 1px solid black;
+  width: 90%;
 `
 const CONTENTS= styled.div`
   width: 95%;
@@ -34,16 +34,36 @@ const CONTENT = styled.div`
     border: 1px solid rgba(150,150,150,0.1);
     display: block;
   }
-
   div{
     display: flex;
   }
-
 `
 const ADDCONTENT = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  button{
+    margin-left:1%;
+    width: 80px;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+    background: lightgray;
+
+    &:hover {
+      background-color: darkgrey;
+    }
+  }
+  input{
+    width: 500px;
+    height: 30px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border: 1px solid rgba(150,150,150,0.1);
+    display: block;
+  }
 `
 const H2 = styled.h2`
   margin-left: 5%;
