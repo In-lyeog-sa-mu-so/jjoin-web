@@ -105,13 +105,13 @@ function NoticeList() {
             <CommonTable headersName={['글번호', '제목', '작성일']}>
                 {noticeList&&noticeList.data.map((notice)=> (
                     <Tr key={notice.id}>
-                        <Td>{notice.id}</Td>
+                        <Td>{notice.noticeNumber}</Td>
                         <Td>
                             <StyledLink to={`/manager/club/${clubId}/notice/${notice.id}`}>
                                 {notice.title}
                             </StyledLink>
                         </Td>
-                        <Td>{notice.updatedDate ? notice.updatedDate.split('T')[0] : ' '}</Td>
+                        <Td>{notice.createdDate ? notice.createdDate.split('T')[0] : ' '}</Td>
                     </Tr>
                 ))}
             </CommonTable>
