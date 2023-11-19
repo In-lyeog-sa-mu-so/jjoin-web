@@ -70,7 +70,7 @@ const PAGEBUTTON = styled.div`
 
 function NoticeList() {
     const navigate = useNavigate();
-    const [noticeList, setNoticeList] = useState([]);
+    const [noticeList, setNoticeList] = useState({data:[], pageInfo:{}});
     
     const {clubId} = useParams();
     const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 상태 추가
@@ -79,7 +79,7 @@ function NoticeList() {
         try {
             const resp = await api.get(`/manager/club/${clubId}/notice?page=${page}&size=10`);
             if(resp && resp.data) {
-                setNoticeList(resp.data.data);
+                setNoticeList(resp.data);
             } else {
                 console.error('No data received');
             }
@@ -103,7 +103,7 @@ function NoticeList() {
         <div>
             <H2>공지사항</H2>
             <CommonTable headersName={['글번호', '제목', '작성일']}>
-                {noticeList&&noticeList.map((notice)=> (
+                {noticeList&&noticeList.data.map((notice)=> (
                     <Tr key={notice.id}>
                         <Td>{notice.id}</Td>
                         <Td>
@@ -116,8 +116,14 @@ function NoticeList() {
                 ))}
             </CommonTable>
             <PAGEBUTTON>
-                {[...Array(10)].map((_, index) => (
-                    <button onClick={() => moveToPage(index)}>{index + 1}</button>
+                {[...Array(noticeList.pageInfo.totalPages)].map((_, index) => (
+                    <button onClick={() => moveToPage(index)}
+                            style={{
+                                color: currentPage === index ? 'darkblue' : 'black',
+                                fontWeight: currentPage === index ? 'bold' : 'normal', // 현재 페이지이면 굵게
+                                textDecoration: currentPage === index ? 'underline' : 'none' // 현재 페이지이면 밑줄
+                            }}
+                    >{index + 1}</button>
                 ))}
             </PAGEBUTTON>
             <Container>

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useParams, useNavigate} from 'react-router-dom';
-import api from '../../Axios';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const CONTAINER = styled.div`
   margin-left: 5%;
@@ -16,13 +16,11 @@ const CONTAINER = styled.div`
     text-align: center;
   }
 `
-
 const CONTENTS= styled.div`
   width: 95%;
   margin-left: 2%;
   height: 550px;
 `
-
 const H2 = styled.h2`
   margin-left: 5%;
   span{
@@ -37,17 +35,17 @@ const CONTENT = styled.table`
   position: relative;
   margin-left: 20px;
   margin-top: 10px;
-    textarea{
-      width: 650px;
-      height: 100px;
-      border: 1px solid #ddd;
-      white-space: pre-line;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 10px;
-      resize: none;
-    }
+  textarea{
+    width: 650px;
+    height: 100px;
+    border: 1px solid #ddd;
+    white-space: pre-line;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    resize: none;
+  }
 `
 const BUTTONS = styled.div`
   display: flex;
@@ -105,7 +103,7 @@ const DATE = styled.div`
   align-items: center;
   margin-left: 2.5%;
   & > div:not(:first-child){
-      margin-left: 50px;
+    margin-left: 50px;
     input{
       margin-left:10px;
       width: 100px;
@@ -123,11 +121,14 @@ const DecorateFixPage=()=>{
     const [decorate, setDecorate] = useState({
         clubImageUuid: null,
         backgroundImageUuid: null,
+        clubImageFile: null,
+        backgroundImageFile: null,
         introduction: "",
-        isFinished: false,
+        isFinished: null,
         startDate: null,
         endDate: null,
     });
+
     const {clubImageUuid,backgroundImageUuid,introduction,isFinished,startDate,endDate}=decorate;
     const onChange = (event) => {
         const { value, name } = event.target;
@@ -136,10 +137,10 @@ const DecorateFixPage=()=>{
             [name]: value,
         });
     };
-    
+
     const getBoard = async () => {
         try {
-            const resp = await api.get(`/manager/club/${clubId}/information`);
+            const resp = await axios.get(`https://jjoin.dcs-hyungjoon.com/api/v1/manager/club/${clubId}/information`);
             if(resp && resp.data) {
                 setDecorate(resp.data);
             } else {
@@ -151,7 +152,31 @@ const DecorateFixPage=()=>{
     };
     const updateBoard = async () => {
         try {
-            await api.put(`/manager/club/${clubId}/information`, decorate);
+            // 이미지 파일을 multipart/form-data 형식으로 보내기 위한 FormData 생성
+            const formData = new FormData();
+            formData.append('clubImageUuid', decorate.clubImageFile);
+            formData.append('backgroundImageUuid', decorate.backgroundImageFile);
+
+            // 이미지 파일 업로드
+            await axios.put(`https://jjoin.dcs-hyungjoon.com/api/v1/manager/club/${clubId}/information/files`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            // 나머지 데이터를 JSON 형식으로 보내기
+            const data = {
+                introduction: decorate.introduction,
+                startDate: decorate.startDate,
+                endDate: decorate.endDate
+            };
+
+            await axios.put(`https://jjoin.dcs-hyungjoon.com/api/v1/manager/club/${clubId}/information`, data, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
             alert('수정되었습니다.');
             navigate(`/manager/club/${clubId}/information`);
         } catch (error) {
@@ -172,38 +197,48 @@ const DecorateFixPage=()=>{
                 <CONTENTS>
                     <IMAGE>
                         <div>
-                        <p>프로필 사진</p>
-                        <img src={`https://jjoin.dcs-hyungjoon.com/images/${clubImageUuid}`} alt="프로필사진" />
+                            <p>프로필 사진</p>
+                            <img src={decorate.clubImageUuid && decorate.clubImageUuid.startsWith('data:image')
+                                ? decorate.clubImageUuid : `https://jjoin.dcs-hyungjoon.com/images/${decorate.clubImageUuid}`} alt="프로필사진" />
                         </div>
                         <div>
-                        <p>배경 사진</p>
-                        <img src={`https://jjoin.dcs-hyungjoon.com/images/${backgroundImageUuid}`} alt="배경사진" />
+                            <p>배경 사진</p>
+                            <img src={decorate.backgroundImageUuid && decorate.backgroundImageUuid.startsWith('data:image')
+                                ? decorate.backgroundImageUuid : `https://jjoin.dcs-hyungjoon.com/images/${decorate.backgroundImageUuid}`} alt="배경사진" />
                         </div>
                     </IMAGE>
                     <IMAGEINPUT>
                         <div>
-                        <input
-                            type="file"
-                            onChange={event => {
-                                const reader = new FileReader();
-                                reader.onloadend = () => {
-                                    setDecorate({...decorate, clubImageUuid: reader.result});
-                                };
-                                reader.readAsDataURL(event.target.files[0]);
-                            }}
-                        />
+                            <input
+                                type="file"
+                                onChange={event => {
+                                    const reader = new FileReader();
+                                    reader.onloadend = () => {
+                                        setDecorate({
+                                            ...decorate,
+                                            clubImageUuid: reader.result,
+                                            clubImageFile: event.target.files[0]
+                                        });
+                                    };
+                                    reader.readAsDataURL(event.target.files[0]);
+                                }}
+                            />
                         </div>
                         <div>
-                        <input
-                            type="file"
-                            onChange={event => {
-                                const reader = new FileReader();
-                                reader.onloadend = () => {
-                                    setDecorate({...decorate, backgroundImageUuid: reader.result});
-                                };
-                                reader.readAsDataURL(event.target.files[0]);
-                            }}
-                        />
+                            <input
+                                type="file"
+                                onChange={event => {
+                                    const reader = new FileReader();
+                                    reader.onloadend = () => {
+                                        setDecorate({
+                                            ...decorate,
+                                            backgroundImageUuid: reader.result,
+                                            backgroundImageFile: event.target.files[0]
+                                        });
+                                    };
+                                    reader.readAsDataURL(event.target.files[0]);
+                                }}
+                            />
                         </div>
                     </IMAGEINPUT>
                     <CONTENT>
@@ -218,40 +253,38 @@ const DecorateFixPage=()=>{
                     </CONTENT>
                     <CHECKBOX>
                         <div>
-                        <p>모집여부</p>
+                            <p>모집여부</p>
                         </div>
                         <div>
-                        <a>모집</a>
-                        <input
-                            type="radio"
-                            name="recruit"
-                            value="모집"
-                            checked={isFinished === false}
-                            onChange={event => setDecorate({...decorate, isFinished: event.target.value === '모집'})}
-                        />
+                            <a>모집</a>
+                            <input
+                                type="radio"
+                                name="recruit"
+                                value="모집"
+                                checked={isFinished === false}
+                            />
                         </div>
                         <div>
-                        <a>모집안함</a>
-                        <input
-                            type="radio"
-                            name="recruit"
-                            value="모집안함"
-                            checked={isFinished === true}
-                            onChange={event => setDecorate({...decorate, isFinished: event.target.value === '모집안함'})}
-                        />
+                            <a>모집안함</a>
+                            <input
+                                type="radio"
+                                name="recruit"
+                                value="모집안함"
+                                checked={isFinished === true}
+                            />
                         </div>
                     </CHECKBOX>
                     <DATE>
                         <div>
-                        <p>모집일정</p>
+                            <p>모집일정</p>
                         </div>
                         <div>
-                        <a>시작날짜</a>
-                        <input type="text" name="startDate" value={startDate?startDate.split('T')[0] : ' '} onChange={onChange} />
+                            <a>시작날짜</a>
+                            <input type="text" name="startDate" value={startDate?startDate.split('T')[0] : ' '} onChange={onChange} />
                         </div>
                         <div>
-                        <a>종료날짜</a>
-                        <input type="text" name="endDate" value={endDate? endDate.split('T')[0] : ' '} onChange={onChange} />
+                            <a>종료날짜</a>
+                            <input type="text" name="endDate" value={endDate? endDate.split('T')[0] : ' '} onChange={onChange} />
                         </div>
                     </DATE>
                     <BUTTONS>

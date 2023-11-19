@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from 'react-router-dom';
 import api from '../../Axios';
 import styled from 'styled-components';
-
 const CONTAINER = styled.div`
   margin-left: 5%;
   border-top: 1px solid black;
@@ -93,72 +92,89 @@ const BUTTONS = styled.div`
     }
   }
 `
-const ApplyFormPage = () => {
+const ApplyFormDeletePage=()=>{
     const [applyForm, setApplyForm] = useState([]);
+    const [deletedIds, setDeletedIds] = useState([]);
     const navigate = useNavigate();
-    const {clubId} = useParams();
+    const { clubId } = useParams();
 
-    const MoveToUpdate = () => {
-        navigate(`/manager/club/${clubId}/apply/fix`);
+    const onChange = (e, index) => {
+        const newApplyForm = [...applyForm];
+        setApplyForm(newApplyForm);
     };
-    const MoveToAdd = () => {
-        navigate(`/manager/club/${clubId}/apply/add`);
-    };
-    const MoveToDelete = () => {
-        navigate(`/manager/club/${clubId}/apply/delete`);
-    };
+
     const getApply = async () => {
         try {
             const resp = await api.get(`/manager/club/${clubId}/question`);
-            if(resp && resp.data) {
+            if(resp && resp.data && Array.isArray(resp.data.data)) {
                 setApplyForm(resp.data.data);
             } else {
-                console.error('No data received');
+                console.error('No data received or data is not an array');
             }
         } catch (error) {
             console.error('Error fetching data: ', error);
         }
     };
+    const deleteApply = (index) => {
+        const newFields = [...applyForm];
+        const deletedItem = newFields.splice(index, 1);
+        setApplyForm(newFields);
+        setDeletedIds([...deletedIds, deletedItem[0].id]); // 삭제한 항목의 ID를 deletedIds 상태에 추가
+    };
+    const saveBoard = async () => {
+        try {
+            await api.delete(`/manager/club/${clubId}/question`, { data: deletedIds }); // 삭제할 항목의 ID를 서버에 전송
+            alert('삭제되었습니다.');
+            navigate(`/manager/club/${clubId}/apply`);
+        } catch (error) {
+            console.error('Error updating the board: ', error);
+        }
+    };
+    const backToDetail = () => {
+        navigate(`/manager/club/${clubId}/apply`);
+    };
 
     useEffect(() => {
         getApply();
-    }, [clubId]);
-
+    }, []);
     return(
         <div>
-            <H2>신청서 관리 <span> > 조회</span></H2>
+            <H2>신청서 관리 <span> > 삭제</span></H2>
             <CONTAINER>
                 <CONTENTS>
                     <CONTENT>
-                    <div>
-                        <span>성함</span>
-                        <a></a>
-                    </div>
-                    <div>
-                        <span>학번</span>
-                        <a></a>
-                    </div>
-                    <div>
-                        <span>학과</span>
-                        <a></a>
-                    </div>
-                    <div>
-                        <span>전화번호</span>
-                        <a></a>
-                    </div>
+                        <div>
+                            <span>성함</span>
+                            <a></a>
+                        </div>
+                        <div>
+                            <span>학번</span>
+                            <a></a>
+                        </div>
+                        <div>
+                            <span>학과</span>
+                            <a></a>
+                        </div>
+                        <div>
+                            <span>전화번호</span>
+                            <a></a>
+                        </div>
                         <ADDCONTENT>
-                            {applyForm && applyForm.map((apply) => (
-                                <div key={apply.id}>
-                                    <span>{apply.content}</span>
-                                    <a></a>
-                                </div>
+                            {Array.isArray(applyForm) && applyForm.map((question, index) => (
+                                    <div key={index}>
+                                        <input
+                                            type="text"
+                                            value={question.content}
+                                            onChange={(e) => onChange(e, index)}
+                                        />
+                                        <button onClick={() => deleteApply(index)}>삭제</button>
+                                    </div>
                             ))}
                         </ADDCONTENT>
                     </CONTENT>
                     <BUTTONS>
-                        <button onClick={MoveToAdd}>추가하기</button>
-                        <button onClick={MoveToUpdate}>수정하기</button>
-                        <button onClick={MoveToDelete}>삭제하기</button>
+                        <button onClick={saveBoard}>저장</button>
+                        <button onClick={backToDetail}>취소</button>
                     </BUTTONS>
                 </CONTENTS>
             </CONTAINER>
@@ -166,4 +182,4 @@ const ApplyFormPage = () => {
     );
 };
 
-export default ApplyFormPage;
+export default ApplyFormDeletePage;
