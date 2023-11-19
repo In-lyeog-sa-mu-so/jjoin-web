@@ -19,7 +19,7 @@ const CONTENT = styled.div`
   margin-left: 5%;
   margin-top:20px;
   span{
-    min-width: 100px;
+    min-width: 180px;
     max-width: 200px;
     font-weight: 500;
     color: #495057;
