@@ -127,8 +127,12 @@ const ApplyFormAddPage=()=>{
     };
     const saveBoard = async () => {
         try {
-            // applyForm에서 id가 없는 질문만을 필터링하여 새 배열을 만듭니다.
             const newQuestions = applyForm.filter(question => !question.id);
+            const emptyContents = newQuestions.filter(question => question.content.trim() === "");
+            if(emptyContents.length > 0) {
+                alert('내용이 입력되지 않은 항목이 있습니다.');
+                return;
+            }
             const requestBody = newQuestions.map(question => ({ content: question.content }));
             await api.post(`/manager/club/${clubId}/question`, requestBody);
             alert('등록되었습니다.');

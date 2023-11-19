@@ -115,6 +115,11 @@ const ApplyFormFixPage = () => {
 
     const saveBoard = async () => {
         try {
+            const emptyContents = applyForm.filter(question => question.content.trim() === "");
+            if(emptyContents.length > 0) {
+                alert('내용이 입력되지 않은 항목이 있습니다.');
+                return;
+            }
             await api.patch(`/manager/club/${clubId}/question`, applyForm);
             alert('수정되었습니다.');
             navigate(`/manager/club/${clubId}/apply`);

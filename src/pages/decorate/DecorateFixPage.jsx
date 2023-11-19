@@ -85,9 +85,23 @@ const IMAGE = styled.div`
 `
 const IMAGEINPUT=styled.div`
   display: flex;
-  margin-left: 6%;
+  margin-left: 100px;
   & > div:nth-child(2) {
-    margin-left: 120px;
+    margin-left: 205px;
+  }
+  label{
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 5px 10px;
+    background-Color: darkblue;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    text-Align: center;
+    text-Decoration: none;
+    display: inline-block;
+    transition-duration: 0.4s;
   }
 `
 const CHECKBOX=styled.div`
@@ -113,7 +127,6 @@ const DATE = styled.div`
       box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
       border: 1px solid rgba(150,150,150,0.1);
     }
-  m
 `
 const DecorateFixPage = () => {
     const navigate = useNavigate();
@@ -216,6 +229,8 @@ const DecorateFixPage = () => {
                         <div>
                             <input
                                 type="file"
+                                id="profileUpload"
+                                style={{display: 'none'}}
                                 onChange={event => {
                                     const reader = new FileReader();
                                     reader.onloadend = () => {
@@ -228,10 +243,13 @@ const DecorateFixPage = () => {
                                     reader.readAsDataURL(event.target.files[0]);
                                 }}
                             />
+                            <label htmlFor="profileUpload" style={{cursor: 'pointer'}}>프로필 이미지 파일 선택</label>
                         </div>
                         <div>
                             <input
                                 type="file"
+                                id="backUpload"
+                                style={{display: 'none'}}
                                 onChange={event => {
                                     const reader = new FileReader();
                                     reader.onloadend = () => {
@@ -244,6 +262,7 @@ const DecorateFixPage = () => {
                                     reader.readAsDataURL(event.target.files[0]);
                                 }}
                             />
+                            <label htmlFor="backUpload" style={{cursor: 'pointer'}}>배경 이미지 파일 선택</label>
                         </div>
                     </IMAGEINPUT>
                     <CONTENT>
@@ -295,7 +314,7 @@ const DecorateFixPage = () => {
                         </div>
                     </DATE>
                     <BUTTONS>
-                        <button onClick={updateBoard}>수정</button>
+                        <button onClick={updateBoard}>수정완료</button>
                         <button onClick={backToDetail}>취소</button>
                     </BUTTONS>
                 </CONTENTS>

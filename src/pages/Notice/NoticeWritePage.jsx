@@ -111,12 +111,19 @@ const NoticeWrite = () => {
     };
 
     const saveBoard = async () => {
+        if (title.trim() === '') {
+            alert('제목을 입력해주세요');
+            return;
+        }
+        if (content.trim() === '') {
+            alert('내용을 입력해주세요');
+            return;
+        }
         await api.post(`/manager/club/${clubId}/notice`, notice).then((res) => {
             alert('등록되었습니다.');
             navigate(`/manager/club/${clubId}/notice`);
         });
     };
-
     const backToList = () => {
         navigate(`/manager/club/${clubId}/notice`);
     };

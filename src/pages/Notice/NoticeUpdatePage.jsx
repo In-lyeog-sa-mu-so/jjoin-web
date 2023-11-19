@@ -108,6 +108,14 @@ const NoticeUpdatePage = () => {
 
     const updateBoard = async () => {
         try {
+            if (title.trim() === '') {
+                alert('제목을 입력해주세요');
+                return;
+            }
+            if (content.trim() === '') {
+                alert('내용을 입력해주세요');
+                return;
+            }
             await api.put(`/manager/club/${clubId}/notice/${id}`, notice);
             alert('수정되었습니다.');
             navigate(`/manager/club/${clubId}/notice/${id}`);
