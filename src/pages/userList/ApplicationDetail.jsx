@@ -135,11 +135,11 @@ function ApplicationDetails() {
                         ))}
                     </tbody>
                 </CONTENT>
-            </CONTENTS>
-            <BUTTONS>
+                <BUTTONS>
                 <button onClick={allowApplication}>수락</button>
                 <button onClick={denyApplication}>거절</button>
-            </BUTTONS>
+                </BUTTONS>
+            </CONTENTS>
         </div>
     );
 }

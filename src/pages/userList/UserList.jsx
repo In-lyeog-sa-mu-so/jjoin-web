@@ -20,10 +20,27 @@ const Dropdown = styled.select`
   }
 `;
 
-const Button = styled.button`
+const ChangeButton = styled.button`
   padding: 5px 15px;
   margin-right: 10px;
   background-color: var(--primary);
+  color: white;
+  border-radius: 5px;
+  font-size: 15px;
+  cursor: pointer;
+  border: none;
+  &:hover {
+    background-color: darkblue;
+  }
+  &:last-child {
+    margin-right: 0;
+  }
+`;
+
+const DeleteButton = styled.button`
+  padding: 5px 15px;
+  margin-right: 10px;
+  background-color: red;
   color: white;
   border-radius: 5px;
   font-size: 15px;
@@ -49,20 +66,21 @@ const Td = styled.td`
 `;
 
 const Container = styled.div`
-  float: left;
+  float: right;
   display: flex;
   padding-bottom:10px;
   margin-right:5%;
   button{
     width: 150px;
-    height: 80px;
+    height: 100px;
     margin-top: 20px;
-    margin-left:1%;
-    background-color: var(--primary); /* Change color */
-    font-size: 15px;
+    margin-left: 1%;
+    background-color: var(--primary);
+    font-size: 18px;
     color: white;
     border-radius: 10px;
     cursor: pointer;
+    font-weight: bold;
     &:hover {
       background-color: darkblue;
     }
@@ -145,18 +163,24 @@ function MemberList() {
     }
 
     const deleteMember = (memberId) => {
-        api.delete(`/manager/club/${clubId}/member/${memberId}`)
-        .then(() => {
-          alert('멤버가 퇴출되었습니다.');
-          getMemberList(currentPage); // 현재 페이지의 멤버 목록을 다시 불러옴
-          navigate(`/manager/club/${clubId}/member`); // 멤버 퇴출
-        })
-        .catch(error => {
-          console.error('Error deleting member', error);
-          alert('일정 삭제에 실패했습니다.');
-          navigate(`/manager/club/${clubId}/member`); // 삭제 후 캘린더 페이지로 이동
-        });
-      };
+        const isConfirmed = window.confirm("정말 퇴출하시겠습니까?");
+        if (isConfirmed) {
+            api.delete(`/manager/club/${clubId}/member/${memberId}`)
+            .then(() => {
+                alert('멤버가 퇴출되었습니다.');
+                getMemberList(currentPage); // 현재 페이지의 멤버 목록을 다시 불러옴
+                navigate(`/manager/club/${clubId}/users`); // 멤버 퇴출
+            })
+            .catch(error => {
+                console.error('Error deleting member', error);
+                alert('멤버 삭제에 실패했습니다.');
+                navigate(`/manager/club/${clubId}/users`);
+            });
+        }
+        else {
+            navigate(`/manager/club/${clubId}/users`);
+        }
+    };
 
     return (
         <div className="userList">
@@ -174,15 +198,19 @@ function MemberList() {
                         <Td>{member.registerDate ? member.registerDate.split('T')[0] : ' '}</Td>
                         <Td>{member.position}</Td>
                         <Td>
-                        <Dropdown onChange={(e) => setSelectedRank(e.target.value)}>
-                            <option value="">직책 선택</option>
-                            <option value="LEADER">LEADER</option>
-                            <option value="MANAGER">MANAGER</option>
-                            <option value="MEMBER">MEMBER</option>
-                        </Dropdown>
-                        <Button onClick={() => handleRankChange(member.userId)}>직책 변경</Button>
-                        <Button onClick={() => deleteMember(member.userId)}>퇴출</Button>
-                    </Td>
+                            {member.position !== 'LEADER' && (
+                                <>
+                                <Dropdown onChange={(e) => setSelectedRank(e.target.value)}>
+                                  <option value="">직책 선택</option>
+                                  <option value="LEADER">LEADER</option>
+                                  <option value="MANAGER">MANAGER</option>
+                                  <option value="MEMBER">MEMBER</option>
+                                </Dropdown>
+                                <ChangeButton onClick={() => handleRankChange(member.userId)}>직책 변경</ChangeButton>
+                                <DeleteButton onClick={() => deleteMember(member.userId)}>퇴출</DeleteButton>
+                                </>
+                            )}
+                        </Td>
                     </Tr>
                 ))}
             </CommonTable>
@@ -198,7 +226,7 @@ function MemberList() {
                 ))}
             </PAGEBUTTON>
             <Container>
-                <button onClick={goToApplicationList}>가입 신청 목록</button>
+                <button onClick={goToApplicationList}>가입 신청 현황</button>
             </Container>
         </div>
     );
