@@ -20,8 +20,8 @@ const CONTENT = styled.div`
   margin-left: 5%;
   margin-top:20px;
   span{
-    min-width: 180px;
-    max-width: 200px;
+    min-width: 270px;
+    max-width: 270px;
     font-weight: 500;
     color: #495057;
   }
@@ -33,6 +33,7 @@ const CONTENT = styled.div`
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     border: 1px solid rgba(150,150,150,0.1);
     display: block;
+    margin-left: 20px;
   }
   div{
     display: flex;

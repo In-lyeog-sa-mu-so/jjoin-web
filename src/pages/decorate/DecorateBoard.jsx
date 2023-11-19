@@ -188,7 +188,7 @@ const DecorateBoard = ({ clubImageUuid, backgroundImageUuid, introduction, isFin
                         </div>
                     </DATE>
                     <BUTTONS>
-                        <button onClick={moveToUpdate}>수정</button>
+                        <button onClick={moveToUpdate}>수정하기</button>
                     </BUTTONS>
                 </CONTENTS>
             </CONTAINER>

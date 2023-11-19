@@ -161,14 +161,14 @@ const ApplyFormDeletePage=()=>{
                         </div>
                         <ADDCONTENT>
                             {Array.isArray(applyForm) && applyForm.map((question, index) => (
-                                    <div key={index}>
-                                        <input
-                                            type="text"
-                                            value={question.content}
-                                            onChange={(e) => onChange(e, index)}
-                                        />
-                                        <button onClick={() => deleteApply(index)}>삭제</button>
-                                    </div>
+                                <div key={index}>
+                                    <input
+                                        type="text"
+                                        value={question.content}
+                                        onChange={(e) => onChange(e, index)}
+                                    />
+                                    <button onClick={() => deleteApply(index)}>삭제</button>
+                                </div>
                             ))}
                         </ADDCONTENT>
                     </CONTENT>
