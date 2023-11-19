@@ -113,9 +113,9 @@ const DATE = styled.div`
       box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
       border: 1px solid rgba(150,150,150,0.1);
     }
-  }
+  m
 `
-const DecorateFixPage=()=>{
+const DecorateFixPage = () => {
     const navigate = useNavigate();
     const { clubId } = useParams();
     const [decorate, setDecorate] = useState({
@@ -129,7 +129,7 @@ const DecorateFixPage=()=>{
         endDate: null,
     });
 
-    const {clubImageUuid,backgroundImageUuid,introduction,isFinished,startDate,endDate}=decorate;
+    const { clubImageUuid, backgroundImageUuid, introduction, isFinished, clubImageFile, backgroundImageFile, startDate, endDate } = decorate;
     const onChange = (event) => {
         const { value, name } = event.target;
         setDecorate({
@@ -141,7 +141,7 @@ const DecorateFixPage=()=>{
     const getBoard = async () => {
         try {
             const resp = await axios.get(`https://jjoin.dcs-hyungjoon.com/api/v1/manager/club/${clubId}/information`);
-            if(resp && resp.data) {
+            if (resp && resp.data) {
                 setDecorate(resp.data);
             } else {
                 console.error('No data received');
@@ -150,31 +150,34 @@ const DecorateFixPage=()=>{
             console.error('Error fetching data: ', error);
         }
     };
+
     const updateBoard = async () => {
         try {
-            // 이미지 파일을 multipart/form-data 형식으로 보내기 위한 FormData 생성
             const formData = new FormData();
-            formData.append('clubImageUuid', decorate.clubImageFile);
-            formData.append('backgroundImageUuid', decorate.backgroundImageFile);
 
-            // 이미지 파일 업로드
-            await axios.put(`https://jjoin.dcs-hyungjoon.com/api/v1/manager/club/${clubId}/information/files`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-
-            // 나머지 데이터를 JSON 형식으로 보내기
+            if (decorate.clubImageFile) {
+                formData.append('clubImageFile', decorate.clubImageFile);
+            }
+            if (decorate.backgroundImageFile) {
+                formData.append('backgroundImageFile', decorate.backgroundImageFile);
+            }
             const data = {
-                introduction: decorate.introduction,
-                startDate: decorate.startDate,
-                endDate: decorate.endDate
+                introduction,
+                startDate,
+                endDate
             };
 
-            await axios.put(`https://jjoin.dcs-hyungjoon.com/api/v1/manager/club/${clubId}/information`, data, {
+            const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+            formData.append('data', blob);
+
+            await axios({
+                method: 'PUT',
+                url: `https://jjoin.dcs-hyungjoon.com/api/v1/manager/club/${clubId}/information`,
+                mode: 'cors',
                 headers: {
-                    'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'multipart/form-data'
+                },
+                data: formData
             });
 
             alert('수정되었습니다.');
@@ -183,6 +186,7 @@ const DecorateFixPage=()=>{
             console.error('Error updating the board: ', error);
         }
     };
+
     const backToDetail = () => {
         navigate(`/manager/club/${clubId}/information`);
     };
@@ -192,19 +196,20 @@ const DecorateFixPage=()=>{
     }, []);
 
     return (
-        <div><H2>홍보페이지 관리 <span> > 수정</span></H2>
+        <div>
+            <H2>홍보페이지 관리 <span> > 수정</span></H2>
             <CONTAINER>
                 <CONTENTS>
                     <IMAGE>
                         <div>
                             <p>프로필 사진</p>
-                            <img src={decorate.clubImageUuid && decorate.clubImageUuid.startsWith('data:image')
-                                ? decorate.clubImageUuid : `https://jjoin.dcs-hyungjoon.com/images/${decorate.clubImageUuid}`} alt="프로필사진" />
+                            <img src={clubImageUuid && clubImageUuid.startsWith('data:image')
+                                ? clubImageUuid : `https://jjoin.dcs-hyungjoon.com/images/${clubImageUuid}`} alt="프로필사진" />
                         </div>
                         <div>
                             <p>배경 사진</p>
-                            <img src={decorate.backgroundImageUuid && decorate.backgroundImageUuid.startsWith('data:image')
-                                ? decorate.backgroundImageUuid : `https://jjoin.dcs-hyungjoon.com/images/${decorate.backgroundImageUuid}`} alt="배경사진" />
+                            <img src={backgroundImageUuid && backgroundImageUuid.startsWith('data:image')
+                                ? backgroundImageUuid : `https://jjoin.dcs-hyungjoon.com/images/${backgroundImageUuid}`} alt="배경사진" />
                         </div>
                     </IMAGE>
                     <IMAGEINPUT>
@@ -262,6 +267,7 @@ const DecorateFixPage=()=>{
                                 name="recruit"
                                 value="모집"
                                 checked={isFinished === false}
+                                disabled
                             />
                         </div>
                         <div>
@@ -271,6 +277,7 @@ const DecorateFixPage=()=>{
                                 name="recruit"
                                 value="모집안함"
                                 checked={isFinished === true}
+                                disabled
                             />
                         </div>
                     </CHECKBOX>
@@ -280,11 +287,11 @@ const DecorateFixPage=()=>{
                         </div>
                         <div>
                             <a>시작날짜</a>
-                            <input type="text" name="startDate" value={startDate?startDate.split('T')[0] : ' '} onChange={onChange} />
+                            <input type="text" name="startDate" value={startDate ? startDate.split('T')[0] : ' '} onChange={onChange} />
                         </div>
                         <div>
                             <a>종료날짜</a>
-                            <input type="text" name="endDate" value={endDate? endDate.split('T')[0] : ' '} onChange={onChange} />
+                            <input type="text" name="endDate" value={endDate ? endDate.split('T')[0] : ' '} onChange={onChange} />
                         </div>
                     </DATE>
                     <BUTTONS>
