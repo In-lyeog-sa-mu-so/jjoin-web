@@ -21,6 +21,7 @@ import EventDetails from "./pages/calendar/EventDetails";
 import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate, useParams } from 'react-router-dom';
 import {RecoilRoot} from 'recoil';
 import ApplicationList from "./pages/userList/ApplicationList";
+import ApplicationDetails from "./pages/userList/ApplicationDetail";
 
 function App() {
     return (
@@ -44,6 +45,7 @@ function App() {
                                 <Route path="/manager/club/:clubId/information/fix" element={<DecorateFixPage/>}/>
                                 <Route path="/manager/club/:clubId/users" element={<UserList/>} />
                                 <Route path="/manager/club/:clubId/application" element={<ApplicationList/>} />
+                                <Route path="/manager/club/:clubId/application/:id" element={<ApplicationDetails/>} />
                                 <Route path='/manager/club/:clubId/plan/upload' element={<AddEvent/>} exact />
                                 <Route path='/manager/club/:clubId/plan/:defid' element={<EventDetails/>} />
                                 <Route path="/manager/club/:clubId/apply" element={<ApplyFormPage/>} />
