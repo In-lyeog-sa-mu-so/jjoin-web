@@ -32,7 +32,7 @@ const StyledLink = styled(Link)`
     box-shadow: #ddd 0px 3px 8px;
     border-radius: 12px;
     width: 100%;
-    height: 200px;
+    height: 450px;
     justify-content: center;
     background: linear-gradient(45deg, white 90%, var(--primary) 10%);
     position: relative;
@@ -80,7 +80,10 @@ function MainPage(){
                 <CLICK>
                     {clubList.map((club) => (
                         <StyledLink to={`/manager/club/${club.id}/notice`} key={club.id}>
+                            <img src={`https://jjoin.dcs-hyungjoon.com/images/${club.profileImageUuid}`} alt="프로필사진"/>
                             <span>{club.name}</span>
+                            <span>{club.introduction}</span>
+                            <span>{club.leaderName}</span>
                             <ArrowForwardIcon sx={{ color: 'var(--primary)' }} />
                         </StyledLink>
                     ))}
