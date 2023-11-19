@@ -1,58 +1,143 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import './userList.css';
-import ApplicationList from './ApplicationList';
-import { DataGrid } from '@mui/x-data-grid';
-// import { userRows } from '../../dummyData'
-import { DeleteOutline } from '@mui/icons-material';
+import '../Notice/NoticeList/CommonTable.css';
+import CommonTable from "../Notice/NoticeList/CommonTable";
+import api from '../../Axios';
+import { useNavigate, useParams } from "react-router";
+import styled from "styled-components";
 
-const userRows = [
-    { id: 1, name: "조원준", student_id: '2019112060', department: '컴퓨터공학과', email: 'c68254@gmail.com', join_date: '2023-10-06', user_type: '회장'},
-    { id: 2, name: "김태욱", student_id: '2019112061', department: '컴퓨터공학과', email: 'taewook@naver.com', join_date: '2023-10-06', user_type: '대국장'},
-    { id: 3, name: "조성진", student_id: '2019112062', department: '컴퓨터공학과', email: 'csk00@gmail.com-xxxx', join_date: '2023-10-07', user_type: '부회장'},
-    { id: 4, name: "박재형", student_id: '2019112063', department: '컴퓨터공학과', email: 'hyeong@dgu.ac.kr', join_date: '2023-10-07', user_type: '기획국장'},
-    { id: 5, name: "손형준", student_id: '2019112064', department: '컴퓨터공학과', email: 'dcs.public.gmail.com', join_date: '2023-10-08', user_type: '사무국장'},
-    { id: 6, name: "이선호", student_id: '2019112065', department: '컴퓨터공학과', email: 'prefer00@dongguk.edu', join_date: '2023-10-09', user_type: '관리국장'},
-];
+const Tr = styled.tr`
+  &:hover {
+    background-color: aliceblue;
+    cursor: pointer;
+  }
+`;
+const Td = styled.td`
+  padding: 10px 5px;
+  border-bottom: 2px solid #D2D2FF;
+`;
 
-const columns = [
-    { field: 'id', headerName: 'ID', width: 70, },
-    { field: 'name', headerName: '이름', width: 150, },
-    { field: 'student_id', headerName: '학번', width: 150, },
-    { field: 'department', headerName: '학과', width: 150, },
-    { field: 'email', headerName: '이메일', width: 150, },
-    { field: 'join_date', headerName: '가입일', width: 150, },
-    { field: 'user_type', headerName: '직책', width: 150, },
-    { 
-        field: 'modification', 
-        headerName: '변경', 
-        width: 150,
-        renderCell: (params) => {
-            return (
-                <>
-                    <button className="userListEdit">Edit</button>
-                    <DeleteOutline className="userListDelete" />
-                </>
-            );
-        },
-    },
-];
+const Container = styled.div`
+  float: left;
+  display: flex;
+  padding-bottom:10px;
+  margin-right:5%;
+  button{
+    width: 150px;
+    height: 80px;
+    margin-top: 20px;
+    margin-left:1%;
+    background-color: var(--primary); /* Change color */
+    font-size: 15px;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    &:hover {
+      background-color: darkblue;
+    }
+  }
+  & > input {
+    height: 20px;
+    margin-left: 10px;
+    border: 2px solid gray;
+  }
+`;
 
-export default function UserList() {
+const PAGEBUTTON = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  button {
+    border: none;
+    font-size: 15px;
+    margin-right: 5px;
+    background-color: white;
+    color: ${props => props.current ? 'red' : 'black'};
+    &:hover {
+      font-weight:bold;
+      cursor: pointer;
+    }
+  }
+`;
+
+function MemberList() {
+    const navigate = useNavigate();
+    const [memberList, setMemberList] = useState({data:[], pageInfo:{}});
+    const { clubId } = useParams();
+    const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 상태 추가
+    
+    const getMemberList = async (page = 0) => {
+        try {
+            const resp = await api.get(`/manager/club/${clubId}/member?page=${page}&size=10`);
+            if (resp && resp.data) {
+                setMemberList(resp.data);
+            } else {
+                console.error('No data received');
+            }
+        } catch (error) {
+            console.error('Error fetching data: ', error);
+        }
+    }
+
+    useEffect(() => {
+        getMemberList(currentPage);
+    }, [clubId, currentPage]);
+
+    const moveToPage = (page) => { // 페이지 이동 함수 추가
+        setCurrentPage(page);
+    };
+
+    const goToApplicationList = () => {
+        navigate(`/manager/club/${clubId}/application`);
+    }
+
+    // const deleteMember = () => {
+    //     api.delete(`/manager/club/${clubId}/member/${userId}`)
+    //     .then(() => {
+    //       alert('멤버가 퇴출되었습니다.');
+    //       navigate(`/manager/club/${clubId}/member`); // 멤버 퇴출
+    //     })
+    //     .catch(error => {
+    //       console.error('Error deleting member', error);
+    //       alert('일정 삭제에 실패했습니다.');
+    //       navigate(`/manager/club/${clubId}/member`); // 삭제 후 캘린더 페이지로 이동
+    //     });
+    //   };
+
     return (
         <div className="userList">
             <h3>멤버관리</h3>
             <hr color="darkBlue"/>
             <br />
-            <DataGrid
-                rows={userRows}
-                disableRowSelectionOnClick
-                columns={columns}
-                pageSizeOptions={5}
-                rowsPerPageOptions={[5]}
-                checkboxSelection
-            />
-            <br /><br />
-            <ApplicationList />
+            <CommonTable headersName={['ID', '이름', '학번', '학과', '이메일', '가입일', '직책']}>
+                {memberList && memberList.data.map((member)=> (
+                    <Tr key={member.userId}>
+                        <Td>{member.userId}</Td>
+                        <Td>{member.userName}</Td>
+                        <Td>{member.studentId}</Td>
+                        <Td>{member.major}</Td>
+                        <Td>{member.email}</Td>
+                        <Td>{member.registerDate ? member.registerDate.split('T')[0] : ' '}</Td>
+                        <Td>{member.position}</Td>
+                    </Tr>
+                ))}
+            </CommonTable>
+            <PAGEBUTTON>
+                {[...Array(memberList.pageInfo.totalPages)].map((_, index) => (
+                    <button onClick={() => moveToPage(index)}
+                            style={{
+                                color: currentPage === index ? 'darkblue' : 'black',
+                                fontWeight: currentPage === index ? 'bold' : 'normal', // 현재 페이지이면 굵게
+                                textDecoration: currentPage === index ? 'underline' : 'none' // 현재 페이지이면 밑줄
+                            }}
+                    >{index + 1}</button>
+                ))}
+            </PAGEBUTTON>
+            <Container>
+                <button onClick={goToApplicationList}>가입 신청 목록</button>
+            </Container>
         </div>
     );
 }
+
+export default MemberList;
