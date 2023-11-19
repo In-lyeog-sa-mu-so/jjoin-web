@@ -18,6 +18,16 @@ const Td = styled.td`
   border-bottom: 2px solid #D2D2FF;
 `;
 
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit; // 혹은 원하는 색상
+  float: left;
+  margin-left: 200px;
+  &:hover {
+    font-weight: bold;
+  }
+`;
+
 const StyledTd = styled.td`
   cursor: pointer;
   background-color: var(--primary);
@@ -89,6 +99,9 @@ function ApplicationList() {
                     <Td>{application.major}</Td>
                     <Td>{application.email}</Td>
                     <Td>{application.requestDate ? application.requestDate.split('T')[0] : ' '}</Td>
+                    {/* <StyledLink to={`/manager/club/${clubId}/application/${application.id}`}>
+                        가입 신청서 보기
+                    </StyledLink> */}
                     <StyledTd onClick={() => handleRowClick(application.id)}>가입 신청서 보기</StyledTd>
                 </Tr>
             ))}
